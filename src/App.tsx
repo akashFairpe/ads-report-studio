@@ -16,6 +16,9 @@ import KeywordPerformance from "./pages/KeywordPerformance";
 import SearchTermReport from "./pages/SearchTermReport";
 import CostBudgetReport from "./pages/CostBudgetReport";
 import PacingReport from "./pages/PacingReport";
+import ConversionTrackingReport from "./pages/ConversionTrackingReport";
+import ROASReport from "./pages/ROASReport";
+import AdVariationPerformanceReport from "./pages/AdVariationPerformanceReport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +43,9 @@ const App = () => (
           <Route path="/search-term-report" element={<SearchTermReport />} />
           <Route path="/cost-budget-report" element={<CostBudgetReport />} />
           <Route path="/pacing-report" element={<PacingReport />} />
+          <Route path="/conversion-tracking-report" element={<ConversionTrackingReport />} />
+          <Route path="/roas-report" element={<ROASReport />} />
+          <Route path="/ad-variation-performance-report" element={<AdVariationPerformanceReport />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

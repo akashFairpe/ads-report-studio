@@ -277,6 +277,72 @@ const Index = () => {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🎯 Conversion Tracking
+              </CardTitle>
+              <CardDescription>
+                Comprehensive conversion tracking with attribution model analysis and optimization insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Conversion action breakdowns</li>
+                <li>• Attribution model comparison</li>
+                <li>• Conversion trend analysis</li>
+                <li>• CPA optimization insights</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/conversion-tracking-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                💸 ROAS Report
+              </CardTitle>
+              <CardDescription>
+                Return on Ad Spend analysis with campaign profitability and revenue optimization insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Campaign ROAS performance</li>
+                <li>• Revenue trend analysis</li>
+                <li>• Top/bottom performer identification</li>
+                <li>• Profitability optimization</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/roas-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🧪 Ad Variation Performance
+              </CardTitle>
+              <CardDescription>
+                A/B testing results with statistical significance and creative optimization recommendations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• A/B test performance comparison</li>
+                <li>• Statistical significance analysis</li>
+                <li>• Winning creative identification</li>
+                <li>• Testing strategy recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/ad-variation-performance-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="mt-12 text-center">
