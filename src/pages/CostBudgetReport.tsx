@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import ExportButtons from "@/components/ExportButtons";
 
 const CostBudgetReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
