@@ -19,6 +19,9 @@ import PacingReport from "./pages/PacingReport";
 import ConversionTrackingReport from "./pages/ConversionTrackingReport";
 import ROASReport from "./pages/ROASReport";
 import AdVariationPerformanceReport from "./pages/AdVariationPerformanceReport";
+import QualityScoreAnalysisReport from "./pages/QualityScoreAnalysisReport";
+import AuctionInsightsReport from "./pages/AuctionInsightsReport";
+import ShoppingCampaignPerformanceReport from "./pages/ShoppingCampaignPerformanceReport";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +49,9 @@ const App = () => (
           <Route path="/conversion-tracking-report" element={<ConversionTrackingReport />} />
           <Route path="/roas-report" element={<ROASReport />} />
           <Route path="/ad-variation-performance-report" element={<AdVariationPerformanceReport />} />
+          <Route path="/quality-score-analysis-report" element={<QualityScoreAnalysisReport />} />
+          <Route path="/auction-insights-report" element={<AuctionInsightsReport />} />
+          <Route path="/shopping-campaign-performance-report" element={<ShoppingCampaignPerformanceReport />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

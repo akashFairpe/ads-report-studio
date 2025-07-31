@@ -343,6 +343,72 @@ const Index = () => {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                ⭐ Quality Score Analysis
+              </CardTitle>
+              <CardDescription>
+                In-depth quality score analysis with keyword optimization and landing page recommendations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Quality score by keyword analysis</li>
+                <li>• Expected CTR performance review</li>
+                <li>• Landing page experience insights</li>
+                <li>• Ad relevance optimization tips</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/quality-score-analysis-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                ⚔️ Auction Insights
+              </CardTitle>
+              <CardDescription>
+                Competitive analysis with auction insights, impression share, and outranking data
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Competitor impression share analysis</li>
+                <li>• Overlap rate and outranking metrics</li>
+                <li>• Top of page rate comparison</li>
+                <li>• Competitive strategy recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/auction-insights-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🛍️ Shopping Campaign Performance
+              </CardTitle>
+              <CardDescription>
+                E-commerce focused analysis with product performance, ROAS, and merchandising insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Product group performance analysis</li>
+                <li>• Top/bottom performing SKUs</li>
+                <li>• Brand performance comparison</li>
+                <li>• Merchandising optimization tips</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/shopping-campaign-performance-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="mt-12 text-center">
