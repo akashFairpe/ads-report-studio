@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import AccountPerformance from "./pages/AccountPerformance";
+import CampaignPerformance from "./pages/CampaignPerformance";
+import AdGroupPerformance from "./pages/AdGroupPerformance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,6 +19,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/account-performance" element={<AccountPerformance />} />
+          <Route path="/campaign-performance" element={<CampaignPerformance />} />
+          <Route path="/ad-group-performance" element={<AdGroupPerformance />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
