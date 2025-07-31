@@ -6,11 +6,45 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import PaginationControls from "@/components/PaginationControls";
+import { usePagination } from "@/hooks/usePagination";
 
 const AdVariationPerformanceReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample data with more than 10 entries to demonstrate pagination
+  const adVariations = [
+    { id: 1, variant: "Variant A", headline: "Transform Your Business Today", impressions: 45230, ctr: "2.34%", conversions: 287, cpc: "$2.45", status: "Control", statusColor: "bg-gray-100 text-gray-800", isWinner: false },
+    { id: 2, variant: "Variant B", headline: "Unlock Growth in 30 Days", impressions: 44890, ctr: "3.12%", conversions: 398, cpc: "$2.28", status: "Winner", statusColor: "bg-green-100 text-green-800", isWinner: true },
+    { id: 3, variant: "Variant C", headline: "Boost Revenue Fast", impressions: 43670, ctr: "2.78%", conversions: 324, cpc: "$2.67", status: "Competitor", statusColor: "bg-yellow-100 text-yellow-800", isWinner: false },
+    { id: 4, variant: "Variant D", headline: "Start Your Success Journey", impressions: 44120, ctr: "2.01%", conversions: 245, cpc: "$2.89", status: "Underperform", statusColor: "bg-red-100 text-red-800", isWinner: false },
+    { id: 5, variant: "Variant E", headline: "Maximize Your Potential", impressions: 42890, ctr: "2.56%", conversions: 301, cpc: "$2.53", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 6, variant: "Variant F", headline: "Scale Beyond Limits", impressions: 43210, ctr: "2.89%", conversions: 342, cpc: "$2.41", status: "Competitor", statusColor: "bg-yellow-100 text-yellow-800", isWinner: false },
+    { id: 7, variant: "Variant G", headline: "Achieve More Today", impressions: 41560, ctr: "2.23%", conversions: 267, cpc: "$2.71", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 8, variant: "Variant H", headline: "Drive Results Now", impressions: 43890, ctr: "2.67%", conversions: 315, cpc: "$2.49", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 9, variant: "Variant I", headline: "Grow Your Business", impressions: 42340, ctr: "2.45%", conversions: 289, cpc: "$2.62", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 10, variant: "Variant J", headline: "Success Starts Here", impressions: 43780, ctr: "2.34%", conversions: 278, cpc: "$2.58", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 11, variant: "Variant K", headline: "Innovation Unleashed", impressions: 41920, ctr: "2.12%", conversions: 254, cpc: "$2.76", status: "Underperform", statusColor: "bg-red-100 text-red-800", isWinner: false },
+    { id: 12, variant: "Variant L", headline: "Excellence Delivered", impressions: 44560, ctr: "2.91%", conversions: 356, cpc: "$2.33", status: "Competitor", statusColor: "bg-yellow-100 text-yellow-800", isWinner: false },
+    { id: 13, variant: "Variant M", headline: "Future-Ready Solutions", impressions: 42670, ctr: "2.58%", conversions: 298, cpc: "$2.64", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 14, variant: "Variant N", headline: "Strategic Advantage", impressions: 43120, ctr: "2.73%", conversions: 321, cpc: "$2.47", status: "Testing", statusColor: "bg-blue-100 text-blue-800", isWinner: false },
+    { id: 15, variant: "Variant O", headline: "Market Leadership", impressions: 41890, ctr: "2.19%", conversions: 262, cpc: "$2.83", status: "Underperform", statusColor: "bg-red-100 text-red-800", isWinner: false },
+  ];
+
+  const {
+    paginatedData,
+    exportData,
+    currentPage,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+  } = usePagination(adVariations, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -143,53 +177,34 @@ const AdVariationPerformanceReport = () => {
                   </tr>
                 </thead>
                 <tbody id="ad_variations_data" data-table="ad_variations">
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="variant">Variant A</td>
-                    <td className="p-2" data-field="headline">"Transform Your Business Today"</td>
-                    <td className="text-right p-2" data-field="impressions">45,230</td>
-                    <td className="text-right p-2" data-field="ctr">2.34%</td>
-                    <td className="text-right p-2" data-field="conversions">287</td>
-                    <td className="text-right p-2" data-field="cpc">$2.45</td>
-                    <td className="text-center p-2">
-                      <span className="bg-gray-100 text-gray-800 px-2 py-1 rounded text-xs">Control</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-green-50">
-                    <td className="p-2 font-medium" data-field="variant">Variant B</td>
-                    <td className="p-2" data-field="headline">"Unlock Growth in 30 Days"</td>
-                    <td className="text-right p-2" data-field="impressions">44,890</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="ctr">3.12%</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="conversions">398</td>
-                    <td className="text-right p-2" data-field="cpc">$2.28</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Winner</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="variant">Variant C</td>
-                    <td className="p-2" data-field="headline">"Boost Revenue Fast"</td>
-                    <td className="text-right p-2" data-field="impressions">43,670</td>
-                    <td className="text-right p-2" data-field="ctr">2.78%</td>
-                    <td className="text-right p-2" data-field="conversions">324</td>
-                    <td className="text-right p-2" data-field="cpc">$2.67</td>
-                    <td className="text-center p-2">
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Competitor</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="variant">Variant D</td>
-                    <td className="p-2" data-field="headline">"Start Your Success Journey"</td>
-                    <td className="text-right p-2" data-field="impressions">44,120</td>
-                    <td className="text-right p-2" data-field="ctr">2.01%</td>
-                    <td className="text-right p-2" data-field="conversions">245</td>
-                    <td className="text-right p-2" data-field="cpc">$2.89</td>
-                    <td className="text-center p-2">
-                      <span className="bg-red-100 text-red-800 px-2 py-1 rounded text-xs">Underperform</span>
-                    </td>
-                  </tr>
+                  {paginatedData.map((variation) => (
+                    <tr key={variation.id} className={`border-b ${variation.isWinner ? 'bg-green-50' : ''}`}>
+                      <td className="p-2 font-medium" data-field="variant">{variation.variant}</td>
+                      <td className="p-2" data-field="headline">"{variation.headline}"</td>
+                      <td className="text-right p-2" data-field="impressions">{variation.impressions.toLocaleString()}</td>
+                      <td className={`text-right p-2 ${variation.isWinner ? 'font-bold text-green-600' : ''}`} data-field="ctr">{variation.ctr}</td>
+                      <td className={`text-right p-2 ${variation.isWinner ? 'font-bold text-green-600' : ''}`} data-field="conversions">{variation.conversions}</td>
+                      <td className="text-right p-2" data-field="cpc">{variation.cpc}</td>
+                      <td className="text-center p-2">
+                        <span className={`${variation.statusColor} px-2 py-1 rounded text-xs`}>{variation.status}</span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPrevPage}
+              showAll={showAll}
+              onNextPage={goToNextPage}
+              onPrevPage={goToPrevPage}
+              onToggleShowAll={toggleShowAll}
+              totalItems={adVariations.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 

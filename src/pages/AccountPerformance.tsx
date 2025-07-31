@@ -1,10 +1,43 @@
 import React, { useState } from 'react';
 import ExportButtons from "@/components/ExportButtons";
+import PaginationControls from "@/components/PaginationControls";
+import { usePagination } from "@/hooks/usePagination";
 
 const AccountPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#1a73e8');
   const [selectedFont, setSelectedFont] = useState('Inter');
-  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMxYTczZTgiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR088L3RleHQ+PC9zdmc+");
+  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMxYTczZTgiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR084L3RleHQ+PC9zdmc+");
+
+  // Sample campaign data with more entries for pagination demonstration
+  const campaignData = [
+    { id: 1, name: "Search - Brand Terms", impressions: "45,632", clicks: "3,421", ctr: "7.49%", cost: "$8,025", conversions: "421", roas: "525%" },
+    { id: 2, name: "Search - Product Terms", impressions: "89,156", clicks: "4,235", ctr: "4.75%", cost: "$9,912", conversions: "398", roas: "402%" },
+    { id: 3, name: "Display - Remarketing", impressions: "67,890", clicks: "2,156", ctr: "3.18%", cost: "$5,434", conversions: "189", roas: "348%" },
+    { id: 4, name: "Shopping - All Products", impressions: "43,111", clicks: "2,644", ctr: "6.13%", cost: "$5,775", conversions: "226", roas: "392%" },
+    { id: 5, name: "Search - Competitor Terms", impressions: "52,340", clicks: "2,890", ctr: "5.52%", cost: "$7,234", conversions: "312", roas: "431%" },
+    { id: 6, name: "Display - Interest Targeting", impressions: "78,920", clicks: "1,987", ctr: "2.52%", cost: "$4,567", conversions: "156", roas: "342%" },
+    { id: 7, name: "Video - YouTube Ads", impressions: "134,567", clicks: "3,456", ctr: "2.57%", cost: "$6,789", conversions: "287", roas: "423%" },
+    { id: 8, name: "Search - Long Tail Keywords", impressions: "29,876", clicks: "1,678", ctr: "5.61%", cost: "$3,234", conversions: "189", roas: "584%" },
+    { id: 9, name: "Shopping - Electronics", impressions: "38,765", clicks: "2,134", ctr: "5.50%", cost: "$4,567", conversions: "203", roas: "445%" },
+    { id: 10, name: "Display - Custom Audiences", impressions: "56,789", clicks: "1,789", ctr: "3.15%", cost: "$3,890", conversions: "167", roas: "429%" },
+    { id: 11, name: "Search - Location Based", impressions: "41,234", clicks: "2,456", ctr: "5.96%", cost: "$5,123", conversions: "234", roas: "456%" },
+    { id: 12, name: "Video - Product Demos", impressions: "89,456", clicks: "2,678", ctr: "2.99%", cost: "$4,234", conversions: "178", roas: "421%" },
+    { id: 13, name: "Shopping - Fashion", impressions: "34,567", clicks: "1,987", ctr: "5.75%", cost: "$3,456", conversions: "156", roas: "451%" },
+    { id: 14, name: "Search - Seasonal Terms", impressions: "67,890", clicks: "3,234", ctr: "4.76%", cost: "$6,789", conversions: "289", roas: "426%" },
+    { id: 15, name: "Display - Lookalike Audiences", impressions: "45,678", clicks: "1,567", ctr: "3.43%", cost: "$3,789", conversions: "134", roas: "354%" },
+  ];
+
+  const {
+    paginatedData,
+    currentPage,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+  } = usePagination(campaignData, 10);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -352,44 +385,31 @@ const AccountPerformance = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Search - Brand Terms</td>
-                <td>45,632</td>
-                <td>3,421</td>
-                <td>7.49%</td>
-                <td>$8,025</td>
-                <td>421</td>
-                <td>525%</td>
-              </tr>
-              <tr>
-                <td>Search - Product Terms</td>
-                <td>89,156</td>
-                <td>4,235</td>
-                <td>4.75%</td>
-                <td>$9,912</td>
-                <td>398</td>
-                <td>402%</td>
-              </tr>
-              <tr>
-                <td>Display - Remarketing</td>
-                <td>67,890</td>
-                <td>2,156</td>
-                <td>3.18%</td>
-                <td>$5,434</td>
-                <td>189</td>
-                <td>348%</td>
-              </tr>
-              <tr>
-                <td>Shopping - All Products</td>
-                <td>43,111</td>
-                <td>2,644</td>
-                <td>6.13%</td>
-                <td>$5,775</td>
-                <td>226</td>
-                <td>392%</td>
-              </tr>
+              {paginatedData.map((campaign) => (
+                <tr key={campaign.id}>
+                  <td>{campaign.name}</td>
+                  <td>{campaign.impressions}</td>
+                  <td>{campaign.clicks}</td>
+                  <td>{campaign.ctr}</td>
+                  <td>{campaign.cost}</td>
+                  <td>{campaign.conversions}</td>
+                  <td>{campaign.roas}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={campaignData.length}
+            itemsPerPage={10}
+          />
         </section>
 
         {/* Insights & Notes */}
