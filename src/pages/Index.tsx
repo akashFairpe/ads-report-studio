@@ -145,6 +145,72 @@ const Index = () => {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                ⏰ Dayparting Performance
+              </CardTitle>
+              <CardDescription>
+                Hour-by-hour and day-of-week performance analysis for optimal ad scheduling
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Performance by hour of day</li>
+                <li>• Day-of-week analysis</li>
+                <li>• Peak performance windows</li>
+                <li>• Bid adjustment recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/dayparting-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                📝 Ad Performance
+              </CardTitle>
+              <CardDescription>
+                Individual ad creative analysis with CTR, conversion tracking, and optimization insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Top performing ad creatives</li>
+                <li>• Ad type comparison analysis</li>
+                <li>• Creative performance metrics</li>
+                <li>• A/B testing recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/ad-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🔑 Keyword Performance
+              </CardTitle>
+              <CardDescription>
+                Comprehensive keyword analysis with match types, negative keywords, and bid optimization
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Top keywords by conversions</li>
+                <li>• Match type performance analysis</li>
+                <li>• Negative keyword suggestions</li>
+                <li>• Keyword expansion opportunities</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/keyword-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="mt-12 text-center">
