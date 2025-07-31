@@ -211,6 +211,72 @@ const Index = () => {
               </Button>
             </CardContent>
           </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🔍 Search Term Report
+              </CardTitle>
+              <CardDescription>
+                Detailed analysis of actual search queries triggering your ads with performance insights
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Search term performance analysis</li>
+                <li>• Negative keyword recommendations</li>
+                <li>• Search query optimization</li>
+                <li>• Irrelevant traffic identification</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/search-term-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                💰 Cost & Budget Tracking
+              </CardTitle>
+              <CardDescription>
+                Comprehensive budget monitoring with spend analysis and cost efficiency metrics
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Budget vs actual spend tracking</li>
+                <li>• Daily cost trend analysis</li>
+                <li>• Campaign cost breakdown</li>
+                <li>• Cost efficiency optimization</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/cost-budget-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                📈 Pacing Report
+              </CardTitle>
+              <CardDescription>
+                Budget pacing analysis with spending projections and campaign optimization recommendations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Budget pacing health monitoring</li>
+                <li>• Spend projection analysis</li>
+                <li>• Campaign-level pacing status</li>
+                <li>• Automated adjustment recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/pacing-report">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
         <div className="mt-12 text-center">
