@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import ExportButtons from "@/components/ExportButtons";
 
 const AdVariationPerformanceReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
@@ -58,8 +59,9 @@ const AdVariationPerformanceReport = () => {
               className="w-16 h-10"
             />
           </div>
+          </div>
+          <ExportButtons reportTitle="Ad Variation Performance Report" />
         </div>
-      </div>
 
       {/* Report Content */}
       <div className="max-w-4xl mx-auto p-6 space-y-6">
