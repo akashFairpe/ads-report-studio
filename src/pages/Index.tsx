@@ -13,7 +13,7 @@ const Index = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           <Card className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -76,6 +76,72 @@ const Index = () => {
               </ul>
               <Button asChild className="w-full">
                 <Link to="/ad-group-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                👥 Demographic Performance
+              </CardTitle>
+              <CardDescription>
+                Performance analysis by age, gender, and demographic segments
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Age group performance analysis</li>
+                <li>• Gender demographic insights</li>
+                <li>• Cross-demographic comparisons</li>
+                <li>• Targeting recommendations</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/demographic-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🌍 Geographic Performance
+              </CardTitle>
+              <CardDescription>
+                Regional and location-based performance insights and trends
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Country/region performance map</li>
+                <li>• Top performing locations</li>
+                <li>• Geographic trend analysis</li>
+                <li>• Location-based optimization</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/geographic-performance">View Report</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                📱 Device Performance
+              </CardTitle>
+              <CardDescription>
+                Mobile, desktop, and tablet performance comparison and analysis
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
+                <li>• Cross-device performance metrics</li>
+                <li>• Traffic distribution analysis</li>
+                <li>• Device-specific trends</li>
+                <li>• Mobile optimization insights</li>
+              </ul>
+              <Button asChild className="w-full">
+                <Link to="/device-performance">View Report</Link>
               </Button>
             </CardContent>
           </Card>

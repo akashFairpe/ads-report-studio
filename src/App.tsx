@@ -7,6 +7,9 @@ import Index from "./pages/Index";
 import AccountPerformance from "./pages/AccountPerformance";
 import CampaignPerformance from "./pages/CampaignPerformance";
 import AdGroupPerformance from "./pages/AdGroupPerformance";
+import DemographicPerformance from "./pages/DemographicPerformance";
+import GeographicPerformance from "./pages/GeographicPerformance";
+import DevicePerformance from "./pages/DevicePerformance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +25,9 @@ const App = () => (
           <Route path="/account-performance" element={<AccountPerformance />} />
           <Route path="/campaign-performance" element={<CampaignPerformance />} />
           <Route path="/ad-group-performance" element={<AdGroupPerformance />} />
+          <Route path="/demographic-performance" element={<DemographicPerformance />} />
+          <Route path="/geographic-performance" element={<GeographicPerformance />} />
+          <Route path="/device-performance" element={<DevicePerformance />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
