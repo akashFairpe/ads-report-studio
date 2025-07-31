@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExportButtons from "@/components/ExportButtons";
 
 const AccountPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#1a73e8');
@@ -262,6 +263,7 @@ const AccountPerformance = () => {
               onChange={(e) => setPrimaryColor(e.target.value)}
             />
           </div>
+          <ExportButtons reportTitle="Account Performance Report" />
         </div>
       </div>
 
