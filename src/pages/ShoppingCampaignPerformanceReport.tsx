@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const ShoppingCampaignPerformanceReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
@@ -190,45 +192,36 @@ const ShoppingCampaignPerformanceReport = () => {
                   </tr>
                 </thead>
                 <tbody id="product_groups_data" data-table="product_groups">
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="product_group">Electronics &gt; Smartphones</td>
-                    <td className="text-right p-2" data-field="impressions">847,250</td>
-                    <td className="text-right p-2" data-field="clicks">18,420</td>
-                    <td className="text-right p-2" data-field="ctr">2.17%</td>
-                    <td className="text-right p-2" data-field="conversions">456</td>
-                    <td className="text-right p-2" data-field="revenue">$68,940</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">4.85x</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="product_group">Home &amp; Garden &gt; Furniture</td>
-                    <td className="text-right p-2" data-field="impressions">623,890</td>
-                    <td className="text-right p-2" data-field="clicks">12,780</td>
-                    <td className="text-right p-2" data-field="ctr">2.05%</td>
-                    <td className="text-right p-2" data-field="conversions">298</td>
-                    <td className="text-right p-2" data-field="revenue">$42,670</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">3.94x</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="product_group">Fashion &gt; Athletic Wear</td>
-                    <td className="text-right p-2" data-field="impressions">456,720</td>
-                    <td className="text-right p-2" data-field="clicks">9,340</td>
-                    <td className="text-right p-2" data-field="ctr">2.04%</td>
-                    <td className="text-right p-2" data-field="conversions">267</td>
-                    <td className="text-right p-2" data-field="revenue">$24,890</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">3.67x</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="product_group">Beauty &gt; Skincare</td>
-                    <td className="text-right p-2" data-field="impressions">389,450</td>
-                    <td className="text-right p-2" data-field="clicks">7,210</td>
-                    <td className="text-right p-2" data-field="ctr">1.85%</td>
-                    <td className="text-right p-2" data-field="conversions">226</td>
-                    <td className="text-right p-2" data-field="revenue">$20,390</td>
-                    <td className="text-right p-2 font-bold text-orange-600" data-field="roas">2.89x</td>
-                  </tr>
+                  {paginatedGroups.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2 font-medium" data-field="product_group">{item.productGroup}</td>
+                      <td className="text-right p-2" data-field="impressions">{item.impressions}</td>
+                      <td className="text-right p-2" data-field="clicks">{item.clicks}</td>
+                      <td className="text-right p-2" data-field="ctr">{item.ctr}</td>
+                      <td className="text-right p-2" data-field="conversions">{item.conversions}</td>
+                      <td className="text-right p-2" data-field="revenue">{item.revenue}</td>
+                      <td className={`text-right p-2 font-bold ${
+                        parseFloat(item.roas) >= 4.0 ? 'text-green-600' : 
+                        parseFloat(item.roas) >= 3.0 ? 'text-blue-600' : 'text-orange-600'
+                      }`} data-field="roas">{item.roas}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={groupsPage}
+              totalPages={groupsTotalPages}
+              hasNextPage={groupsHasNext}
+              hasPrevPage={groupsHasPrev}
+              showAll={groupsShowAll}
+              onNextPage={groupsNextPage}
+              onPrevPage={groupsPrevPage}
+              onToggleShowAll={groupsToggleShowAll}
+              totalItems={productGroupsData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 
@@ -336,51 +329,51 @@ const ShoppingCampaignPerformanceReport = () => {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse" id="brand_performance_table">
+               <table className="w-full border-collapse" id="brand_performance_table">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left p-2 font-semibold">Brand</th>
-                    <th className="text-right p-2 font-semibold">Products</th>
+                    <th className="text-right p-2 font-semibold">Impressions</th>
+                    <th className="text-right p-2 font-semibold">Clicks</th>
+                    <th className="text-right p-2 font-semibold">CTR</th>
+                    <th className="text-right p-2 font-semibold">CPC</th>
+                    <th className="text-right p-2 font-semibold">Conversions</th>
                     <th className="text-right p-2 font-semibold">Revenue</th>
                     <th className="text-right p-2 font-semibold">ROAS</th>
-                    <th className="text-right p-2 font-semibold">Avg. CPC</th>
-                    <th className="text-center p-2 font-semibold">Performance</th>
                   </tr>
                 </thead>
                 <tbody id="brand_performance_data" data-table="brand_performance">
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="brand_name">Apple</td>
-                    <td className="text-right p-2" data-field="product_count">23</td>
-                    <td className="text-right p-2" data-field="revenue">$52,340</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">5.1x</td>
-                    <td className="text-right p-2" data-field="avg_cpc">$1.25</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Excellent</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="brand_name">Nike</td>
-                    <td className="text-right p-2" data-field="product_count">45</td>
-                    <td className="text-right p-2" data-field="revenue">$31,890</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">4.2x</td>
-                    <td className="text-right p-2" data-field="avg_cpc">$0.89</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Excellent</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="brand_name">Samsung</td>
-                    <td className="text-right p-2" data-field="product_count">18</td>
-                    <td className="text-right p-2" data-field="revenue">$24,670</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">3.8x</td>
-                    <td className="text-right p-2" data-field="avg_cpc">$1.12</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Good</span>
-                    </td>
-                  </tr>
+                  {paginatedBrands.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2 font-medium" data-field="brand_name">{item.brand}</td>
+                      <td className="text-right p-2" data-field="impressions">{item.impressions}</td>
+                      <td className="text-right p-2" data-field="clicks">{item.clicks}</td>
+                      <td className="text-right p-2" data-field="ctr">{item.ctr}</td>
+                      <td className="text-right p-2" data-field="cpc">{item.cpc}</td>
+                      <td className="text-right p-2" data-field="conversions">{item.conversions}</td>
+                      <td className="text-right p-2" data-field="revenue">{item.revenue}</td>
+                      <td className={`text-right p-2 font-bold ${
+                        parseFloat(item.roas) >= 4.0 ? 'text-green-600' : 
+                        parseFloat(item.roas) >= 3.0 ? 'text-blue-600' : 'text-orange-600'
+                      }`} data-field="roas">{item.roas}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={brandsPage}
+              totalPages={brandsTotalPages}
+              hasNextPage={brandsHasNext}
+              hasPrevPage={brandsHasPrev}
+              showAll={brandsShowAll}
+              onNextPage={brandsNextPage}
+              onPrevPage={brandsPrevPage}
+              onToggleShowAll={brandsToggleShowAll}
+              totalItems={brandData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 
