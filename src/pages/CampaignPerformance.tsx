@@ -19,7 +19,7 @@ const CampaignPerformance = () => {
 
   return (
     <div style={{ 
-      fontFamily: selectedFont + ', sans-serif',
+      fontFamily: selectedFont,
       '--primary-color': primaryColor,
       '--text-color': '#333',
       '--background-color': '#fff',

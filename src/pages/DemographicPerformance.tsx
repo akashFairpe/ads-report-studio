@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControls from '@/components/PaginationControls';
 
 const DemographicPerformance = () => {
+  const [selectedFont, setSelectedFont] = useState("Inter");
+  const [primaryColor, setPrimaryColor] = useState("#2563eb");
+  
   // Sample demographic data for pagination
   const demographicsData = [
     { demographic: 'Male 18-24', impressions: '45,230', clicks: '1,856', ctr: '4.10%', cpc: '$2.12', conversions: '78', cost: '$3,935', roas: '4.8x' },
@@ -34,10 +37,10 @@ const DemographicPerformance = () => {
   } = usePagination(demographicsData, 10);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={{ fontFamily: selectedFont }}>
       <style>{`
         :root {
-          --primary-color: #2563eb;
+          --primary-color: ${primaryColor};
           --text-color: #1f2937;
           --background-color: #ffffff;
           --border-color: #e5e7eb;
@@ -294,7 +297,7 @@ const DemographicPerformance = () => {
           </div>
           <div className="branding-item">
             <label htmlFor="font-select">Select Font:</label>
-            <select id="font-select">
+            <select id="font-select" value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)}>
               <option value="Inter">Inter</option>
               <option value="Roboto">Roboto</option>
               <option value="Lato">Lato</option>
@@ -302,7 +305,7 @@ const DemographicPerformance = () => {
           </div>
           <div className="branding-item">
             <label htmlFor="color-picker">Primary Color:</label>
-            <input type="color" id="color-picker" defaultValue="#2563eb" />
+            <input type="color" id="color-picker" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} />
           </div>
         </div>
       </div>

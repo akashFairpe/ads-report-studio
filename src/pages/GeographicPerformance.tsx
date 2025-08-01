@@ -1,9 +1,14 @@
+import React, { useState } from 'react';
+
 const GeographicPerformance = () => {
+  const [selectedFont, setSelectedFont] = useState("Inter");
+  const [primaryColor, setPrimaryColor] = useState("#2563eb");
+  
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={{ fontFamily: selectedFont }}>
       <style>{`
         :root {
-          --primary-color: #2563eb;
+          --primary-color: ${primaryColor};
           --text-color: #1f2937;
           --background-color: #ffffff;
           --border-color: #e5e7eb;
@@ -301,7 +306,7 @@ const GeographicPerformance = () => {
           </div>
           <div className="branding-item">
             <label htmlFor="font-select">Select Font:</label>
-            <select id="font-select">
+            <select id="font-select" value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)}>
               <option value="Inter">Inter</option>
               <option value="Roboto">Roboto</option>
               <option value="Lato">Lato</option>
@@ -309,7 +314,7 @@ const GeographicPerformance = () => {
           </div>
           <div className="branding-item">
             <label htmlFor="color-picker">Primary Color:</label>
-            <input type="color" id="color-picker" defaultValue="#2563eb" />
+            <input type="color" id="color-picker" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} />
           </div>
         </div>
       </div>
