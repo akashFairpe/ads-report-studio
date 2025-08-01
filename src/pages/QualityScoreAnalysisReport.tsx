@@ -1,335 +1,313 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import ExportButtons from "@/components/ExportButtons";
-import { usePagination } from '@/hooks/usePagination';
-import { useBranding } from '@/hooks/useBranding';
-import PaginationControls from '@/components/PaginationControls';
+import React, { useState } from 'react';
+
+interface QualityScoreData {
+  keyword: string;
+  qualityScore: number;
+  expectedCtr: string;
+  adRelevance: string;
+  landingPageExp: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  status: string;
+}
 
 const QualityScoreAnalysisReport = () => {
-  const {
-    selectedFont,
-    setSelectedFont,
-    primaryColor,
-    setPrimaryColor,
-    logoUrl,
-    handleLogoUpload,
-    reportStyle
-  } = useBranding();
+  const [selectedFont, setSelectedFont] = useState('Inter');
+  const [primaryColor, setPrimaryColor] = useState('#2563eb');
+  const [logoUrl, setLogoUrl] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showAll, setShowAll] = useState(false);
+  const itemsPerPage = 10;
 
-  // Sample quality score data for pagination
-  const qualityScoreData = [
-    { keyword: 'digital marketing services', qualityScore: '9', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '45,230' },
-    { keyword: 'ppc management', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '32,890' },
-    { keyword: 'google ads optimization', qualityScore: '6', expectedCtr: 'Average', adRelevance: 'Above average', landingPage: 'Average', impressions: '28,450' },
-    { keyword: 'online advertising', qualityScore: '4', expectedCtr: 'Below average', adRelevance: 'Average', landingPage: 'Below average', impressions: '18,670' },
-    { keyword: 'search engine marketing', qualityScore: '7', expectedCtr: 'Above average', adRelevance: 'Average', landingPage: 'Above average', impressions: '23,456' },
-    { keyword: 'paid search advertising', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '19,876' },
-    { keyword: 'facebook ads management', qualityScore: '5', expectedCtr: 'Average', adRelevance: 'Below average', landingPage: 'Average', impressions: '15,432' },
-    { keyword: 'social media advertising', qualityScore: '6', expectedCtr: 'Average', adRelevance: 'Average', landingPage: 'Average', impressions: '21,098' },
-    { keyword: 'conversion rate optimization', qualityScore: '9', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '12,345' },
-    { keyword: 'landing page design', qualityScore: '7', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '16,789' },
-    { keyword: 'ad campaign management', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '14,567' },
-    { keyword: 'digital advertising agency', qualityScore: '5', expectedCtr: 'Below average', adRelevance: 'Average', landingPage: 'Below average', impressions: '11,234' }
+  const qualityScoreData: QualityScoreData[] = [
+    { keyword: "digital marketing", qualityScore: 8, expectedCtr: "Above average", adRelevance: "Above average", landingPageExp: "Above average", impressions: 15420, clicks: 892, ctr: 5.78, status: "Excellent" },
+    { keyword: "online advertising", qualityScore: 7, expectedCtr: "Above average", adRelevance: "Average", landingPageExp: "Above average", impressions: 12350, clicks: 654, ctr: 5.29, status: "Good" },
+    { keyword: "ppc campaign", qualityScore: 6, expectedCtr: "Average", adRelevance: "Above average", landingPageExp: "Average", impressions: 9875, clicks: 445, ctr: 4.51, status: "Average" },
+    { keyword: "google ads", qualityScore: 9, expectedCtr: "Above average", adRelevance: "Above average", landingPageExp: "Above average", impressions: 18920, clicks: 1240, ctr: 6.55, status: "Excellent" },
+    { keyword: "search marketing", qualityScore: 5, expectedCtr: "Below average", adRelevance: "Average", landingPageExp: "Average", impressions: 7650, clicks: 298, ctr: 3.89, status: "Poor" },
+    { keyword: "conversion optimization", qualityScore: 8, expectedCtr: "Above average", adRelevance: "Above average", landingPageExp: "Above average", impressions: 11200, clicks: 672, ctr: 6.00, status: "Excellent" },
+    { keyword: "landing page", qualityScore: 4, expectedCtr: "Below average", adRelevance: "Below average", landingPageExp: "Average", impressions: 6890, clicks: 185, ctr: 2.68, status: "Poor" },
+    { keyword: "ad copy", qualityScore: 7, expectedCtr: "Average", adRelevance: "Above average", landingPageExp: "Above average", impressions: 9340, clicks: 512, ctr: 5.48, status: "Good" },
+    { keyword: "keyword research", qualityScore: 6, expectedCtr: "Average", adRelevance: "Average", landingPageExp: "Above average", impressions: 8765, clicks: 394, ctr: 4.49, status: "Average" },
+    { keyword: "bid management", qualityScore: 8, expectedCtr: "Above average", adRelevance: "Above average", landingPageExp: "Average", impressions: 10450, clicks: 587, ctr: 5.62, status: "Excellent" },
+    { keyword: "remarketing", qualityScore: 7, expectedCtr: "Above average", adRelevance: "Average", landingPageExp: "Above average", impressions: 13200, clicks: 726, ctr: 5.50, status: "Good" },
+    { keyword: "display advertising", qualityScore: 5, expectedCtr: "Below average", adRelevance: "Average", landingPageExp: "Below average", impressions: 5920, clicks: 201, ctr: 3.39, status: "Poor" }
   ];
 
-  const {
-    currentPage,
-    paginatedData,
-    exportData,
-    totalPages,
-    hasNextPage,
-    hasPrevPage,
-    showAll,
-    goToNextPage,
-    goToPrevPage,
-    toggleShowAll,
-    resetPagination
-  } = usePagination(qualityScoreData, 10);
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setLogoUrl(e.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
 
+  const getDisplayedData = () => {
+    if (showAll) return qualityScoreData;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return qualityScoreData.slice(startIndex, startIndex + itemsPerPage);
+  };
+
+  const totalPages = Math.ceil(qualityScoreData.length / itemsPerPage);
+  const displayedData = getDisplayedData();
+
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+      case 'Excellent': return 'badge badge-success';
+      case 'Good': return 'badge badge-warning';
+      case 'Average': return 'badge badge-warning';
+      case 'Poor': return 'badge badge-danger';
+      default: return 'badge';
+    }
+  };
+
+  const reportStyle = {
+    fontFamily: selectedFont,
+    '--primary-color': primaryColor,
+  } as React.CSSProperties;
 
   return (
-    <div className="min-h-screen bg-background" style={reportStyle}>
+    <div className="min-h-screen" style={reportStyle}>
       {/* Branding Controls */}
-      <div className="bg-card border-b p-4 print:hidden">
-        <div className="max-w-4xl mx-auto flex flex-wrap gap-4">
-          <div>
-            <Label htmlFor="logo-upload">Company Logo</Label>
-            <Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoUpload} className="w-48" />
+      <div className="branding-controls">
+        <div className="branding-row">
+          <div className="branding-item">
+            <label className="label" htmlFor="logo-upload">Company Logo</label>
+            <input 
+              id="logo-upload" 
+              type="file" 
+              accept="image/*" 
+              onChange={handleLogoUpload} 
+              className="input"
+              style={{ width: '200px' }}
+            />
           </div>
-          <div>
-            <Label>Font Family</Label>
-            <Select value={selectedFont} onValueChange={setSelectedFont}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Inter">Inter</SelectItem>
-                <SelectItem value="Roboto">Roboto</SelectItem>
-                <SelectItem value="Lato">Lato</SelectItem>
-                <SelectItem value="Open Sans">Open Sans</SelectItem>
-              </SelectContent>
-            </Select>
+          <div className="branding-item">
+            <label className="label">Font Family</label>
+            <select 
+              value={selectedFont} 
+              onChange={(e) => setSelectedFont(e.target.value)}
+              className="select"
+              style={{ width: '150px' }}
+            >
+              <option value="Inter">Inter</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Lato">Lato</option>
+              <option value="Open Sans">Open Sans</option>
+            </select>
           </div>
-          <div>
-            <Label htmlFor="color-picker">Primary Color</Label>
-            <Input
-              id="color-picker"
-              type="color"
-              value={primaryColor}
+          <div className="branding-item">
+            <label className="label">Primary Color</label>
+            <input 
+              type="color" 
+              value={primaryColor} 
               onChange={(e) => setPrimaryColor(e.target.value)}
-              className="w-16 h-10"
+              className="input"
+              style={{ width: '80px', height: '40px' }}
             />
           </div>
         </div>
       </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="container">
         {/* Header */}
-        <div className="text-center border-b pb-6" style={{ pageBreakAfter: 'avoid' }}>
-          {logoUrl && (
+        <div className="report-header">
+          <div className="logo-section">
             <img 
-              src={logoUrl} 
+              src={logoUrl || "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMjAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIxMDAiIHk9IjM1IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjE4Ij5Zb3VyIExvZ288L3RleHQ+PC9zdmc+"} 
               alt="Company Logo" 
-              className="mx-auto mb-4 max-h-16 object-contain"
-              id="company_logo"
             />
-          )}
-          <h1 
-            className="text-3xl font-bold mb-2"
-            contentEditable="true"
-            suppressContentEditableWarning={true}
-            style={{ color: primaryColor }}
-            id="report_title"
-          >
-            Quality Score Analysis Report
-          </h1>
-          <div className="text-lg text-muted-foreground space-y-1">
-            <p>
-              Account: <span contentEditable="true" suppressContentEditableWarning={true} id="account_name" className="font-medium">AdSpyder Analytics</span>
-            </p>
-            <p>
-              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range" className="font-medium">January 1, 2024 - January 31, 2024</span>
-            </p>
+          </div>
+          <div className="report-title">
+            <h1 style={{ color: primaryColor }}>Quality Score Analysis Report</h1>
+            <div style={{ marginTop: '8px' }}>
+              <input 
+                type="text" 
+                defaultValue="Client Account Name" 
+                className="input"
+                style={{ border: 'none', background: 'transparent', textAlign: 'center', fontSize: '16px' }}
+              />
+            </div>
+          </div>
+          <div className="report-meta">
+            <p><strong>Report Period:</strong></p>
+            <input type="date" defaultValue="2024-01-01" className="input" style={{ marginBottom: '4px' }} />
+            <input type="date" defaultValue="2024-01-31" className="input" />
           </div>
         </div>
 
         {/* Quality Score Overview */}
-        <Card>
-          <CardHeader>
-            <CardTitle style={{ color: primaryColor }}>Quality Score Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* API-ready metric cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="avg_quality_score" data-metric="avg_quality_score">7.2</div>
-                <div className="text-sm text-muted-foreground">Avg Quality Score</div>
-              </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-green-600" id="expected_ctr" data-metric="expected_ctr">Above Avg</div>
-                <div className="text-sm text-muted-foreground">Expected CTR</div>
-              </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-yellow-600" id="landing_page_exp" data-metric="landing_page_experience">Average</div>
-                <div className="text-sm text-muted-foreground">Landing Page Exp</div>
-              </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-green-600" id="ad_relevance" data-metric="ad_relevance">Above Avg</div>
-                <div className="text-sm text-muted-foreground">Ad Relevance</div>
-              </div>
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title" style={{ color: primaryColor }}>Quality Score Overview</h2>
+          </div>
+          <div className="overview-metrics">
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: primaryColor }}>6.8</div>
+              <div className="metric-label">Average Quality Score</div>
             </div>
-          </CardContent>
-        </Card>
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: primaryColor }}>Above Average</div>
+              <div className="metric-label">Expected CTR</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: primaryColor }}>Above Average</div>
+              <div className="metric-label">Landing Page Experience</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: primaryColor }}>Above Average</div>
+              <div className="metric-label">Ad Relevance</div>
+            </div>
+          </div>
+        </div>
 
         {/* Quality Score by Keyword Table */}
-        <Card style={{ pageBreakInside: 'avoid' }}>
-          <CardHeader>
-            <CardTitle style={{ color: primaryColor }}>Quality Score by Keyword</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* API-ready table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse" id="quality_score_keywords_table">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2 font-semibold">Keyword</th>
-                    <th className="text-center p-2 font-semibold">Quality Score</th>
-                    <th className="text-center p-2 font-semibold">Expected CTR</th>
-                    <th className="text-center p-2 font-semibold">Ad Relevance</th>
-                    <th className="text-center p-2 font-semibold">Landing Page Exp</th>
-                    <th className="text-right p-2 font-semibold">Impressions</th>
-                  </tr>
-                </thead>
-                <tbody id="quality_score_data" data-table="quality_score_keywords">
-                  {paginatedData.map((item, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="p-2" data-field="keyword">{item.keyword}</td>
-                      <td className="text-center p-2">
-                        <span className={`px-2 py-1 rounded font-bold ${
-                          parseInt(item.qualityScore) >= 7 ? 'bg-green-100 text-green-800' :
-                          parseInt(item.qualityScore) >= 5 ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-red-100 text-red-800'
-                        }`} data-field="quality_score">{item.qualityScore}</span>
-                      </td>
-                      <td className="text-center p-2" data-field="expected_ctr">{item.expectedCtr}</td>
-                      <td className="text-center p-2" data-field="ad_relevance">{item.adRelevance}</td>
-                      <td className="text-center p-2" data-field="landing_page">{item.landingPage}</td>
-                      <td className="text-right p-2" data-field="impressions">{item.impressions}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title" style={{ color: primaryColor }}>Quality Score by Keyword</h2>
+          </div>
+          
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Keyword</th>
+                <th>Quality Score</th>
+                <th>Expected CTR</th>
+                <th>Ad Relevance</th>
+                <th>Landing Page Exp</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>CTR</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {displayedData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.keyword}</td>
+                  <td><strong>{item.qualityScore}/10</strong></td>
+                  <td>{item.expectedCtr}</td>
+                  <td>{item.adRelevance}</td>
+                  <td>{item.landingPageExp}</td>
+                  <td>{item.impressions.toLocaleString()}</td>
+                  <td>{item.clicks.toLocaleString()}</td>
+                  <td>{item.ctr}%</td>
+                  <td><span className={getStatusBadgeClass(item.status)}>{item.status}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination */}
+          <div className="pagination">
+            <div className="pagination-info">
+              {showAll 
+                ? `Showing all ${qualityScoreData.length} entries` 
+                : `Showing ${((currentPage - 1) * itemsPerPage) + 1}-${Math.min(currentPage * itemsPerPage, qualityScoreData.length)} of ${qualityScoreData.length} entries`
+              }
             </div>
-            
-            <PaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              hasNextPage={hasNextPage}
-              hasPrevPage={hasPrevPage}
-              showAll={showAll}
-              onNextPage={goToNextPage}
-              onPrevPage={goToPrevPage}
-              onToggleShowAll={toggleShowAll}
-              totalItems={qualityScoreData.length}
-              itemsPerPage={10}
-            />
-          </CardContent>
-        </Card>
+            <div className="pagination-controls">
+              <button 
+                className="button button-secondary"
+                onClick={() => setShowAll(!showAll)}
+              >
+                {showAll ? 'Show Pages' : 'View All'}
+              </button>
+              {!showAll && (
+                <>
+                  <button 
+                    className="button button-secondary"
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <span style={{ padding: '8px 16px' }}>
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button 
+                    className="button button-secondary"
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
 
         {/* Quality Score Trend Chart */}
-        <Card style={{ pageBreakInside: 'avoid' }}>
-          <CardHeader>
-            <CardTitle style={{ color: primaryColor }}>Quality Score Trend Over Time</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="quality_score_trend_chart" data-chart="quality_score_trend">
-              <p className="text-muted-foreground">📈 Quality Score Trend Chart</p>
-              {/* Chart will be injected here via API */}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title" style={{ color: primaryColor }}>Quality Score Trend</h2>
+          </div>
+          <div className="chart-placeholder">
+            <p>Quality Score Trend Chart</p>
+            <p style={{ fontSize: '14px', marginTop: '8px' }}>(Chart showing quality score changes over time)</p>
+          </div>
+        </div>
 
         {/* Quality Score Distribution */}
-        <Card style={{ pageBreakInside: 'avoid' }}>
-          <CardHeader>
-            <CardTitle style={{ color: primaryColor }}>Keywords by Quality Score Tier</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-4" id="quality_score_distribution" data-section="quality_score_tiers">
-              <div className="text-center p-4 bg-red-50 rounded-lg">
-                <div className="text-2xl font-bold text-red-600" data-field="low_tier_count">23</div>
-                <div className="text-sm text-muted-foreground">Poor (1-3)</div>
-                <div className="text-xs text-red-600 mt-1" data-field="low_tier_percentage">12.3% of keywords</div>
-              </div>
-              <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                <div className="text-2xl font-bold text-yellow-600" data-field="mid_tier_count">87</div>
-                <div className="text-sm text-muted-foreground">Average (4-6)</div>
-                <div className="text-xs text-yellow-600 mt-1" data-field="mid_tier_percentage">46.5% of keywords</div>
-              </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600" data-field="high_tier_count">77</div>
-                <div className="text-sm text-muted-foreground">Excellent (7-10)</div>
-                <div className="text-xs text-green-600 mt-1" data-field="high_tier_percentage">41.2% of keywords</div>
-              </div>
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title" style={{ color: primaryColor }}>Quality Score Distribution</h2>
+          </div>
+          <div className="overview-metrics">
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: '#ef4444' }}>2</div>
+              <div className="metric-label">Poor (1-4)</div>
             </div>
-          </CardContent>
-        </Card>
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: '#f59e0b' }}>4</div>
+              <div className="metric-label">Average (5-7)</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value" style={{ color: '#10b981' }}>6</div>
+              <div className="metric-label">Excellent (8-10)</div>
+            </div>
+          </div>
+        </div>
 
-        {/* Optimization Recommendations */}
-        <Card style={{ pageBreakBefore: 'auto' }}>
-          <CardHeader>
-            <CardTitle style={{ color: primaryColor }}>Optimization Actions & Insights</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Textarea
-              className="w-full min-h-[200px] resize-none border-none bg-transparent p-0 focus-visible:ring-0"
-              id="optimization_insights"
-              defaultValue="Quality Score Analysis Summary:
-• Average quality score of 7.2 is above industry benchmark of 6.5
-• 41.2% of keywords achieve excellent quality scores (7-10)
-• Landing page experience shows room for improvement across 58% of keywords
-• Expected CTR performance is strong, indicating relevant ad copy
+        {/* Optimization Actions & Insights */}
+        <div className="card">
+          <div className="card-header">
+            <h2 className="card-title" style={{ color: primaryColor }}>Optimization Actions & Insights</h2>
+          </div>
+          <textarea 
+            className="textarea"
+            placeholder="Enter your strategic analysis and recommendations here..."
+            defaultValue="Based on the quality score analysis, focus on improving keywords with scores below 6. Consider revising ad copy for better relevance and optimizing landing pages for better user experience."
+            style={{ minHeight: '150px' }}
+          />
+        </div>
 
-Priority Optimization Actions:
-1. Landing Page Experience Improvements:
-   • Optimize page load speed for mobile devices
-   • Improve mobile responsiveness and user experience
-   • Align landing page content with ad messaging
-
-2. Keyword Quality Score Improvements:
-   • Pause or restructure keywords with quality scores 1-3 (23 keywords)
-   • Create more specific ad groups for broad keywords
-   • Implement negative keyword lists to improve relevance
-
-3. Ad Copy Optimization:
-   • A/B test headlines for average-performing keywords
-   • Include more specific benefit statements
-   • Match ad copy language to search intent
-
-Expected Impact:
-• 15-20% improvement in average quality score within 60 days
-• 10-15% reduction in cost per click
-• Improved ad position and impression share"
-            />
-          </CardContent>
-        </Card>
+        {/* Export Buttons */}
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
+          <button className="button button-primary">Export to PDF</button>
+          <button className="button button-secondary">Export to Excel</button>
+          <button className="button button-secondary">Export to CSV</button>
+        </div>
 
         {/* Footer */}
-        <div className="text-center text-sm text-muted-foreground border-t pt-4" style={{ pageBreakBefore: 'avoid' }}>
-          <p>
-            <span contentEditable="true" suppressContentEditableWarning={true} id="footer_text">
-              Powered by AdSpyder Analytics | Quality Score Optimization Experts
-            </span>
-          </p>
-          <p className="mt-2">Page <span className="page-counter">1</span></p>
+        <div className="report-footer">
+          <div>
+            <img 
+              src={logoUrl || "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMjAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIxMDAiIHk9IjM1IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjE4Ij5Zb3VyIExvZ288L3RleHQ+PC9zdmc+"} 
+              alt="Company Logo" 
+              style={{ height: '30px' }}
+            />
+          </div>
+          <div>
+            <p>Quality Score Analysis Report | Page 1 of 1</p>
+            <p>Generated on {new Date().toLocaleDateString()}</p>
+          </div>
         </div>
       </div>
-
-      {/* API Integration Example (commented out) */}
-      {/*
-      <script>
-        // Example API integration for dynamic quality score data injection
-        async function loadQualityScoreData() {
-          try {
-            const response = await fetch('/api/quality-score-analysis', {
-              method: 'GET',
-              headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await response.json();
-            
-            // Update overview metrics
-            document.getElementById('avg_quality_score').textContent = data.avgQualityScore;
-            document.getElementById('expected_ctr').textContent = data.expectedCTR;
-            document.getElementById('landing_page_exp').textContent = data.landingPageExperience;
-            document.getElementById('ad_relevance').textContent = data.adRelevance;
-            
-            // Update keywords table
-            const tbody = document.getElementById('quality_score_data');
-            tbody.innerHTML = data.keywords.map(keyword => `
-              <tr class="border-b">
-                <td class="p-2">${keyword.keyword}</td>
-                <td class="text-center p-2">
-                  <span class="${keyword.qualityScoreColor} px-2 py-1 rounded font-bold">${keyword.qualityScore}</span>
-                </td>
-                <td class="text-center p-2">${keyword.expectedCTR}</td>
-                <td class="text-center p-2">${keyword.adRelevance}</td>
-                <td class="text-center p-2">${keyword.landingPageExperience}</td>
-                <td class="text-right p-2">${keyword.impressions.toLocaleString()}</td>
-              </tr>
-            `).join('');
-          } catch (error) {
-            console.error('Failed to load quality score data:', error);
-          }
-        }
-      </script>
-      */}
     </div>
   );
 };
