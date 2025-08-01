@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,12 +7,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
 import { usePagination } from '@/hooks/usePagination';
+import { useBranding } from '@/hooks/useBranding';
 import PaginationControls from '@/components/PaginationControls';
 
 const QualityScoreAnalysisReport = () => {
-  const [selectedFont, setSelectedFont] = useState('Inter');
-  const [primaryColor, setPrimaryColor] = useState('#2563eb');
-  const [logoUrl, setLogoUrl] = useState('');
+  const {
+    selectedFont,
+    setSelectedFont,
+    primaryColor,
+    setPrimaryColor,
+    logoUrl,
+    handleLogoUpload,
+    reportStyle
+  } = useBranding();
 
   // Sample quality score data for pagination
   const qualityScoreData = [
@@ -44,19 +51,6 @@ const QualityScoreAnalysisReport = () => {
     resetPagination
   } = usePagination(qualityScoreData, 10);
 
-  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setLogoUrl(e.target?.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const reportStyle = {
-    fontFamily: selectedFont,
-    '--primary-color': primaryColor,
-  } as React.CSSProperties;
 
   return (
     <div className="min-h-screen bg-background" style={reportStyle}>

@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { usePagination } from '@/hooks/usePagination';
+import { useBranding } from '@/hooks/useBranding';
 import PaginationControls from '@/components/PaginationControls';
 
 const DemographicPerformance = () => {
-  const [selectedFont, setSelectedFont] = useState("Inter");
-  const [primaryColor, setPrimaryColor] = useState("#2563eb");
+  const {
+    selectedFont,
+    setSelectedFont,
+    primaryColor,
+    setPrimaryColor,
+    logoUrl,
+    handleLogoUpload,
+    reportStyle
+  } = useBranding();
   
   // Sample demographic data for pagination
   const demographicsData = [
@@ -37,7 +45,7 @@ const DemographicPerformance = () => {
   } = usePagination(demographicsData, 10);
 
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: selectedFont }}>
+    <div className="min-h-screen bg-background" style={reportStyle}>
       <style>{`
         :root {
           --primary-color: ${primaryColor};
@@ -293,7 +301,7 @@ const DemographicPerformance = () => {
         <div className="branding-row">
           <div className="branding-item">
             <label htmlFor="logo-upload">Upload Logo:</label>
-            <input type="file" id="logo-upload" accept="image/*" />
+            <input type="file" id="logo-upload" accept="image/*" onChange={handleLogoUpload} />
           </div>
           <div className="branding-item">
             <label htmlFor="font-select">Select Font:</label>
@@ -314,7 +322,7 @@ const DemographicPerformance = () => {
         {/* Report Header */}
         <header className="report-header">
           <div className="logo-section">
-            <img id="report-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMjAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIxMDAiIHk9IjM1IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjE4Ij5Zb3VyIExvZ288L3RleHQ+PC9zdmc+" alt="Company Logo" />
+            <img id="report-logo" src={logoUrl || "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMjAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIxMDAiIHk9IjM1IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjE4Ij5Zb3VyIExvZ288L3RleHQ+PC9zdmc+"} alt="Company Logo" />
           </div>
           <div className="report-title">
             <h1 contentEditable="true" id="report-title">Demographic Performance Report</h1>
