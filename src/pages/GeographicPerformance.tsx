@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExportButtons from "@/components/ExportButtons";
 
 interface LocationData {
   country: string;
@@ -259,11 +260,7 @@ const GeographicPerformance = () => {
         </div>
 
         {/* Export Buttons */}
-        <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
-          <button className="button button-primary">Export to PDF</button>
-          <button className="button button-secondary">Export to Excel</button>
-          <button className="button button-secondary">Export to CSV</button>
-        </div>
+        <ExportButtons reportTitle="Geographic Performance Report" />
 
         {/* Footer */}
         <div className="report-footer">

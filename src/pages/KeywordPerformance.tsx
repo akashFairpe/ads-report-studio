@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ExportButtons from "@/components/ExportButtons";
 
 interface KeywordData {
   keyword: string;
@@ -259,14 +260,7 @@ const KeywordPerformance = () => {
         </div>
 
         {/* Export Functionality */}
-        <div className="card">
-          <h2 className="card-title" style={{ color: primaryColor }}>Export Report</h2>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button className="button button-primary">Export to PDF</button>
-            <button className="button button-secondary">Export to Excel</button>
-            <button className="button button-secondary">Export to CSV</button>
-          </div>
-        </div>
+        <ExportButtons reportTitle="Keyword Performance Report" />
 
         {/* Match Type Performance Analysis */}
         <div className="card">

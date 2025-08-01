@@ -12,23 +12,80 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({ reportTitle }) => {
     const printStyles = `
       <style>
         @media print {
-          body { font-size: 11pt; line-height: 1.3; }
+          body { font-size: 10pt; line-height: 1.2; }
           .print\\:hidden { display: none !important; }
+          .branding-controls { display: none !important; }
           .page-break-before { page-break-before: always; }
           .page-break-after { page-break-after: always; }
           .page-break-inside-avoid { page-break-inside: avoid; }
-          @page { margin: 0.75in; size: A4; }
-          .text-3xl { font-size: 18pt; }
-          .text-2xl { font-size: 16pt; }
-          .text-xl { font-size: 14pt; }
-          .text-lg { font-size: 12pt; }
-          table { font-size: 10pt; }
-          .space-y-6 > * + * { margin-top: 1rem; }
-          .space-y-4 > * + * { margin-top: 0.75rem; }
-          .space-y-3 > * + * { margin-top: 0.5rem; }
-          .grid { display: block; }
-          .grid > * { margin-bottom: 0.5rem; }
-          .h-64 { height: 4in; }
+          @page { margin: 0.5in; size: A4; }
+          
+          /* Header styling */
+          .report-header { font-size: 9pt; margin-bottom: 0.5in; page-break-inside: avoid; }
+          .report-title h1 { font-size: 16pt; margin-bottom: 8px; }
+          
+          /* Card and section styling */
+          .card { 
+            font-size: 9pt; 
+            margin-bottom: 0.3in; 
+            page-break-inside: avoid;
+            border: 1px solid #ddd;
+            padding: 12px;
+          }
+          .card-header { margin-bottom: 8px; }
+          .card-title { font-size: 12pt; font-weight: bold; margin-bottom: 4px; }
+          
+          /* Table styling */
+          table { 
+            font-size: 8pt; 
+            width: 100%; 
+            border-collapse: collapse;
+            page-break-inside: auto;
+          }
+          table thead { display: table-header-group; }
+          table tbody { display: table-row-group; }
+          table tr { page-break-inside: avoid; }
+          table th, table td { 
+            border: 1px solid #ddd; 
+            padding: 4px; 
+            text-align: left;
+          }
+          table th { background-color: #f5f5f5; font-weight: bold; }
+          
+          /* Metric cards */
+          .overview-metrics { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            page-break-inside: avoid; 
+          }
+          .metric-card { 
+            font-size: 8pt; 
+            padding: 6px; 
+            border: 1px solid #ddd; 
+            flex: 1; 
+            min-width: 150px;
+          }
+          .metric-value { font-size: 12pt; font-weight: bold; }
+          .metric-label { font-size: 7pt; }
+          
+          /* Chart placeholders */
+          .chart-placeholder { 
+            height: 2in; 
+            border: 1px solid #ddd; 
+            font-size: 8pt; 
+            page-break-inside: avoid; 
+          }
+          
+          /* Footer */
+          .report-footer { 
+            font-size: 7pt; 
+            margin-top: 0.5in; 
+            page-break-inside: avoid; 
+          }
+          
+          /* Pagination controls */
+          .pagination { display: none !important; }
         }
       </style>
     `;
