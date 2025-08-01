@@ -1,4 +1,34 @@
+import React from 'react';
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
+
 const DevicePerformance = () => {
+  // Sample device performance data for pagination
+  const deviceData = [
+    { device: 'Mobile', icon: '📱', traffic: '58.5%', impressions: '456,789', clicks: '18,234', ctr: '3.99%', cpc: '$1.89', conversions: '721', convRate: '3.95%', cost: '$34,462', roas: '4.2x' },
+    { device: 'Desktop', icon: '🖥️', traffic: '30.1%', impressions: '234,567', clicks: '9,876', ctr: '4.21%', cpc: '$2.14', conversions: '456', convRate: '4.62%', cost: '$21,134', roas: '3.8x' },
+    { device: 'Tablet', icon: '📲', traffic: '11.4%', impressions: '89,123', clicks: '2,789', ctr: '3.13%', cpc: '$1.67', conversions: '98', convRate: '3.51%', cost: '$4,657', roas: '3.2x' },
+    { device: 'Smart TV', icon: '📺', traffic: '2.3%', impressions: '18,456', clicks: '456', ctr: '2.47%', cpc: '$2.89', conversions: '23', convRate: '5.04%', cost: '$1,318', roas: '2.9x' },
+    { device: 'Smartwatch', icon: '⌚', traffic: '1.2%', impressions: '9,234', clicks: '123', ctr: '1.33%', cpc: '$1.45', conversions: '5', convRate: '4.07%', cost: '$178', roas: '2.1x' },
+    { device: 'Gaming Console', icon: '🎮', traffic: '0.8%', impressions: '6,789', clicks: '89', ctr: '1.31%', cpc: '$3.12', conversions: '4', convRate: '4.49%', cost: '$278', roas: '1.8x' },
+    { device: 'Smart Speaker', icon: '🔊', traffic: '0.5%', impressions: '3,456', clicks: '45', ctr: '1.30%', cpc: '$2.67', conversions: '2', convRate: '4.44%', cost: '$120', roas: '1.5x' },
+    { device: 'VR Headset', icon: '🥽', traffic: '0.2%', impressions: '1,234', clicks: '23', ctr: '1.86%', cpc: '$4.56', conversions: '1', convRate: '4.35%', cost: '$105', roas: '1.2x' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(deviceData, 10);
+
   return (
     <div className="min-h-screen bg-background">
       <style>{`
@@ -494,56 +524,39 @@ const DevicePerformance = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="device-label">
-                  <span>📱</span>
-                  Mobile
-                  <span className="device-percentage">58%</span>
-                </td>
-                <td>58.5%</td>
-                <td>456,789</td>
-                <td>18,234</td>
-                <td>3.99%</td>
-                <td>$1.89</td>
-                <td>721</td>
-                <td>3.95%</td>
-                <td>$34,462</td>
-                <td>4.2x</td>
-              </tr>
-              <tr>
-                <td className="device-label">
-                  <span>🖥️</span>
-                  Desktop
-                  <span className="device-percentage">30%</span>
-                </td>
-                <td>30.1%</td>
-                <td>234,567</td>
-                <td>8,456</td>
-                <td>3.61%</td>
-                <td>$2.34</td>
-                <td>423</td>
-                <td>5.0%</td>
-                <td>$19,787</td>
-                <td>3.8x</td>
-              </tr>
-              <tr>
-                <td className="device-label">
-                  <span>📟</span>
-                  Tablet
-                  <span className="device-percentage">12%</span>
-                </td>
-                <td>11.4%</td>
-                <td>89,123</td>
-                <td>2,890</td>
-                <td>3.24%</td>
-                <td>$2.12</td>
-                <td>134</td>
-                <td>4.63%</td>
-                <td>$6,127</td>
-                <td>3.6x</td>
-              </tr>
+              {paginatedData.map((device, index) => (
+                <tr key={index}>
+                  <td className="device-label">
+                    <span>{device.icon}</span>
+                    {device.device}
+                    <span className="device-percentage">{device.traffic}</span>
+                  </td>
+                  <td>{device.traffic}</td>
+                  <td>{device.impressions}</td>
+                  <td>{device.clicks}</td>
+                  <td>{device.ctr}</td>
+                  <td>{device.cpc}</td>
+                  <td>{device.conversions}</td>
+                  <td>{device.convRate}</td>
+                  <td>{device.cost}</td>
+                  <td>{device.roas}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={deviceData.length}
+            itemsPerPage={10}
+          />
         </section>
 
         {/* Device Insights and Recommendations */}
