@@ -3,11 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const KeywordPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample keyword data for pagination
+  const keywordData = [
+    { keyword: 'best running shoes', matchType: 'Broad', impressions: '456,789', clicks: '12,345', ctr: '2.70%', cpc: '$0.95', conversions: '234', convRate: '1.89%', roas: '4.2x' },
+    { keyword: '"nike air max"', matchType: 'Exact', impressions: '234,567', clicks: '8,901', ctr: '3.80%', cpc: '$1.12', conversions: '189', convRate: '2.12%', roas: '3.8x' },
+    { keyword: '+affordable +sneakers', matchType: 'Modified Broad', impressions: '189,234', clicks: '7,891', ctr: '4.17%', cpc: '$0.89', conversions: '167', convRate: '2.12%', roas: '5.1x' },
+    { keyword: 'sports shoes sale', matchType: 'Phrase', impressions: '345,678', clicks: '6,789', ctr: '1.96%', cpc: '$1.23', conversions: '134', convRate: '1.97%', roas: '2.9x' },
+    { keyword: 'discount athletic shoes', matchType: 'Broad', impressions: '567,890', clicks: '5,678', ctr: '1.00%', cpc: '$1.67', conversions: '98', convRate: '1.73%', roas: '2.1x' },
+    { keyword: '"running shoes for women"', matchType: 'Exact', impressions: '123,456', clicks: '4,567', ctr: '3.70%', cpc: '$1.05', conversions: '87', convRate: '1.91%', roas: '3.4x' },
+    { keyword: 'marathon running gear', matchType: 'Phrase', impressions: '298,765', clicks: '8,234', ctr: '2.76%', cpc: '$0.78', conversions: '198', convRate: '2.40%', roas: '4.8x' },
+    { keyword: 'professional athletic shoes', matchType: 'Broad', impressions: '432,109', clicks: '9,876', ctr: '2.29%', cpc: '$1.34', conversions: '156', convRate: '1.58%', roas: '3.1x' },
+    { keyword: '"cross training shoes"', matchType: 'Exact', impressions: '187,654', clicks: '6,543', ctr: '3.49%', cpc: '$0.92', conversions: '123', convRate: '1.88%', roas: '3.6x' },
+    { keyword: 'lightweight running sneakers', matchType: 'Phrase', impressions: '365,421', clicks: '7,832', ctr: '2.14%', cpc: '$1.15', conversions: '145', convRate: '1.85%', roas: '2.8x' },
+    { keyword: 'premium athletic footwear', matchType: 'Broad', impressions: '254,987', clicks: '5,432', ctr: '2.13%', cpc: '$1.89', conversions: '89', convRate: '1.64%', roas: '2.5x' },
+    { keyword: '"trail running shoes"', matchType: 'Exact', impressions: '176,234', clicks: '4,987', ctr: '2.83%', cpc: '$1.07', conversions: '112', convRate: '2.25%', roas: '3.9x' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(keywordData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -156,75 +188,41 @@ const KeywordPerformance = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_1">best running shoes</td>
-                  <td className="p-3" data-id="match_type_1">Broad</td>
-                  <td className="p-3" data-id="impressions_1">456,789</td>
-                  <td className="p-3" data-id="clicks_1">12,345</td>
-                  <td className="p-3" data-id="ctr_1">2.70%</td>
-                  <td className="p-3" data-id="cpc_1">$0.95</td>
-                  <td className="p-3" data-id="conversions_1">234</td>
-                  <td className="p-3" data-id="conv_rate_1">1.89%</td>
-                  <td className="p-3" data-id="roas_1">4.2x</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_2">"nike air max"</td>
-                  <td className="p-3" data-id="match_type_2">Exact</td>
-                  <td className="p-3" data-id="impressions_2">234,567</td>
-                  <td className="p-3" data-id="clicks_2">8,901</td>
-                  <td className="p-3" data-id="ctr_2">3.80%</td>
-                  <td className="p-3" data-id="cpc_2">$1.12</td>
-                  <td className="p-3" data-id="conversions_2">189</td>
-                  <td className="p-3" data-id="conv_rate_2">2.12%</td>
-                  <td className="p-3" data-id="roas_2">3.8x</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_3">+affordable +sneakers</td>
-                  <td className="p-3" data-id="match_type_3">Modified Broad</td>
-                  <td className="p-3" data-id="impressions_3">189,234</td>
-                  <td className="p-3" data-id="clicks_3">7,891</td>
-                  <td className="p-3" data-id="ctr_3">4.17%</td>
-                  <td className="p-3" data-id="cpc_3">$0.89</td>
-                  <td className="p-3" data-id="conversions_3">167</td>
-                  <td className="p-3" data-id="conv_rate_3">2.12%</td>
-                  <td className="p-3" data-id="roas_3">5.1x</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_4">sports shoes sale</td>
-                  <td className="p-3" data-id="match_type_4">Phrase</td>
-                  <td className="p-3" data-id="impressions_4">345,678</td>
-                  <td className="p-3" data-id="clicks_4">6,789</td>
-                  <td className="p-3" data-id="ctr_4">1.96%</td>
-                  <td className="p-3" data-id="cpc_4">$1.23</td>
-                  <td className="p-3" data-id="conversions_4">134</td>
-                  <td className="p-3" data-id="conv_rate_4">1.97%</td>
-                  <td className="p-3" data-id="roas_4">2.9x</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_5">discount athletic shoes</td>
-                  <td className="p-3" data-id="match_type_5">Broad</td>
-                  <td className="p-3" data-id="impressions_5">567,890</td>
-                  <td className="p-3" data-id="clicks_5">5,678</td>
-                  <td className="p-3" data-id="ctr_5">1.00%</td>
-                  <td className="p-3" data-id="cpc_5">$1.67</td>
-                  <td className="p-3" data-id="conversions_5">98</td>
-                  <td className="p-3" data-id="conv_rate_5">1.73%</td>
-                  <td className="p-3" data-id="roas_5">2.1x</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="keyword_6">"running shoes for women"</td>
-                  <td className="p-3" data-id="match_type_6">Exact</td>
-                  <td className="p-3" data-id="impressions_6">123,456</td>
-                  <td className="p-3" data-id="clicks_6">4,567</td>
-                  <td className="p-3" data-id="ctr_6">3.70%</td>
-                  <td className="p-3" data-id="cpc_6">$1.05</td>
-                  <td className="p-3" data-id="conversions_6">87</td>
-                  <td className="p-3" data-id="conv_rate_6">1.91%</td>
-                  <td className="p-3" data-id="roas_6">3.4x</td>
-                </tr>
+                {paginatedData.map((keyword, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/50">
+                    <td className="p-3 font-medium">{keyword.keyword}</td>
+                    <td className="p-3">{keyword.matchType}</td>
+                    <td className="p-3">{keyword.impressions}</td>
+                    <td className="p-3">{keyword.clicks}</td>
+                    <td className="p-3">{keyword.ctr}</td>
+                    <td className="p-3">{keyword.cpc}</td>
+                    <td className="p-3">{keyword.conversions}</td>
+                    <td className="p-3">{keyword.convRate}</td>
+                    <td className="p-3">{keyword.roas}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={keywordData.length}
+            itemsPerPage={10}
+          />
+        </div>
+
+        {/* Export Functionality */}
+        <div className="bg-card rounded-lg shadow-sm border p-6 print:hidden">
+          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Export Report</h2>
+          <ExportButtons reportTitle="Keyword Performance Report" />
         </div>
 
         {/* Match Type Performance Analysis */}

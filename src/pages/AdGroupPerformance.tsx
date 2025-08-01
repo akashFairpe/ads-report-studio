@@ -1,11 +1,43 @@
 import React, { useState } from 'react';
 import ExportButtons from "@/components/ExportButtons";
 import { Link } from 'react-router-dom';
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const AdGroupPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#1a73e8');
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMxYTczZTgiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR088L3RleHQ+PC9zdmc+");
+
+  // Sample data for pagination
+  const adGroupData = [
+    { name: 'Brand Keywords - Core', status: 'Active', impressions: '1,234,567', clicks: '23,456', ctr: '1.90%', cpc: '$0.85', conversions: '892', costConv: '$23.45', convRate: '3.80%' },
+    { name: 'Product Category - Shoes', status: 'Active', impressions: '987,654', clicks: '18,901', ctr: '1.91%', cpc: '$1.12', conversions: '567', costConv: '$37.23', convRate: '3.00%' },
+    { name: 'Competitor Terms', status: 'Paused', impressions: '456,789', clicks: '8,234', ctr: '1.80%', cpc: '$1.45', conversions: '234', costConv: '$51.23', convRate: '2.84%' },
+    { name: 'Long-tail Keywords', status: 'Active', impressions: '234,567', clicks: '5,678', ctr: '2.42%', cpc: '$0.67', conversions: '345', costConv: '$11.23', convRate: '6.08%' },
+    { name: 'Seasonal Promotions', status: 'Limited', impressions: '567,890', clicks: '12,345', ctr: '2.17%', cpc: '$1.23', conversions: '456', costConv: '$33.45', convRate: '3.69%' },
+    { name: 'Mobile Specific', status: 'Active', impressions: '345,678', clicks: '7,890', ctr: '2.28%', cpc: '$0.98', conversions: '234', costConv: '$18.67', convRate: '2.97%' },
+    { name: 'Display Campaigns', status: 'Active', impressions: '678,901', clicks: '9,876', ctr: '1.45%', cpc: '$0.89', conversions: '123', costConv: '$71.45', convRate: '1.25%' },
+    { name: 'Video Campaigns', status: 'Paused', impressions: '123,456', clicks: '2,345', ctr: '1.90%', cpc: '$2.45', conversions: '67', costConv: '$85.67', convRate: '2.86%' },
+    { name: 'Shopping Campaigns', status: 'Active', impressions: '789,012', clicks: '15,678', ctr: '1.99%', cpc: '$1.34', conversions: '578', costConv: '$36.23', convRate: '3.69%' },
+    { name: 'Remarketing Lists', status: 'Active', impressions: '456,123', clicks: '11,234', ctr: '2.46%', cpc: '$0.76', conversions: '456', costConv: '$18.76', convRate: '4.06%' },
+    { name: 'Local Campaigns', status: 'Limited', impressions: '234,789', clicks: '4,567', ctr: '1.95%', cpc: '$1.56', conversions: '123', costConv: '$57.89', convRate: '2.69%' },
+    { name: 'Performance Max', status: 'Active', impressions: '567,234', clicks: '13,456', ctr: '2.37%', cpc: '$0.92', conversions: '678', costConv: '$18.23', convRate: '5.04%' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(adGroupData, 10);
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -624,82 +656,48 @@ const AdGroupPerformance = () => {
                 <th>Impressions</th>
                 <th>Clicks</th>
                 <th>CTR</th>
-                <th>Cost</th>
                 <th>Avg. CPC</th>
                 <th>Conversions</th>
-                <th>CPA</th>
-                <th>ROAS</th>
-                <th>Quality Score</th>
+                <th>Cost/Conv</th>
+                <th>Conv. Rate</th>
               </tr>
             </thead>
             <tbody>
-              <tr className="performance-excellent">
-                <td>Premium Laptops</td>
-                <td><span className="status-badge status-active">Active</span></td>
-                <td>34,567</td>
-                <td>2,134</td>
-                <td>6.17%</td>
-                <td>$4,982</td>
-                <td>$2.33</td>
-                <td>234</td>
-                <td>$21.29</td>
-                <td>467%</td>
-                <td>8.2</td>
-              </tr>
-              <tr className="performance-good">
-                <td>Gaming Accessories</td>
-                <td><span className="status-badge status-active">Active</span></td>
-                <td>28,943</td>
-                <td>1,567</td>
-                <td>5.41%</td>
-                <td>$3,789</td>
-                <td>$2.42</td>
-                <td>189</td>
-                <td>$20.05</td>
-                <td>412%</td>
-                <td>7.8</td>
-              </tr>
-              <tr className="performance-good">
-                <td>Office Software</td>
-                <td><span className="status-badge status-active">Active</span></td>
-                <td>41,234</td>
-                <td>1,898</td>
-                <td>4.60%</td>
-                <td>$4,456</td>
-                <td>$2.35</td>
-                <td>201</td>
-                <td>$22.17</td>
-                <td>389%</td>
-                <td>7.4</td>
-              </tr>
-              <tr className="performance-average">
-                <td>Mobile Phones</td>
-                <td><span className="status-badge status-active">Active</span></td>
-                <td>52,891</td>
-                <td>2,089</td>
-                <td>3.95%</td>
-                <td>$5,234</td>
-                <td>$2.51</td>
-                <td>178</td>
-                <td>$29.41</td>
-                <td>298%</td>
-                <td>6.9</td>
-              </tr>
-              <tr className="performance-poor">
-                <td>Smart Watches</td>
-                <td><span className="status-badge status-limited">Limited</span></td>
-                <td>15,432</td>
-                <td>467</td>
-                <td>3.03%</td>
-                <td>$1,876</td>
-                <td>$4.02</td>
-                <td>45</td>
-                <td>$41.69</td>
-                <td>187%</td>
-                <td>5.8</td>
-              </tr>
+              {paginatedData.map((adGroup, index) => (
+                <tr key={index} className="performance-good">
+                  <td>{adGroup.name}</td>
+                  <td>
+                    <span className={`status-badge ${
+                      adGroup.status === 'Active' ? 'status-active' : 
+                      adGroup.status === 'Paused' ? 'status-paused' : 'status-limited'
+                    }`}>
+                      {adGroup.status}
+                    </span>
+                  </td>
+                  <td>{adGroup.impressions}</td>
+                  <td>{adGroup.clicks}</td>
+                  <td>{adGroup.ctr}</td>
+                  <td>{adGroup.cpc}</td>
+                  <td>{adGroup.conversions}</td>
+                  <td>{adGroup.costConv}</td>
+                  <td>{adGroup.convRate}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={adGroupData.length}
+            itemsPerPage={10}
+          />
         </section>
 
         {/* Keyword Breakdown */}
@@ -855,6 +853,11 @@ const AdGroupPerformance = () => {
             <span contentEditable={true} suppressContentEditableWarning={true}>Generated on: January 31, 2024</span>
           </div>
         </footer>
+
+        {/* Export Buttons */}
+        <div className="print:hidden" style={{ marginTop: '20px', textAlign: 'center' }}>
+          <ExportButtons reportTitle="Ad Group Performance Report" />
+        </div>
       </div>
     </div>
   );
