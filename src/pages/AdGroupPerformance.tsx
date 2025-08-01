@@ -51,7 +51,7 @@ const AdGroupPerformance = () => {
   };
 
   return (
-    <div style={{ 
+    <div className="page-background" style={{ 
       fontFamily: selectedFont,
       '--primary-color': primaryColor,
       '--text-color': '#333',
@@ -64,6 +64,11 @@ const AdGroupPerformance = () => {
       '--info-color': '#4285f4'
     } as React.CSSProperties}>
       <style>{`
+        .page-background {
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+
         .container {
           max-width: 1200px;
           margin: 0 auto;

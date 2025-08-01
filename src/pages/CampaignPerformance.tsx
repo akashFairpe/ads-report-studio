@@ -18,7 +18,7 @@ const CampaignPerformance = () => {
   };
 
   return (
-    <div style={{ 
+    <div className="page-background" style={{ 
       fontFamily: selectedFont,
       '--primary-color': primaryColor,
       '--text-color': '#333',
@@ -30,6 +30,11 @@ const CampaignPerformance = () => {
       '--danger-color': '#ea4335'
     } as React.CSSProperties}>
       <style>{`
+        .page-background {
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+
         .container {
           max-width: 1200px;
           margin: 0 auto;

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControls from '@/components/PaginationControls';
@@ -9,7 +6,7 @@ import PaginationControls from '@/components/PaginationControls';
 const CostBudgetReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
-  const [logoUrl, setLogoUrl] = useState('');
+  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMzYjgyZjYiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR084L3RleHQ+PC9zdmc+");
 
   // Sample cost breakdown data for pagination
   const costData = [
@@ -44,225 +41,291 @@ const CostBudgetReport = () => {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setLogoUrl(url);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoSrc(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const applyFont = (font: string) => {
-    document.documentElement.style.setProperty('--report-font', font);
-  };
-
-  React.useEffect(() => {
-    applyFont(selectedFont);
-  }, [selectedFont]);
-
-  React.useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', primaryColor);
-  }, [primaryColor]);
-
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: `var(--report-font, ${selectedFont})` }}>
+    <div className="page-background" style={{ 
+      fontFamily: selectedFont,
+      '--primary-color': primaryColor,
+      '--text-color': '#333',
+      '--background-color': '#fff',
+      '--border-color': '#e0e0e0',
+      '--secondary-color': '#f8f9fa',
+      '--success-color': '#34a853',
+      '--warning-color': '#fbbc04',
+      '--danger-color': '#ea4335'
+    } as React.CSSProperties}>
+      <style>{`
+        .page-background {
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        .branding-controls {
+          background: var(--secondary-color);
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          border: 2px dashed var(--border-color);
+        }
+
+        .control-group {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .control-item {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .control-item label {
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .control-item input, .control-item select {
+          padding: 8px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+          font-size: 14px;
+        }
+
+        .report-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid var(--primary-color);
+        }
+
+        .logo-container {
+          max-width: 200px;
+        }
+
+        .logo-container img {
+          max-width: 100%;
+          height: auto;
+          max-height: 60px;
+        }
+
+        .report-title {
+          text-align: center;
+          flex-grow: 1;
+          margin: 0 20px;
+        }
+
+        .report-title h1 {
+          color: var(--primary-color);
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .report-meta {
+          text-align: right;
+          min-width: 200px;
+        }
+
+        .data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+          background: var(--primary-color);
+          color: white;
+          padding: 15px;
+          text-align: left;
+          font-weight: 600;
+        }
+
+        .data-table td {
+          padding: 12px 15px;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+          background-color: var(--secondary-color);
+        }
+
+        .status-badge {
+          padding: 4px 8px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-weight: bold;
+          text-transform: uppercase;
+        }
+
+        .status-on-track {
+          background: rgba(52, 168, 83, 0.2);
+          color: var(--success-color);
+        }
+
+        .status-monitor {
+          background: rgba(251, 188, 4, 0.2);
+          color: var(--warning-color);
+        }
+
+        .status-over-budget {
+          background: rgba(234, 67, 53, 0.2);
+          color: var(--danger-color);
+        }
+
+        .status-under-budget {
+          background: rgba(52, 168, 83, 0.2);
+          color: var(--success-color);
+        }
+
+        .insights-section {
+          background: var(--secondary-color);
+          border-radius: 8px;
+          padding: 25px;
+          margin-bottom: 30px;
+        }
+
+        .insights-section h3 {
+          color: var(--primary-color);
+          margin-bottom: 15px;
+        }
+
+        .report-footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid var(--border-color);
+          text-align: center;
+          color: #666;
+        }
+
+        @media (max-width: 768px) {
+          .report-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+          }
+          
+          .control-group {
+            flex-direction: column;
+            align-items: stretch;
+          }
+        }
+      `}</style>
+
       {/* Branding Controls */}
-      <div className="bg-card border-b p-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4 text-card-foreground">Report Branding Controls</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Company Logo</label>
-              <Input type="file" accept="image/*" onChange={handleLogoUpload} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Font Family</label>
-              <select 
-                value={selectedFont} 
-                onChange={(e) => setSelectedFont(e.target.value)}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
-              >
-                <option value="Inter">Inter</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Lato">Lato</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Poppins">Poppins</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Primary Color</label>
-              <Input 
-                type="color" 
-                value={primaryColor} 
-                onChange={(e) => setPrimaryColor(e.target.value)}
-                className="h-10"
-              />
-            </div>
+      <div className="branding-controls">
+        <h3 style={{ marginBottom: '15px', color: primaryColor }}>🎨 Customize Report Branding</h3>
+        <div className="control-group">
+          <div className="control-item">
+            <label htmlFor="logo-upload">Upload Logo:</label>
+            <input 
+              type="file" 
+              id="logo-upload" 
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
           </div>
+          <div className="control-item">
+            <label htmlFor="font-select">Brand Font:</label>
+            <select 
+              id="font-select" 
+              value={selectedFont}
+              onChange={(e) => setSelectedFont(e.target.value)}
+            >
+              <option value="Inter">Inter</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Lato">Lato</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Poppins">Poppins</option>
+            </select>
+          </div>
+          <div className="control-item">
+            <label htmlFor="primary-color">Primary Color:</label>
+            <input 
+              type="color" 
+              id="primary-color" 
+              value={primaryColor}
+              onChange={(e) => setPrimaryColor(e.target.value)}
+            />
+          </div>
+          <ExportButtons reportTitle="Cost Budget Report" />
         </div>
       </div>
 
-      {/* Report Content */}
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        {/* Header */}
-        <div className="bg-card rounded-lg shadow-sm border p-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              {logoUrl && (
-                <img src={logoUrl} alt="Company Logo" className="h-16 mb-4" id="company-logo" />
-              )}
-              <h1 
-                contentEditable="true" 
-                className="text-3xl font-bold mb-2 outline-none"
-                style={{ color: primaryColor }}
-                suppressContentEditableWarning={true}
-                id="report-title"
-              >
-                Cost & Budget Tracking Report
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <strong>Client:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="client-name">
-                    Example Client Name
-                  </span>
-                </div>
-                <div>
-                  <strong>Date Range:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="date-range">
-                    March 1 - 31, 2024
-                  </span>
-                </div>
-              </div>
-            </div>
+      <div className="container">
+        {/* Report Header */}
+        <header className="report-header">
+          <div className="logo-container">
+            <img src={logoSrc} alt="Company Logo" />
           </div>
-        </div>
+          <div className="report-title">
+            <h1>Cost & Budget Report</h1>
+            <div>Campaign Budget Analysis</div>
+          </div>
+          <div className="report-meta">
+            <div><strong>Account:</strong> ABC Company</div>
+            <div><strong>Period:</strong> Jan 1 - Jan 31, 2024</div>
+            <div><strong>Analyst:</strong> Budget Team</div>
+          </div>
+        </header>
 
-        {/* Summary Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* API Integration Ready - Add data-id attributes for dynamic data injection */}
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Spend</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-spend" data-id="total_spend">$45,678</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Planned Budget</h3>
-            <p className="text-3xl font-bold text-foreground" id="planned-budget" data-id="planned_budget">$50,000</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Budget Used</h3>
-            <p className="text-3xl font-bold text-foreground" id="budget-used" data-id="budget_used_percentage">91.4%</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Cost per Conversion</h3>
-            <p className="text-3xl font-bold text-foreground" id="cost-per-conversion" data-id="cost_per_conversion">$23.45</p>
-          </div>
-        </div>
-
-        {/* Budget Progress Visualization */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Budget vs Actual Spend</h2>
-          <div className="space-y-4">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium">Current Progress</span>
-                <span className="text-sm font-medium" id="progress-percentage" data-id="budget_progress_percentage">91.4%</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-6 overflow-hidden">
-                <div 
-                  className="h-6 rounded-full transition-all duration-300"
-                  style={{ 
-                    width: '91.4%', 
-                    backgroundColor: primaryColor 
-                  }}
-                  id="progress-bar"
-                  data-id="budget_progress_bar"
-                ></div>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-foreground" id="remaining-budget" data-id="remaining_budget">$4,322</p>
-                <p className="text-sm text-muted-foreground">Remaining Budget</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-foreground" id="avg-daily-spend" data-id="avg_daily_spend">$1,473</p>
-                <p className="text-sm text-muted-foreground">Avg Daily Spend</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-foreground" id="days-remaining" data-id="days_remaining">3</p>
-                <p className="text-sm text-muted-foreground">Days Remaining</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Budget Alert */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4" id="budget-alert" data-id="budget_alert_section">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <span className="text-yellow-600 text-xl">⚠️</span>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-yellow-800">Budget Alert</h3>
-              <p className="mt-1 text-sm text-yellow-700" contentEditable="true" suppressContentEditableWarning={true} id="alert-message" data-id="budget_alert_message">
-                You've used 91.4% of your monthly budget with 3 days remaining. Consider adjusting daily spend to stay within budget.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Daily Spend Trend Chart */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Daily Spend Trend</h2>
-          <div className="h-64 bg-muted rounded-lg flex items-center justify-center text-muted-foreground" id="daily-spend-chart" data-id="daily_spend_trend_chart">
-            {/* API Integration: Replace with dynamic chart data */}
-            <div className="text-center">
-              <p className="text-lg font-medium">Daily Spend Trend Chart</p>
-              <p className="text-sm">Chart will be populated with API data</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Campaign Cost Breakdown */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Campaign Cost Breakdown</h2>
-          <div className="overflow-x-auto">
-            {/* API Integration Ready - Table with data-id attributes */}
-            <table className="w-full border-collapse" id="campaign-costs-table" data-id="campaign_costs_table">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-3 font-semibold">Campaign</th>
-                  <th className="text-left p-3 font-semibold">Budget</th>
-                  <th className="text-left p-3 font-semibold">Spend</th>
-                  <th className="text-left p-3 font-semibold">% Used</th>
-                  <th className="text-left p-3 font-semibold">Avg CPC</th>
-                  <th className="text-left p-3 font-semibold">Cost/Conv</th>
-                  <th className="text-left p-3 font-semibold">Status</th>
+        {/* Cost Budget Table */}
+        <section className="cost-budget-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>💰 Campaign Budget Performance</h2>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Budget</th>
+                <th>Spend</th>
+                <th>% Used</th>
+                <th>Avg CPC</th>
+                <th>Cost/Conv</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.campaign}</td>
+                  <td>{item.budget}</td>
+                  <td>{item.spend}</td>
+                  <td>{item.used}</td>
+                  <td>{item.cpc}</td>
+                  <td>{item.costConv}</td>
+                  <td>
+                    <span className={`status-badge ${
+                      item.status === 'On Track' ? 'status-on-track' : 
+                      item.status === 'Monitor' ? 'status-monitor' : 
+                      item.status === 'Over Budget' ? 'status-over-budget' : 'status-under-budget'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map((item, index) => (
-                  <tr key={index} className="border-b hover:bg-muted/50">
-                    <td className="p-3 font-medium">{item.campaign}</td>
-                    <td className="p-3">{item.budget}</td>
-                    <td className="p-3">{item.spend}</td>
-                    <td className="p-3">{item.used}</td>
-                    <td className="p-3">{item.cpc}</td>
-                    <td className="p-3">{item.costConv}</td>
-                    <td className="p-3">
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        item.status === 'On Track' ? 'bg-green-100 text-green-800' :
-                        item.status === 'Under Budget' ? 'bg-green-100 text-green-800' :
-                        item.status === 'Monitor' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
-                        {item.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
+              ))}
+            </tbody>
+          </table>
+
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
@@ -275,110 +338,37 @@ const CostBudgetReport = () => {
             totalItems={costData.length}
             itemsPerPage={10}
           />
-        </div>
+        </section>
 
-        {/* Cost Efficiency Analysis */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Cost Efficiency Analysis</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Most Efficient Campaign</h3>
-              <p className="text-lg font-bold text-foreground" id="most-efficient-campaign" data-id="most_efficient_campaign">Brand Keywords Campaign</p>
-              <p className="text-sm text-muted-foreground">$18.50 cost per conversion</p>
-            </div>
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Highest Spend</h3>
-              <p className="text-lg font-bold text-foreground" id="highest-spend-campaign" data-id="highest_spend_campaign">Product Category - Running</p>
-              <p className="text-sm text-muted-foreground">$18,789 total spend</p>
-            </div>
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Budget Optimization</h3>
-              <p className="text-lg font-bold text-foreground" id="optimization-opportunity" data-id="optimization_opportunity">$1,010</p>
-              <p className="text-sm text-muted-foreground">Potential reallocation</p>
-            </div>
+        {/* Insights */}
+        <section className="insights-section">
+          <h3>💡 Budget Management Insights</h3>
+          <div>
+            <p><strong>Budget Efficiency:</strong></p>
+            <ul>
+              <li>Brand campaigns showing optimal budget utilization</li>
+              <li>Competitor terms requiring budget adjustment</li>
+              <li>Display remarketing has room for increased investment</li>
+            </ul>
+            
+            <p><strong>Optimization Recommendations:</strong></p>
+            <ul>
+              <li>Reallocate budget from under-performing campaigns</li>
+              <li>Increase bids for under-budget high performers</li>
+              <li>Implement budget pacing for over-spending campaigns</li>
+            </ul>
           </div>
-        </div>
-
-        {/* Budget Observations */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Budget Observations & Recommendations</h2>
-          <Textarea 
-            defaultValue="Current budget utilization shows strong performance across most campaigns. Key observations: 1) Brand Keywords Campaign delivers the lowest cost per conversion at $18.50 and should receive additional budget allocation, 2) Competitor Terms campaign is exceeding budget with high cost per conversion ($35.80) - consider reducing bids or pausing underperforming keywords, 3) Display Remarketing is under-utilizing budget with good efficiency - increase daily budget by 25%, 4) Overall account pacing suggests need for daily spend adjustment to prevent budget exhaustion before month-end."
-            className="min-h-32 w-full"
-            id="budget-observations"
-            data-id="budget_observations"
-          />
-        </div>
+        </section>
 
         {/* Footer */}
-        <div className="bg-card rounded-lg shadow-sm border p-6 text-center" style={{ pageBreakBefore: 'auto' }}>
-          <div className="flex justify-between items-center">
-            <div>
-              {logoUrl && <img src={logoUrl} alt="Company Logo" className="h-8" />}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              <span contentEditable="true" suppressContentEditableWarning={true} id="footer-text">
-                Powered by AdSpyder | Page 1 of 1
-              </span>
-            </div>
+        <footer className="report-footer">
+          <div>
+            <strong>Cost Budget Report prepared by:</strong> Budget Management Team<br />
+            budget@company.com | (555) 123-4567<br />
+            Generated on: January 31, 2024
           </div>
-        </div>
+        </footer>
       </div>
-
-      {/* API Integration Script Template */}
-      {/*
-      <script>
-        // Sample API integration for dynamic data injection
-        async function loadCostBudgetData() {
-          try {
-            const response = await fetch('/api/cost-budget-tracking');
-            const data = await response.json();
-            
-            // Update summary metrics
-            document.getElementById('total-spend').textContent = data.totalSpend;
-            document.getElementById('planned-budget').textContent = data.plannedBudget;
-            document.getElementById('budget-used').textContent = data.budgetUsedPercentage;
-            document.getElementById('cost-per-conversion').textContent = data.costPerConversion;
-            
-            // Update progress bar
-            const progressBar = document.getElementById('progress-bar');
-            progressBar.style.width = data.budgetUsedPercentage;
-            document.getElementById('progress-percentage').textContent = data.budgetUsedPercentage;
-            
-            // Update budget details
-            document.getElementById('remaining-budget').textContent = data.remainingBudget;
-            document.getElementById('avg-daily-spend').textContent = data.avgDailySpend;
-            document.getElementById('days-remaining').textContent = data.daysRemaining;
-            
-            // Update campaign costs table
-            data.campaigns.forEach((campaign, index) => {
-              document.querySelector(`[data-id="campaign_${index + 1}"]`).textContent = campaign.name;
-              document.querySelector(`[data-id="budget_${index + 1}"]`).textContent = campaign.budget;
-              document.querySelector(`[data-id="spend_${index + 1}"]`).textContent = campaign.spend;
-              // ... update other metrics
-            });
-            
-            // Update efficiency analysis
-            document.getElementById('most-efficient-campaign').textContent = data.mostEfficientCampaign;
-            document.getElementById('highest-spend-campaign').textContent = data.highestSpendCampaign;
-            document.getElementById('optimization-opportunity').textContent = data.optimizationOpportunity;
-            
-            // Update budget alert if needed
-            if (data.budgetAlert) {
-              document.getElementById('alert-message').textContent = data.budgetAlert.message;
-            }
-            
-            // Render daily spend chart
-            renderDailySpendChart(data.dailySpendData);
-          } catch (error) {
-            console.error('Error loading cost & budget data:', error);
-          }
-        }
-        
-        // Call on page load
-        document.addEventListener('DOMContentLoaded', loadCostBudgetData);
-      </script>
-      */}
     </div>
   );
 };

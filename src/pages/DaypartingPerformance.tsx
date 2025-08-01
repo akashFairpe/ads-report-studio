@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControls from '@/components/PaginationControls';
@@ -9,7 +6,7 @@ import PaginationControls from '@/components/PaginationControls';
 const DaypartingPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
-  const [logoUrl, setLogoUrl] = useState('');
+  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMzYjgyZjYiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR084L3RleHQ+PC9zdmc+");
 
   // Sample dayparting data for pagination
   const daypartingData = [
@@ -44,174 +41,252 @@ const DaypartingPerformance = () => {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setLogoUrl(url);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoSrc(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const applyFont = (font: string) => {
-    document.documentElement.style.setProperty('--report-font', font);
-  };
-
-  React.useEffect(() => {
-    applyFont(selectedFont);
-  }, [selectedFont]);
-
-  React.useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', primaryColor);
-  }, [primaryColor]);
-
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: `var(--report-font, ${selectedFont})` }}>
+    <div className="page-background" style={{ 
+      fontFamily: selectedFont,
+      '--primary-color': primaryColor,
+      '--text-color': '#333',
+      '--background-color': '#fff',
+      '--border-color': '#e0e0e0',
+      '--secondary-color': '#f8f9fa'
+    } as React.CSSProperties}>
+      <style>{`
+        .page-background {
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        .branding-controls {
+          background: var(--secondary-color);
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          border: 2px dashed var(--border-color);
+        }
+
+        .control-group {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .control-item {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .control-item label {
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .control-item input, .control-item select {
+          padding: 8px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+          font-size: 14px;
+        }
+
+        .report-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid var(--primary-color);
+        }
+
+        .logo-container {
+          max-width: 200px;
+        }
+
+        .logo-container img {
+          max-width: 100%;
+          height: auto;
+          max-height: 60px;
+        }
+
+        .report-title {
+          text-align: center;
+          flex-grow: 1;
+          margin: 0 20px;
+        }
+
+        .report-title h1 {
+          color: var(--primary-color);
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .report-meta {
+          text-align: right;
+          min-width: 200px;
+        }
+
+        .data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+          background: var(--primary-color);
+          color: white;
+          padding: 15px;
+          text-align: left;
+          font-weight: 600;
+        }
+
+        .data-table td {
+          padding: 12px 15px;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+          background-color: var(--secondary-color);
+        }
+
+        .insights-section {
+          background: var(--secondary-color);
+          border-radius: 8px;
+          padding: 25px;
+          margin-bottom: 30px;
+        }
+
+        .insights-section h3 {
+          color: var(--primary-color);
+          margin-bottom: 15px;
+        }
+
+        .report-footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid var(--border-color);
+          text-align: center;
+          color: #666;
+        }
+
+        @media (max-width: 768px) {
+          .report-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+          }
+          
+          .control-group {
+            flex-direction: column;
+            align-items: stretch;
+          }
+        }
+      `}</style>
+
       {/* Branding Controls */}
-      <div className="bg-card border-b p-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4 text-card-foreground">Report Branding Controls</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Company Logo</label>
-              <Input type="file" accept="image/*" onChange={handleLogoUpload} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Font Family</label>
-              <select 
-                value={selectedFont} 
-                onChange={(e) => setSelectedFont(e.target.value)}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
-              >
-                <option value="Inter">Inter</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Lato">Lato</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Poppins">Poppins</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Primary Color</label>
-              <Input 
-                type="color" 
-                value={primaryColor} 
-                onChange={(e) => setPrimaryColor(e.target.value)}
-                className="h-10"
-              />
-            </div>
+      <div className="branding-controls">
+        <h3 style={{ marginBottom: '15px', color: primaryColor }}>🎨 Customize Report Branding</h3>
+        <div className="control-group">
+          <div className="control-item">
+            <label htmlFor="logo-upload">Upload Logo:</label>
+            <input 
+              type="file" 
+              id="logo-upload" 
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
           </div>
+          <div className="control-item">
+            <label htmlFor="font-select">Brand Font:</label>
+            <select 
+              id="font-select" 
+              value={selectedFont}
+              onChange={(e) => setSelectedFont(e.target.value)}
+            >
+              <option value="Inter">Inter</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Lato">Lato</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Poppins">Poppins</option>
+            </select>
+          </div>
+          <div className="control-item">
+            <label htmlFor="primary-color">Primary Color:</label>
+            <input 
+              type="color" 
+              id="primary-color" 
+              value={primaryColor}
+              onChange={(e) => setPrimaryColor(e.target.value)}
+            />
+          </div>
+          <ExportButtons reportTitle="Dayparting Performance Report" />
         </div>
       </div>
 
-      {/* Report Content */}
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        {/* Header */}
-        <div className="bg-card rounded-lg shadow-sm border p-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              {logoUrl && (
-                <img src={logoUrl} alt="Company Logo" className="h-16 mb-4" id="company-logo" />
-              )}
-              <h1 
-                contentEditable="true" 
-                className="text-3xl font-bold mb-2 outline-none"
-                style={{ color: primaryColor }}
-                suppressContentEditableWarning={true}
-                id="report-title"
-              >
-                Dayparting Performance Report
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <strong>Client:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="client-name">
-                    Example Client Name
-                  </span>
-                </div>
-                <div>
-                  <strong>Date Range:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="date-range">
-                    March 1 - 31, 2024
-                  </span>
-                </div>
-              </div>
-            </div>
+      <div className="container">
+        {/* Report Header */}
+        <header className="report-header">
+          <div className="logo-container">
+            <img src={logoSrc} alt="Company Logo" />
           </div>
-        </div>
+          <div className="report-title">
+            <h1>Dayparting Performance Report</h1>
+            <div>Time-Based Performance Analysis</div>
+          </div>
+          <div className="report-meta">
+            <div><strong>Account:</strong> ABC Company</div>
+            <div><strong>Period:</strong> Jan 1 - Jan 31, 2024</div>
+            <div><strong>Analyst:</strong> Performance Team</div>
+          </div>
+        </header>
 
-        {/* Summary Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* API Integration Ready - Add data-id attributes for dynamic data injection */}
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Impressions</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-impressions" data-id="total_impressions">2,456,789</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Clicks</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-clicks" data-id="total_clicks">45,123</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Peak Hour</h3>
-            <p className="text-3xl font-bold text-foreground" id="peak-hour" data-id="peak_hour">2:00 PM</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Best Day</h3>
-            <p className="text-3xl font-bold text-foreground" id="best-day" data-id="best_day">Tuesday</p>
-          </div>
-        </div>
-
-        {/* Performance by Hour Chart */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Performance by Hour of Day</h2>
-          <div className="h-64 bg-muted rounded-lg flex items-center justify-center text-muted-foreground" id="hourly-chart" data-id="hourly_performance_chart">
-            {/* API Integration: Replace with dynamic chart data */}
-            <div className="text-center">
-              <p className="text-lg font-medium">Hourly Performance Chart</p>
-              <p className="text-sm">Chart will be populated with API data</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Performance by Day of Week */}
-        <div className="bg-card rounded-lg shadow-sm border p-6">
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Performance by Day of Week</h2>
-          <div className="h-64 bg-muted rounded-lg flex items-center justify-center text-muted-foreground" id="daily-chart" data-id="daily_performance_chart">
-            <div className="text-center">
-              <p className="text-lg font-medium">Daily Performance Chart</p>
-              <p className="text-sm">Chart will be populated with API data</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Detailed Performance Table */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Detailed Performance Breakdown</h2>
-          <div className="overflow-x-auto">
-            {/* API Integration Ready - Table with data-id attributes */}
-            <table className="w-full border-collapse" id="performance-table" data-id="detailed_performance_table">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-3 font-semibold">Time Period</th>
-                  <th className="text-left p-3 font-semibold">Impressions</th>
-                  <th className="text-left p-3 font-semibold">Clicks</th>
-                  <th className="text-left p-3 font-semibold">CTR</th>
-                  <th className="text-left p-3 font-semibold">CPC</th>
-                  <th className="text-left p-3 font-semibold">Conversions</th>
-                  <th className="text-left p-3 font-semibold">Conv. Rate</th>
+        {/* Dayparting Table */}
+        <section className="dayparting-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>⏰ Hourly Performance Breakdown</h2>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Time Period</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>CTR</th>
+                <th>Avg CPC</th>
+                <th>Conversions</th>
+                <th>Conv Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((period, index) => (
+                <tr key={index}>
+                  <td>{period.period}</td>
+                  <td>{period.impressions}</td>
+                  <td>{period.clicks}</td>
+                  <td>{period.ctr}</td>
+                  <td>{period.cpc}</td>
+                  <td>{period.conversions}</td>
+                  <td>{period.convRate}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map((item, index) => (
-                  <tr key={index} className="border-b hover:bg-muted/50">
-                    <td className="p-3">{item.period}</td>
-                    <td className="p-3">{item.impressions}</td>
-                    <td className="p-3">{item.clicks}</td>
-                    <td className="p-3">{item.ctr}</td>
-                    <td className="p-3">{item.cpc}</td>
-                    <td className="p-3">{item.conversions}</td>
-                    <td className="p-3">{item.convRate}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
+              ))}
+            </tbody>
+          </table>
+
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
@@ -224,69 +299,37 @@ const DaypartingPerformance = () => {
             totalItems={daypartingData.length}
             itemsPerPage={10}
           />
-        </div>
+        </section>
 
-        {/* Recommendations */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Recommendations & Insights</h2>
-          <Textarea 
-            defaultValue="Based on the dayparting analysis, we recommend increasing bid adjustments during peak performance hours (12:00-18:00) and considering budget reallocation from low-performing overnight periods. Tuesday and Wednesday show consistently higher conversion rates and should be prioritized for promotional campaigns."
-            className="min-h-32 w-full"
-            id="recommendations"
-            data-id="analyst_recommendations"
-          />
-        </div>
+        {/* Insights */}
+        <section className="insights-section">
+          <h3>💡 Dayparting Insights</h3>
+          <div>
+            <p><strong>Peak Performance Times:</strong></p>
+            <ul>
+              <li>Afternoon periods (12:00-18:00) showing highest click volume</li>
+              <li>Mid-week performance typically stronger than weekends</li>
+              <li>Early morning hours have lowest CPC but also lower volume</li>
+            </ul>
+            
+            <p><strong>Optimization Recommendations:</strong></p>
+            <ul>
+              <li>Increase bids during high-converting afternoon periods</li>
+              <li>Consider reducing bids during low-performing early morning hours</li>
+              <li>Test weekend-specific ad copy and bidding strategies</li>
+            </ul>
+          </div>
+        </section>
 
         {/* Footer */}
-        <div className="bg-card rounded-lg shadow-sm border p-6 text-center" style={{ pageBreakBefore: 'auto' }}>
-          <div className="flex justify-between items-center">
-            <div>
-              {logoUrl && <img src={logoUrl} alt="Company Logo" className="h-8" />}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              <span contentEditable="true" suppressContentEditableWarning={true} id="footer-text">
-                Powered by AdSpyder | Page 1 of 1
-              </span>
-            </div>
+        <footer className="report-footer">
+          <div>
+            <strong>Dayparting Report prepared by:</strong> Performance Analytics Team<br />
+            performance@company.com | (555) 123-4567<br />
+            Generated on: January 31, 2024
           </div>
-        </div>
+        </footer>
       </div>
-
-      {/* API Integration Script Template */}
-      {/*
-      <script>
-        // Sample API integration for dynamic data injection
-        async function loadDaypartingData() {
-          try {
-            const response = await fetch('/api/dayparting-performance');
-            const data = await response.json();
-            
-            // Update metrics
-            document.getElementById('total-impressions').textContent = data.totalImpressions;
-            document.getElementById('total-clicks').textContent = data.totalClicks;
-            document.getElementById('peak-hour').textContent = data.peakHour;
-            document.getElementById('best-day').textContent = data.bestDay;
-            
-            // Update table data
-            data.timeSlots.forEach((slot, index) => {
-              document.querySelector(`[data-id="period_${index + 1}"]`).textContent = slot.period;
-              document.querySelector(`[data-id="impressions_${index + 1}"]`).textContent = slot.impressions;
-              document.querySelector(`[data-id="clicks_${index + 1}"]`).textContent = slot.clicks;
-              // ... update other metrics
-            });
-            
-            // Render charts
-            renderHourlyChart(data.hourlyData);
-            renderDailyChart(data.dailyData);
-          } catch (error) {
-            console.error('Error loading dayparting data:', error);
-          }
-        }
-        
-        // Call on page load
-        document.addEventListener('DOMContentLoaded', loadDaypartingData);
-      </script>
-      */}
     </div>
   );
 };

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
 import { usePagination } from '@/hooks/usePagination';
 import PaginationControls from '@/components/PaginationControls';
@@ -9,7 +6,7 @@ import PaginationControls from '@/components/PaginationControls';
 const AdPerformance = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
-  const [logoUrl, setLogoUrl] = useState('');
+  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMzYjgyZjYiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR084L3RleHQ+PC9zdmc+");
 
   // Sample data for pagination
   const adData = [
@@ -44,165 +41,254 @@ const AdPerformance = () => {
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setLogoUrl(url);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoSrc(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const applyFont = (font: string) => {
-    document.documentElement.style.setProperty('--report-font', font);
-  };
-
-  React.useEffect(() => {
-    applyFont(selectedFont);
-  }, [selectedFont]);
-
-  React.useEffect(() => {
-    document.documentElement.style.setProperty('--primary-color', primaryColor);
-  }, [primaryColor]);
-
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: `var(--report-font, ${selectedFont})` }}>
+    <div className="page-background" style={{ 
+      fontFamily: selectedFont,
+      '--primary-color': primaryColor,
+      '--text-color': '#333',
+      '--background-color': '#fff',
+      '--border-color': '#e0e0e0',
+      '--secondary-color': '#f8f9fa'
+    } as React.CSSProperties}>
+      <style>{`
+        .page-background {
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        .branding-controls {
+          background: var(--secondary-color);
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 30px;
+          border: 2px dashed var(--border-color);
+        }
+
+        .control-group {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          align-items: center;
+        }
+
+        .control-item {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .control-item label {
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .control-item input, .control-item select {
+          padding: 8px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+          font-size: 14px;
+        }
+
+        .report-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid var(--primary-color);
+        }
+
+        .logo-container {
+          max-width: 200px;
+        }
+
+        .logo-container img {
+          max-width: 100%;
+          height: auto;
+          max-height: 60px;
+        }
+
+        .report-title {
+          text-align: center;
+          flex-grow: 1;
+          margin: 0 20px;
+        }
+
+        .report-title h1 {
+          color: var(--primary-color);
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .report-meta {
+          text-align: right;
+          min-width: 200px;
+        }
+
+        .data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 30px;
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+          background: var(--primary-color);
+          color: white;
+          padding: 15px;
+          text-align: left;
+          font-weight: 600;
+        }
+
+        .data-table td {
+          padding: 12px 15px;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+          background-color: var(--secondary-color);
+        }
+
+        .insights-section {
+          background: var(--secondary-color);
+          border-radius: 8px;
+          padding: 25px;
+          margin-bottom: 30px;
+        }
+
+        .insights-section h3 {
+          color: var(--primary-color);
+          margin-bottom: 15px;
+        }
+
+        .report-footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid var(--border-color);
+          text-align: center;
+          color: #666;
+        }
+
+        @media (max-width: 768px) {
+          .report-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 20px;
+          }
+          
+          .control-group {
+            flex-direction: column;
+            align-items: stretch;
+          }
+        }
+      `}</style>
+
       {/* Branding Controls */}
-      <div className="bg-card border-b p-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4 text-card-foreground">Report Branding Controls</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Company Logo</label>
-              <Input type="file" accept="image/*" onChange={handleLogoUpload} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Font Family</label>
-              <select 
-                value={selectedFont} 
-                onChange={(e) => setSelectedFont(e.target.value)}
-                className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
-              >
-                <option value="Inter">Inter</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Lato">Lato</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Poppins">Poppins</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 text-card-foreground">Primary Color</label>
-              <Input 
-                type="color" 
-                value={primaryColor} 
-                onChange={(e) => setPrimaryColor(e.target.value)}
-                className="h-10"
-              />
-            </div>
+      <div className="branding-controls">
+        <h3 style={{ marginBottom: '15px', color: primaryColor }}>🎨 Customize Report Branding</h3>
+        <div className="control-group">
+          <div className="control-item">
+            <label htmlFor="logo-upload">Upload Logo:</label>
+            <input 
+              type="file" 
+              id="logo-upload" 
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
           </div>
+          <div className="control-item">
+            <label htmlFor="font-select">Brand Font:</label>
+            <select 
+              id="font-select" 
+              value={selectedFont}
+              onChange={(e) => setSelectedFont(e.target.value)}
+            >
+              <option value="Inter">Inter</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Lato">Lato</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Poppins">Poppins</option>
+            </select>
+          </div>
+          <div className="control-item">
+            <label htmlFor="primary-color">Primary Color:</label>
+            <input 
+              type="color" 
+              id="primary-color" 
+              value={primaryColor}
+              onChange={(e) => setPrimaryColor(e.target.value)}
+            />
+          </div>
+          <ExportButtons reportTitle="Ad Performance Report" />
         </div>
       </div>
 
-      {/* Report Content */}
-      <div className="max-w-7xl mx-auto p-6 space-y-8">
-        {/* Header */}
-        <div className="bg-card rounded-lg shadow-sm border p-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex-1">
-              {logoUrl && (
-                <img src={logoUrl} alt="Company Logo" className="h-16 mb-4" id="company-logo" />
-              )}
-              <h1 
-                contentEditable="true" 
-                className="text-3xl font-bold mb-2 outline-none"
-                style={{ color: primaryColor }}
-                suppressContentEditableWarning={true}
-                id="report-title"
-              >
-                Ad Performance Report
-              </h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <strong>Client:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="client-name">
-                    Example Client Name
-                  </span>
-                </div>
-                <div>
-                  <strong>Date Range:</strong> 
-                  <span contentEditable="true" className="ml-2 outline-none" suppressContentEditableWarning={true} id="date-range">
-                    March 1 - 31, 2024
-                  </span>
-                </div>
-              </div>
-            </div>
+      <div className="container">
+        {/* Report Header */}
+        <header className="report-header">
+          <div className="logo-container">
+            <img src={logoSrc} alt="Company Logo" />
           </div>
-        </div>
+          <div className="report-title">
+            <h1>Ad Performance Report</h1>
+            <div>Creative Performance Analysis</div>
+          </div>
+          <div className="report-meta">
+            <div><strong>Account:</strong> ABC Company</div>
+            <div><strong>Period:</strong> Jan 1 - Jan 31, 2024</div>
+            <div><strong>Analyst:</strong> Creative Team</div>
+          </div>
+        </header>
 
-        {/* Summary Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* API Integration Ready - Add data-id attributes for dynamic data injection */}
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Ads</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-ads" data-id="total_ads">156</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Impressions</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-impressions" data-id="total_impressions">2,456,789</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Average CTR</h3>
-            <p className="text-3xl font-bold text-foreground" id="avg-ctr" data-id="avg_ctr">1.85%</p>
-          </div>
-          <div className="bg-card rounded-lg shadow-sm border p-6 text-center">
-            <h3 className="text-lg font-semibold mb-2" style={{ color: primaryColor }}>Total Conversions</h3>
-            <p className="text-3xl font-bold text-foreground" id="total-conversions" data-id="total_conversions">1,234</p>
-          </div>
-        </div>
-
-        {/* Ad Performance Comparison Chart */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>CTR vs Conversion Rate by Ad Type</h2>
-          <div className="h-64 bg-muted rounded-lg flex items-center justify-center text-muted-foreground" id="performance-chart" data-id="ad_performance_chart">
-            {/* API Integration: Replace with dynamic chart data */}
-            <div className="text-center">
-              <p className="text-lg font-medium">Ad Performance Comparison Chart</p>
-              <p className="text-sm">Chart will be populated with API data</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Top Performing Ads Table */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Top Performing Ads</h2>
-          <div className="overflow-x-auto">
-            {/* API Integration Ready - Table with data-id attributes */}
-            <table className="w-full border-collapse" id="ads-table" data-id="top_ads_table">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-3 font-semibold">Headline</th>
-                  <th className="text-left p-3 font-semibold">Type</th>
-                  <th className="text-left p-3 font-semibold">Impressions</th>
-                  <th className="text-left p-3 font-semibold">Clicks</th>
-                  <th className="text-left p-3 font-semibold">CTR</th>
-                  <th className="text-left p-3 font-semibold">CPC</th>
-                  <th className="text-left p-3 font-semibold">Conversions</th>
-                  <th className="text-left p-3 font-semibold">ROAS</th>
+        {/* Ad Performance Table */}
+        <section className="ad-performance-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>🎨 Ad Creative Performance</h2>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Headline</th>
+                <th>Ad Type</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>CTR</th>
+                <th>CPC</th>
+                <th>Conversions</th>
+                <th>ROAS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((ad, index) => (
+                <tr key={index}>
+                  <td>{ad.headline}</td>
+                  <td>{ad.type}</td>
+                  <td>{ad.impressions}</td>
+                  <td>{ad.clicks}</td>
+                  <td>{ad.ctr}</td>
+                  <td>{ad.cpc}</td>
+                  <td>{ad.conversions}</td>
+                  <td>{ad.roas}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map((ad, index) => (
-                  <tr key={index} className="border-b hover:bg-muted/50">
-                    <td className="p-3 font-medium">{ad.headline}</td>
-                    <td className="p-3">{ad.type}</td>
-                    <td className="p-3">{ad.impressions}</td>
-                    <td className="p-3">{ad.clicks}</td>
-                    <td className="p-3">{ad.ctr}</td>
-                    <td className="p-3">{ad.cpc}</td>
-                    <td className="p-3">{ad.conversions}</td>
-                    <td className="p-3">{ad.roas}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          
+              ))}
+            </tbody>
+          </table>
+
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
@@ -215,101 +301,37 @@ const AdPerformance = () => {
             totalItems={adData.length}
             itemsPerPage={10}
           />
-        </div>
+        </section>
 
-        {/* Export Functionality */}
-        <div className="bg-card rounded-lg shadow-sm border p-6 print:hidden">
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Export Report</h2>
-          <ExportButtons reportTitle="Ad Performance Report" />
-        </div>
-
-        {/* Ad Performance Insights */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Performance Analysis & Insights</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Best Performing Ad Type</h3>
-              <p className="text-2xl font-bold text-foreground" id="best-ad-type" data-id="best_ad_type">Responsive Search</p>
-              <p className="text-sm text-muted-foreground">Avg CTR: 2.33%</p>
-            </div>
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Highest Converting Ad</h3>
-              <p className="text-lg font-bold text-foreground" id="top-converting-ad" data-id="top_converting_ad">Best Product Sale</p>
-              <p className="text-sm text-muted-foreground">234 conversions</p>
-            </div>
-            <div className="text-center">
-              <h3 className="font-semibold mb-2" style={{ color: primaryColor }}>Best ROAS</h3>
-              <p className="text-2xl font-bold text-foreground" id="best-roas" data-id="best_roas">4.2x</p>
-              <p className="text-sm text-muted-foreground">Ad ID: RSA-001</p>
-            </div>
+        {/* Insights */}
+        <section className="insights-section">
+          <h3>💡 Ad Performance Insights</h3>
+          <div>
+            <p><strong>Top Performing Ad Types:</strong></p>
+            <ul>
+              <li>Responsive Search Ads showing strong CTR performance</li>
+              <li>Sale-focused headlines driving high conversion rates</li>
+              <li>Urgency messaging improving click-through rates</li>
+            </ul>
+            
+            <p><strong>Creative Optimization Opportunities:</strong></p>
+            <ul>
+              <li>Test more promotional messaging variations</li>
+              <li>Optimize Display ad creative performance</li>
+              <li>A/B test headlines with different value propositions</li>
+            </ul>
           </div>
-        </div>
-
-        {/* Recommendations */}
-        <div className="bg-card rounded-lg shadow-sm border p-6" style={{ pageBreakBefore: 'auto' }}>
-          <h2 className="text-xl font-semibold mb-4" style={{ color: primaryColor }}>Recommendations & Next Steps</h2>
-          <Textarea 
-            defaultValue="Based on the ad performance analysis, Responsive Search Ads are showing superior performance with higher CTRs and conversion rates. We recommend: 1) Increase budget allocation to top-performing RSAs, 2) Test additional headlines similar to 'Best Product Sale' messaging, 3) Pause or optimize underperforming Display ads, 4) A/B test urgency-based copy like 'Limited Time Offer' across more ad groups."
-            className="min-h-32 w-full"
-            id="recommendations"
-            data-id="analyst_recommendations"
-          />
-        </div>
+        </section>
 
         {/* Footer */}
-        <div className="bg-card rounded-lg shadow-sm border p-6 text-center" style={{ pageBreakBefore: 'auto' }}>
-          <div className="flex justify-between items-center">
-            <div>
-              {logoUrl && <img src={logoUrl} alt="Company Logo" className="h-8" />}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              <span contentEditable="true" suppressContentEditableWarning={true} id="footer-text">
-                Powered by AdSpyder | Page 1 of 1
-              </span>
-            </div>
+        <footer className="report-footer">
+          <div>
+            <strong>Ad Performance Report prepared by:</strong> Creative Analytics Team<br />
+            creative@company.com | (555) 123-4567<br />
+            Generated on: January 31, 2024
           </div>
-        </div>
+        </footer>
       </div>
-
-      {/* API Integration Script Template */}
-      {/*
-      <script>
-        // Sample API integration for dynamic data injection
-        async function loadAdPerformanceData() {
-          try {
-            const response = await fetch('/api/ad-performance');
-            const data = await response.json();
-            
-            // Update summary metrics
-            document.getElementById('total-ads').textContent = data.totalAds;
-            document.getElementById('total-impressions').textContent = data.totalImpressions;
-            document.getElementById('avg-ctr').textContent = data.avgCtr;
-            document.getElementById('total-conversions').textContent = data.totalConversions;
-            
-            // Update insights
-            document.getElementById('best-ad-type').textContent = data.bestAdType;
-            document.getElementById('top-converting-ad').textContent = data.topConvertingAd;
-            document.getElementById('best-roas').textContent = data.bestRoas;
-            
-            // Update table data
-            data.topAds.forEach((ad, index) => {
-              document.querySelector(`[data-id="headline_${index + 1}"]`).textContent = ad.headline;
-              document.querySelector(`[data-id="type_${index + 1}"]`).textContent = ad.type;
-              document.querySelector(`[data-id="impressions_${index + 1}"]`).textContent = ad.impressions;
-              // ... update other metrics
-            });
-            
-            // Render performance chart
-            renderAdPerformanceChart(data.chartData);
-          } catch (error) {
-            console.error('Error loading ad performance data:', error);
-          }
-        }
-        
-        // Call on page load
-        document.addEventListener('DOMContentLoaded', loadAdPerformanceData);
-      </script>
-      */}
     </div>
   );
 };
