@@ -3,11 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const CostBudgetReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample cost breakdown data for pagination
+  const costData = [
+    { campaign: 'Brand Keywords Campaign', budget: '$15,000', spend: '$13,245', used: '88.3%', cpc: '$0.95', costConv: '$18.50', status: 'On Track' },
+    { campaign: 'Product Category - Running', budget: '$20,000', spend: '$18,789', used: '93.9%', cpc: '$1.23', costConv: '$25.67', status: 'Monitor' },
+    { campaign: 'Competitor Terms', budget: '$10,000', spend: '$9,654', used: '96.5%', cpc: '$1.89', costConv: '$35.80', status: 'Over Budget' },
+    { campaign: 'Display Remarketing', budget: '$5,000', spend: '$3,990', used: '79.8%', cpc: '$0.67', costConv: '$19.95', status: 'Under Budget' },
+    { campaign: 'Search Network - General', budget: '$12,000', spend: '$10,567', used: '88.1%', cpc: '$1.12', costConv: '$22.45', status: 'On Track' },
+    { campaign: 'Video Advertising', budget: '$8,000', spend: '$7,234', used: '90.4%', cpc: '$0.78', costConv: '$28.90', status: 'On Track' },
+    { campaign: 'Shopping Campaigns', budget: '$18,000', spend: '$16,789', used: '93.3%', cpc: '$1.34', costConv: '$24.67', status: 'Monitor' },
+    { campaign: 'Local Services', budget: '$6,000', spend: '$4,567', used: '76.1%', cpc: '$2.12', costConv: '$45.78', status: 'Under Budget' },
+    { campaign: 'App Install Campaign', budget: '$9,000', spend: '$8,123', used: '90.3%', cpc: '$0.89', costConv: '$18.95', status: 'On Track' },
+    { campaign: 'Performance Max', budget: '$14,000', spend: '$12,890', used: '92.1%', cpc: '$1.05', costConv: '$21.34', status: 'Monitor' },
+    { campaign: 'YouTube Shorts', budget: '$4,000', spend: '$3,123', used: '78.1%', cpc: '$0.45', costConv: '$16.78', status: 'Under Budget' },
+    { campaign: 'Discovery Campaigns', budget: '$7,000', spend: '$6,234', used: '89.1%', cpc: '$0.98', costConv: '$26.45', status: 'On Track' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(costData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -207,45 +239,42 @@ const CostBudgetReport = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_1">Brand Keywords Campaign</td>
-                  <td className="p-3" data-id="budget_1">$15,000</td>
-                  <td className="p-3" data-id="spend_1">$13,245</td>
-                  <td className="p-3" data-id="used_percentage_1">88.3%</td>
-                  <td className="p-3" data-id="cpc_1">$0.95</td>
-                  <td className="p-3" data-id="cost_conv_1">$18.50</td>
-                  <td className="p-3"><span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">On Track</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_2">Product Category - Running</td>
-                  <td className="p-3" data-id="budget_2">$20,000</td>
-                  <td className="p-3" data-id="spend_2">$18,789</td>
-                  <td className="p-3" data-id="used_percentage_2">93.9%</td>
-                  <td className="p-3" data-id="cpc_2">$1.23</td>
-                  <td className="p-3" data-id="cost_conv_2">$25.67</td>
-                  <td className="p-3"><span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Monitor</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_3">Competitor Terms</td>
-                  <td className="p-3" data-id="budget_3">$10,000</td>
-                  <td className="p-3" data-id="spend_3">$9,654</td>
-                  <td className="p-3" data-id="used_percentage_3">96.5%</td>
-                  <td className="p-3" data-id="cpc_3">$1.89</td>
-                  <td className="p-3" data-id="cost_conv_3">$35.80</td>
-                  <td className="p-3"><span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Over Budget</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_4">Display Remarketing</td>
-                  <td className="p-3" data-id="budget_4">$5,000</td>
-                  <td className="p-3" data-id="spend_4">$3,990</td>
-                  <td className="p-3" data-id="used_percentage_4">79.8%</td>
-                  <td className="p-3" data-id="cpc_4">$0.67</td>
-                  <td className="p-3" data-id="cost_conv_4">$19.95</td>
-                  <td className="p-3"><span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">Under Budget</span></td>
-                </tr>
+                {paginatedData.map((item, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/50">
+                    <td className="p-3 font-medium">{item.campaign}</td>
+                    <td className="p-3">{item.budget}</td>
+                    <td className="p-3">{item.spend}</td>
+                    <td className="p-3">{item.used}</td>
+                    <td className="p-3">{item.cpc}</td>
+                    <td className="p-3">{item.costConv}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        item.status === 'On Track' ? 'bg-green-100 text-green-800' :
+                        item.status === 'Under Budget' ? 'bg-green-100 text-green-800' :
+                        item.status === 'Monitor' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={costData.length}
+            itemsPerPage={10}
+          />
         </div>
 
         {/* Cost Efficiency Analysis */}

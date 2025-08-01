@@ -6,11 +6,67 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const ConversionTrackingReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample conversion actions data for pagination
+  const conversionActionsData = [
+    { actionType: 'Form Submissions', conversions: '687', conversionRate: '4.12%', costPerConversion: '$18.75', conversionValue: '$45,230' },
+    { actionType: 'Phone Calls', conversions: '324', conversionRate: '2.89%', costPerConversion: '$32.40', conversionValue: '$28,980' },
+    { actionType: 'Purchases', conversions: '236', conversionRate: '2.31%', costPerConversion: '$28.90', conversionValue: '$67,420' },
+    { actionType: 'Newsletter Signups', conversions: '189', conversionRate: '3.45%', costPerConversion: '$15.67', conversionValue: '$12,890' },
+    { actionType: 'Download Brochure', conversions: '145', conversionRate: '2.78%', costPerConversion: '$22.10', conversionValue: '$8,945' },
+    { actionType: 'Quote Requests', conversions: '123', conversionRate: '1.89%', costPerConversion: '$45.67', conversionValue: '$34,567' },
+    { actionType: 'Video Views (3+ min)', conversions: '98', conversionRate: '5.23%', costPerConversion: '$12.34', conversionValue: '$5,678' },
+    { actionType: 'Demo Requests', conversions: '87', conversionRate: '1.67%', costPerConversion: '$67.89', conversionValue: '$56,789' },
+    { actionType: 'App Downloads', conversions: '76', conversionRate: '3.12%', costPerConversion: '$19.45', conversionValue: '$7,234' },
+    { actionType: 'Chat Initiations', conversions: '65', conversionRate: '2.34%', costPerConversion: '$25.67', conversionValue: '$4,567' },
+    { actionType: 'Webinar Registrations', conversions: '54', conversionRate: '1.45%', costPerConversion: '$34.78', conversionValue: '$12,345' },
+    { actionType: 'Product Page Views', conversions: '43', conversionRate: '6.78%', costPerConversion: '$8.90', conversionValue: '$2,345' }
+  ];
+
+  // Sample attribution models data for pagination
+  const attributionModelsData = [
+    { model: 'Last Click', conversions: '1,247', value: '$141,630', costPerConv: '$24.50' },
+    { model: 'First Click', conversions: '1,089', value: '$128,940', costPerConv: '$28.05' },
+    { model: 'Linear', conversions: '1,156', value: '$135,890', costPerConv: '$26.42' },
+    { model: 'Data-Driven', conversions: '1,203', value: '$139,245', costPerConv: '$25.38' },
+    { model: 'Time Decay', conversions: '1,178', value: '$133,567', costPerConv: '$27.12' },
+    { model: 'Position Based', conversions: '1,134', value: '$131,245', costPerConv: '$28.90' }
+  ];
+
+  const {
+    currentPage: conversionPage,
+    paginatedData: paginatedConversions,
+    exportData: exportConversions,
+    totalPages: conversionTotalPages,
+    hasNextPage: conversionHasNext,
+    hasPrevPage: conversionHasPrev,
+    showAll: conversionShowAll,
+    goToNextPage: conversionNextPage,
+    goToPrevPage: conversionPrevPage,
+    toggleShowAll: conversionToggleShowAll,
+    resetPagination: conversionResetPagination
+  } = usePagination(conversionActionsData, 10);
+
+  const {
+    currentPage: attributionPage,
+    paginatedData: paginatedAttributions,
+    exportData: exportAttributions,
+    totalPages: attributionTotalPages,
+    hasNextPage: attributionHasNext,
+    hasPrevPage: attributionHasPrev,
+    showAll: attributionShowAll,
+    goToNextPage: attributionNextPage,
+    goToPrevPage: attributionPrevPage,
+    toggleShowAll: attributionToggleShowAll,
+    resetPagination: attributionResetPagination
+  } = usePagination(attributionModelsData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -140,30 +196,31 @@ const ConversionTrackingReport = () => {
                   </tr>
                 </thead>
                 <tbody id="conversion_actions_data" data-table="conversion_actions">
-                  <tr className="border-b">
-                    <td className="p-2" data-field="action_type">Form Submissions</td>
-                    <td className="text-right p-2" data-field="conversions">687</td>
-                    <td className="text-right p-2" data-field="conversion_rate">4.12%</td>
-                    <td className="text-right p-2" data-field="cost_per_conversion">$18.75</td>
-                    <td className="text-right p-2" data-field="conversion_value">$45,230</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="action_type">Phone Calls</td>
-                    <td className="text-right p-2" data-field="conversions">324</td>
-                    <td className="text-right p-2" data-field="conversion_rate">2.89%</td>
-                    <td className="text-right p-2" data-field="cost_per_conversion">$32.40</td>
-                    <td className="text-right p-2" data-field="conversion_value">$28,980</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="action_type">Purchases</td>
-                    <td className="text-right p-2" data-field="conversions">236</td>
-                    <td className="text-right p-2" data-field="conversion_rate">2.31%</td>
-                    <td className="text-right p-2" data-field="cost_per_conversion">$28.90</td>
-                    <td className="text-right p-2" data-field="conversion_value">$67,420</td>
-                  </tr>
+                  {paginatedConversions.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2" data-field="action_type">{item.actionType}</td>
+                      <td className="text-right p-2" data-field="conversions">{item.conversions}</td>
+                      <td className="text-right p-2" data-field="conversion_rate">{item.conversionRate}</td>
+                      <td className="text-right p-2" data-field="cost_per_conversion">{item.costPerConversion}</td>
+                      <td className="text-right p-2" data-field="conversion_value">{item.conversionValue}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={conversionPage}
+              totalPages={conversionTotalPages}
+              hasNextPage={conversionHasNext}
+              hasPrevPage={conversionHasPrev}
+              showAll={conversionShowAll}
+              onNextPage={conversionNextPage}
+              onPrevPage={conversionPrevPage}
+              onToggleShowAll={conversionToggleShowAll}
+              totalItems={conversionActionsData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 
@@ -198,33 +255,30 @@ const ConversionTrackingReport = () => {
                   </tr>
                 </thead>
                 <tbody id="attribution_data" data-table="attribution_models">
-                  <tr className="border-b">
-                    <td className="p-2" data-field="model">Last Click</td>
-                    <td className="text-right p-2" data-field="conversions">1,247</td>
-                    <td className="text-right p-2" data-field="value">$141,630</td>
-                    <td className="text-right p-2" data-field="cost_per_conv">$24.50</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="model">First Click</td>
-                    <td className="text-right p-2" data-field="conversions">1,089</td>
-                    <td className="text-right p-2" data-field="value">$128,940</td>
-                    <td className="text-right p-2" data-field="cost_per_conv">$28.05</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="model">Linear</td>
-                    <td className="text-right p-2" data-field="conversions">1,156</td>
-                    <td className="text-right p-2" data-field="value">$135,890</td>
-                    <td className="text-right p-2" data-field="cost_per_conv">$26.42</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="model">Data-Driven</td>
-                    <td className="text-right p-2" data-field="conversions">1,203</td>
-                    <td className="text-right p-2" data-field="value">$139,245</td>
-                    <td className="text-right p-2" data-field="cost_per_conv">$25.38</td>
-                  </tr>
+                  {paginatedAttributions.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2" data-field="model">{item.model}</td>
+                      <td className="text-right p-2" data-field="conversions">{item.conversions}</td>
+                      <td className="text-right p-2" data-field="value">{item.value}</td>
+                      <td className="text-right p-2" data-field="cost_per_conv">{item.costPerConv}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={attributionPage}
+              totalPages={attributionTotalPages}
+              hasNextPage={attributionHasNext}
+              hasPrevPage={attributionHasPrev}
+              showAll={attributionShowAll}
+              onNextPage={attributionNextPage}
+              onPrevPage={attributionPrevPage}
+              onToggleShowAll={attributionToggleShowAll}
+              totalItems={attributionModelsData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 

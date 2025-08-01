@@ -6,11 +6,43 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const QualityScoreAnalysisReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample quality score data for pagination
+  const qualityScoreData = [
+    { keyword: 'digital marketing services', qualityScore: '9', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '45,230' },
+    { keyword: 'ppc management', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '32,890' },
+    { keyword: 'google ads optimization', qualityScore: '6', expectedCtr: 'Average', adRelevance: 'Above average', landingPage: 'Average', impressions: '28,450' },
+    { keyword: 'online advertising', qualityScore: '4', expectedCtr: 'Below average', adRelevance: 'Average', landingPage: 'Below average', impressions: '18,670' },
+    { keyword: 'search engine marketing', qualityScore: '7', expectedCtr: 'Above average', adRelevance: 'Average', landingPage: 'Above average', impressions: '23,456' },
+    { keyword: 'paid search advertising', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '19,876' },
+    { keyword: 'facebook ads management', qualityScore: '5', expectedCtr: 'Average', adRelevance: 'Below average', landingPage: 'Average', impressions: '15,432' },
+    { keyword: 'social media advertising', qualityScore: '6', expectedCtr: 'Average', adRelevance: 'Average', landingPage: 'Average', impressions: '21,098' },
+    { keyword: 'conversion rate optimization', qualityScore: '9', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '12,345' },
+    { keyword: 'landing page design', qualityScore: '7', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Average', impressions: '16,789' },
+    { keyword: 'ad campaign management', qualityScore: '8', expectedCtr: 'Above average', adRelevance: 'Above average', landingPage: 'Above average', impressions: '14,567' },
+    { keyword: 'digital advertising agency', qualityScore: '5', expectedCtr: 'Below average', adRelevance: 'Average', landingPage: 'Below average', impressions: '11,234' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(qualityScoreData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -141,49 +173,38 @@ const QualityScoreAnalysisReport = () => {
                   </tr>
                 </thead>
                 <tbody id="quality_score_data" data-table="quality_score_keywords">
-                  <tr className="border-b">
-                    <td className="p-2" data-field="keyword">digital marketing services</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded font-bold" data-field="quality_score">9</span>
-                    </td>
-                    <td className="text-center p-2" data-field="expected_ctr">Above average</td>
-                    <td className="text-center p-2" data-field="ad_relevance">Above average</td>
-                    <td className="text-center p-2" data-field="landing_page">Above average</td>
-                    <td className="text-right p-2" data-field="impressions">45,230</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="keyword">ppc management</td>
-                    <td className="text-center p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded font-bold" data-field="quality_score">8</span>
-                    </td>
-                    <td className="text-center p-2" data-field="expected_ctr">Above average</td>
-                    <td className="text-center p-2" data-field="ad_relevance">Above average</td>
-                    <td className="text-center p-2" data-field="landing_page">Average</td>
-                    <td className="text-right p-2" data-field="impressions">32,890</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="keyword">google ads optimization</td>
-                    <td className="text-center p-2">
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-bold" data-field="quality_score">6</span>
-                    </td>
-                    <td className="text-center p-2" data-field="expected_ctr">Average</td>
-                    <td className="text-center p-2" data-field="ad_relevance">Above average</td>
-                    <td className="text-center p-2" data-field="landing_page">Average</td>
-                    <td className="text-right p-2" data-field="impressions">28,450</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="keyword">online advertising</td>
-                    <td className="text-center p-2">
-                      <span className="bg-red-100 text-red-800 px-2 py-1 rounded font-bold" data-field="quality_score">4</span>
-                    </td>
-                    <td className="text-center p-2" data-field="expected_ctr">Below average</td>
-                    <td className="text-center p-2" data-field="ad_relevance">Average</td>
-                    <td className="text-center p-2" data-field="landing_page">Below average</td>
-                    <td className="text-right p-2" data-field="impressions">18,670</td>
-                  </tr>
+                  {paginatedData.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2" data-field="keyword">{item.keyword}</td>
+                      <td className="text-center p-2">
+                        <span className={`px-2 py-1 rounded font-bold ${
+                          parseInt(item.qualityScore) >= 7 ? 'bg-green-100 text-green-800' :
+                          parseInt(item.qualityScore) >= 5 ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-red-100 text-red-800'
+                        }`} data-field="quality_score">{item.qualityScore}</span>
+                      </td>
+                      <td className="text-center p-2" data-field="expected_ctr">{item.expectedCtr}</td>
+                      <td className="text-center p-2" data-field="ad_relevance">{item.adRelevance}</td>
+                      <td className="text-center p-2" data-field="landing_page">{item.landingPage}</td>
+                      <td className="text-right p-2" data-field="impressions">{item.impressions}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPrevPage}
+              showAll={showAll}
+              onNextPage={goToNextPage}
+              onPrevPage={goToPrevPage}
+              onToggleShowAll={toggleShowAll}
+              totalItems={qualityScoreData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 

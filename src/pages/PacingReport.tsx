@@ -3,11 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const PacingReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample pacing data for pagination
+  const pacingData = [
+    { campaign: 'Brand Keywords Campaign', budget: '$15,000', spend: '$13,245', expected: '$13,548', pacing: '97.8%', status: 'On Pace', action: 'None' },
+    { campaign: 'Product Category - Running', budget: '$20,000', spend: '$18,789', expected: '$18,064', pacing: '104.0%', status: 'Over Pace', action: 'Reduce bids 10%' },
+    { campaign: 'Competitor Terms', budget: '$10,000', spend: '$9,654', expected: '$9,032', pacing: '106.9%', status: 'High Risk', action: 'Pause low performers' },
+    { campaign: 'Display Remarketing', budget: '$5,000', spend: '$3,990', expected: '$4,516', pacing: '88.4%', status: 'Under Pace', action: 'Increase bids 15%' },
+    { campaign: 'Search Network - General', budget: '$12,000', spend: '$10,987', expected: '$10,840', pacing: '101.4%', status: 'Over Pace', action: 'Monitor closely' },
+    { campaign: 'Video Advertising', budget: '$8,000', spend: '$7,234', expected: '$7,226', pacing: '100.1%', status: 'On Pace', action: 'None' },
+    { campaign: 'Shopping Campaigns', budget: '$18,000', spend: '$16,234', expected: '$16,260', pacing: '99.8%', status: 'On Pace', action: 'None' },
+    { campaign: 'Local Services', budget: '$6,000', spend: '$4,890', expected: '$5,419', pacing: '90.2%', status: 'Under Pace', action: 'Increase budget' },
+    { campaign: 'App Install Campaign', budget: '$9,000', spend: '$8,567', expected: '$8,130', pacing: '105.4%', status: 'Over Pace', action: 'Reduce daily budget' },
+    { campaign: 'Performance Max', budget: '$14,000', spend: '$12,456', expected: '$12,645', pacing: '98.5%', status: 'On Pace', action: 'None' },
+    { campaign: 'YouTube Shorts', budget: '$4,000', spend: '$3,123', expected: '$3,613', pacing: '86.4%', status: 'Under Pace', action: 'Expand targeting' },
+    { campaign: 'Discovery Campaigns', budget: '$7,000', spend: '$6,789', expected: '$6,322', pacing: '107.4%', status: 'High Risk', action: 'Immediate review' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(pacingData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -202,65 +234,48 @@ const PacingReport = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_name_1">Brand Keywords Campaign</td>
-                  <td className="p-3" data-id="campaign_budget_1">$15,000</td>
-                  <td className="p-3" data-id="campaign_spend_1">$13,245</td>
-                  <td className="p-3" data-id="campaign_expected_1">$13,548</td>
-                  <td className="p-3" data-id="campaign_pacing_1">97.8%</td>
-                  <td className="p-3">
-                    <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs flex items-center">
-                      <span className="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                      On Pace
-                    </span>
-                  </td>
-                  <td className="p-3 text-sm text-muted-foreground">None</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_name_2">Product Category - Running</td>
-                  <td className="p-3" data-id="campaign_budget_2">$20,000</td>
-                  <td className="p-3" data-id="campaign_spend_2">$18,789</td>
-                  <td className="p-3" data-id="campaign_expected_2">$18,064</td>
-                  <td className="p-3" data-id="campaign_pacing_2">104.0%</td>
-                  <td className="p-3">
-                    <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs flex items-center">
-                      <span className="w-2 h-2 bg-yellow-500 rounded-full mr-1"></span>
-                      Over Pace
-                    </span>
-                  </td>
-                  <td className="p-3 text-sm text-muted-foreground">Reduce bids 10%</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_name_3">Competitor Terms</td>
-                  <td className="p-3" data-id="campaign_budget_3">$10,000</td>
-                  <td className="p-3" data-id="campaign_spend_3">$9,654</td>
-                  <td className="p-3" data-id="campaign_expected_3">$9,032</td>
-                  <td className="p-3" data-id="campaign_pacing_3">106.9%</td>
-                  <td className="p-3">
-                    <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs flex items-center">
-                      <span className="w-2 h-2 bg-red-500 rounded-full mr-1"></span>
-                      High Risk
-                    </span>
-                  </td>
-                  <td className="p-3 text-sm text-muted-foreground">Pause low performers</td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="campaign_name_4">Display Remarketing</td>
-                  <td className="p-3" data-id="campaign_budget_4">$5,000</td>
-                  <td className="p-3" data-id="campaign_spend_4">$3,990</td>
-                  <td className="p-3" data-id="campaign_expected_4">$4,516</td>
-                  <td className="p-3" data-id="campaign_pacing_4">88.4%</td>
-                  <td className="p-3">
-                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs flex items-center">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
-                      Under Pace
-                    </span>
-                  </td>
-                  <td className="p-3 text-sm text-muted-foreground">Increase bids 15%</td>
-                </tr>
+                {paginatedData.map((item, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/50">
+                    <td className="p-3 font-medium">{item.campaign}</td>
+                    <td className="p-3">{item.budget}</td>
+                    <td className="p-3">{item.spend}</td>
+                    <td className="p-3">{item.expected}</td>
+                    <td className="p-3">{item.pacing}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs flex items-center ${
+                        item.status === 'On Pace' ? 'bg-green-100 text-green-800' :
+                        item.status === 'Over Pace' ? 'bg-yellow-100 text-yellow-800' :
+                        item.status === 'High Risk' ? 'bg-red-100 text-red-800' :
+                        'bg-blue-100 text-blue-800'
+                      }`}>
+                        <span className={`w-2 h-2 rounded-full mr-1 ${
+                          item.status === 'On Pace' ? 'bg-green-500' :
+                          item.status === 'Over Pace' ? 'bg-yellow-500' :
+                          item.status === 'High Risk' ? 'bg-red-500' :
+                          'bg-blue-500'
+                        }`}></span>
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-sm text-muted-foreground">{item.action}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={pacingData.length}
+            itemsPerPage={10}
+          />
         </div>
 
         {/* Pacing Adjustment Recommendations */}

@@ -12,6 +12,46 @@ const ShoppingCampaignPerformanceReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
 
+  // Sample product groups data for pagination
+  const productGroupsData = [
+    { productGroup: 'Running Shoes', impressions: '125,670', clicks: '4,589', ctr: '3.65%', cpc: '$0.89', conversions: '187', revenue: '$18,750', roas: '4.2x' },
+    { productGroup: 'Athletic Apparel', impressions: '98,234', clicks: '3,456', ctr: '3.52%', cpc: '$0.76', conversions: '145', revenue: '$14,500', roas: '3.8x' },
+    { productGroup: 'Sports Equipment', impressions: '87,543', clicks: '2,987', ctr: '3.41%', cpc: '$1.12', conversions: '98', revenue: '$9,800', roas: '3.1x' },
+    { productGroup: 'Fitness Accessories', impressions: '76,432', clicks: '2,345', ctr: '3.07%', cpc: '$0.95', conversions: '76', revenue: '$7,600', roas: '2.9x' }
+  ];
+
+  // Sample brand performance data for pagination  
+  const brandData = [
+    { brand: 'Nike', impressions: '145,890', clicks: '5,234', ctr: '3.59%', cpc: '$0.92', conversions: '234', revenue: '$23,400', roas: '4.1x' },
+    { brand: 'Adidas', impressions: '123,456', clicks: '4,567', ctr: '3.70%', cpc: '$0.87', conversions: '198', revenue: '$19,800', roas: '3.9x' },
+    { brand: 'Under Armour', impressions: '98,765', clicks: '3,456', ctr: '3.50%', cpc: '$1.05', conversions: '145', revenue: '$14,500', roas: '3.2x' },
+    { brand: 'Puma', impressions: '76,543', clicks: '2,876', ctr: '3.76%', cpc: '$0.98', conversions: '123', revenue: '$12,300', roas: '3.6x' }
+  ];
+
+  const {
+    currentPage: groupsPage,
+    paginatedData: paginatedGroups,
+    totalPages: groupsTotalPages,
+    hasNextPage: groupsHasNext,
+    hasPrevPage: groupsHasPrev,
+    showAll: groupsShowAll,
+    goToNextPage: groupsNextPage,
+    goToPrevPage: groupsPrevPage,
+    toggleShowAll: groupsToggleShowAll
+  } = usePagination(productGroupsData, 10);
+
+  const {
+    currentPage: brandsPage,
+    paginatedData: paginatedBrands,
+    totalPages: brandsTotalPages,
+    hasNextPage: brandsHasNext,
+    hasPrevPage: brandsHasPrev,
+    showAll: brandsShowAll,
+    goToNextPage: brandsNextPage,
+    goToPrevPage: brandsPrevPage,
+    toggleShowAll: brandsToggleShowAll
+  } = usePagination(brandData, 10);
+
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {

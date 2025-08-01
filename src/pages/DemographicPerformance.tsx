@@ -1,4 +1,38 @@
+import React from 'react';
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
+
 const DemographicPerformance = () => {
+  // Sample demographic data for pagination
+  const demographicsData = [
+    { demographic: 'Male 18-24', impressions: '45,230', clicks: '1,856', ctr: '4.10%', cpc: '$2.12', conversions: '78', cost: '$3,935', roas: '4.8x' },
+    { demographic: 'Male 25-34', impressions: '52,110', clicks: '2,134', ctr: '4.09%', cpc: '$2.45', conversions: '95', cost: '$5,228', roas: '3.9x' },
+    { demographic: 'Female 18-24', impressions: '41,890', clicks: '1,678', ctr: '4.01%', cpc: '$2.01', conversions: '72', cost: '$3,371', roas: '5.1x' },
+    { demographic: 'Female 25-34', impressions: '48,765', clicks: '1,923', ctr: '3.94%', cpc: '$2.33', conversions: '89', cost: '$4,480', roas: '4.2x' },
+    { demographic: 'Male 35-44', impressions: '38,456', clicks: '1,534', ctr: '3.99%', cpc: '$2.67', conversions: '61', cost: '$4,096', roas: '3.7x' },
+    { demographic: 'Female 35-44', impressions: '35,789', clicks: '1,402', ctr: '3.92%', cpc: '$2.54', conversions: '58', cost: '$3,561', roas: '4.1x' },
+    { demographic: 'Male 45-54', impressions: '28,345', clicks: '1,087', ctr: '3.84%', cpc: '$2.89', conversions: '42', cost: '$3,141', roas: '3.2x' },
+    { demographic: 'Female 45-54', impressions: '26,123', clicks: '998', ctr: '3.82%', cpc: '$2.71', conversions: '38', cost: '$2,704', roas: '3.5x' },
+    { demographic: 'Male 55+', impressions: '22,567', clicks: '834', ctr: '3.70%', cpc: '$3.12', conversions: '29', cost: '$2,602', roas: '2.8x' },
+    { demographic: 'Female 55+', impressions: '20,345', clicks: '745', ctr: '3.66%', cpc: '$2.95', conversions: '26', cost: '$2,198', roas: '3.1x' },
+    { demographic: 'Unknown Gender 18-24', impressions: '8,456', clicks: '302', ctr: '3.57%', cpc: '$1.98', conversions: '12', cost: '$598', roas: '4.3x' },
+    { demographic: 'Unknown Gender 25-34', impressions: '7,234', clicks: '267', ctr: '3.69%', cpc: '$2.15', conversions: '9', cost: '$574', roas: '3.8x' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(demographicsData, 10);
+
   return (
     <div className="min-h-screen bg-background">
       <style>{`
@@ -367,40 +401,35 @@ const DemographicPerformance = () => {
                 <th>ROAS</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Male 18-24</td>
-                <td>45,230</td>
-                <td>1,856</td>
-                <td>4.10%</td>
-                <td>$2.12</td>
-                <td>78</td>
-                <td>$3,935</td>
-                <td>4.8x</td>
-              </tr>
-              <tr>
-                <td>Male 25-34</td>
-                <td>52,110</td>
-                <td>2,134</td>
-                <td>4.09%</td>
-                <td>$2.45</td>
-                <td>95</td>
-                <td>$5,228</td>
-                <td>3.9x</td>
-              </tr>
-              <tr>
-                <td>Female 18-24</td>
-                <td>41,890</td>
-                <td>1,678</td>
-                <td>4.01%</td>
-                <td>$2.01</td>
-                <td>72</td>
-                <td>$3,371</td>
-                <td>5.1x</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
+              <tbody>
+                {paginatedData.map((demo, index) => (
+                  <tr key={index}>
+                    <td>{demo.demographic}</td>
+                    <td>{demo.impressions}</td>
+                    <td>{demo.clicks}</td>
+                    <td>{demo.ctr}</td>
+                    <td>{demo.cpc}</td>
+                    <td>{demo.conversions}</td>
+                    <td>{demo.cost}</td>
+                    <td>{demo.roas}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPrevPage}
+              showAll={showAll}
+              onNextPage={goToNextPage}
+              onPrevPage={goToPrevPage}
+              onToggleShowAll={toggleShowAll}
+              totalItems={demographicsData.length}
+              itemsPerPage={10}
+            />
+          </section>
 
         {/* Insights */}
         <section className="insights-section">

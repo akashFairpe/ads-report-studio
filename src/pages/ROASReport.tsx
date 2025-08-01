@@ -6,11 +6,43 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const ROASReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample ROAS data for pagination
+  const roasData = [
+    { campaign: 'Premium Product Launch', adSpend: '$45,230', revenue: '$198,750', roas: '4.39x', status: 'Excellent' },
+    { campaign: 'Brand Awareness', adSpend: '$32,100', revenue: '$124,890', roas: '3.89x', status: 'Good' },
+    { campaign: 'Retargeting Campaign', adSpend: '$28,470', revenue: '$97,320', roas: '3.42x', status: 'Good' },
+    { campaign: 'Competitor Keywords', adSpend: '$20,000', revenue: '$66,290', roas: '3.31x', status: 'Average' },
+    { campaign: 'Search Network - General', adSpend: '$18,567', revenue: '$55,701', roas: '3.00x', status: 'Average' },
+    { campaign: 'Shopping Campaigns', adSpend: '$25,890', revenue: '$72,492', roas: '2.80x', status: 'Below Average' },
+    { campaign: 'Display Network', adSpend: '$15,234', revenue: '$32,295', roas: '2.12x', status: 'Poor' },
+    { campaign: 'Video Advertising', adSpend: '$12,456', revenue: '$33,231', roas: '2.67x', status: 'Below Average' },
+    { campaign: 'Mobile App Ads', adSpend: '$9,876', revenue: '$26,349', roas: '2.67x', status: 'Below Average' },
+    { campaign: 'Local Services', adSpend: '$8,234', revenue: '$18,927', roas: '2.30x', status: 'Poor' },
+    { campaign: 'Performance Max', adSpend: '$22,345', revenue: '$78,207', roas: '3.50x', status: 'Good' },
+    { campaign: 'YouTube Shorts', adSpend: '$6,789', revenue: '$12,561', roas: '1.85x', status: 'Poor' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(roasData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -140,45 +172,42 @@ const ROASReport = () => {
                   </tr>
                 </thead>
                 <tbody id="campaign_roas_data" data-table="campaign_roas">
-                  <tr className="border-b">
-                    <td className="p-2" data-field="campaign_name">Premium Product Launch</td>
-                    <td className="text-right p-2" data-field="ad_spend">$45,230</td>
-                    <td className="text-right p-2" data-field="revenue">$198,750</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">4.39x</td>
-                    <td className="text-right p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Excellent</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="campaign_name">Brand Awareness</td>
-                    <td className="text-right p-2" data-field="ad_spend">$32,100</td>
-                    <td className="text-right p-2" data-field="revenue">$124,890</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">3.89x</td>
-                    <td className="text-right p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Good</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="campaign_name">Retargeting Campaign</td>
-                    <td className="text-right p-2" data-field="ad_spend">$28,470</td>
-                    <td className="text-right p-2" data-field="revenue">$97,320</td>
-                    <td className="text-right p-2 font-bold text-green-600" data-field="roas">3.42x</td>
-                    <td className="text-right p-2">
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Good</span>
-                    </td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2" data-field="campaign_name">Competitor Keywords</td>
-                    <td className="text-right p-2" data-field="ad_spend">$20,000</td>
-                    <td className="text-right p-2" data-field="revenue">$66,290</td>
-                    <td className="text-right p-2 font-bold text-orange-600" data-field="roas">3.31x</td>
-                    <td className="text-right p-2">
-                      <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Average</span>
-                    </td>
-                  </tr>
+                  {paginatedData.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2" data-field="campaign_name">{item.campaign}</td>
+                      <td className="text-right p-2" data-field="ad_spend">{item.adSpend}</td>
+                      <td className="text-right p-2" data-field="revenue">{item.revenue}</td>
+                      <td className={`text-right p-2 font-bold ${
+                        parseFloat(item.roas) >= 3.5 ? 'text-green-600' : 
+                        parseFloat(item.roas) >= 3.0 ? 'text-orange-600' : 'text-red-600'
+                      }`} data-field="roas">{item.roas}</td>
+                      <td className="text-right p-2">
+                        <span className={`px-2 py-1 rounded text-xs ${
+                          item.status === 'Excellent' ? 'bg-green-100 text-green-800' :
+                          item.status === 'Good' ? 'bg-green-100 text-green-800' :
+                          item.status === 'Average' ? 'bg-yellow-100 text-yellow-800' :
+                          item.status === 'Below Average' ? 'bg-orange-100 text-orange-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>{item.status}</span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPrevPage}
+              showAll={showAll}
+              onNextPage={goToNextPage}
+              onPrevPage={goToPrevPage}
+              onToggleShowAll={toggleShowAll}
+              totalItems={roasData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 

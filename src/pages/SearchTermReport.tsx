@@ -3,11 +3,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const SearchTermReport = () => {
   const [primaryColor, setPrimaryColor] = useState('#3b82f6');
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample search terms data for pagination
+  const searchTermsData = [
+    { searchTerm: 'best running shoes for marathon', keyword: 'running shoes', matchType: 'Broad', impressions: '45,678', clicks: '2,234', ctr: '4.89%', cpc: '$0.95', conversions: '187', status: 'High Performer' },
+    { searchTerm: 'nike air max 270 sale', keyword: 'nike air max', matchType: 'Phrase', impressions: '23,456', clicks: '1,456', ctr: '6.21%', cpc: '$1.12', conversions: '89', status: 'High Performer' },
+    { searchTerm: 'cheap athletic shoes', keyword: 'athletic shoes', matchType: 'Broad', impressions: '78,901', clicks: '789', ctr: '1.00%', cpc: '$0.45', conversions: '12', status: 'Review Needed' },
+    { searchTerm: 'free running apps', keyword: 'running', matchType: 'Broad', impressions: '12,345', clicks: '234', ctr: '1.90%', cpc: '$0.67', conversions: '0', status: 'Consider Negative' },
+    { searchTerm: 'women running shoes size 8', keyword: 'women running shoes', matchType: 'Phrase', impressions: '34,567', clicks: '1,234', ctr: '3.57%', cpc: '$1.23', conversions: '67', status: 'High Performer' },
+    { searchTerm: 'running shoes repair', keyword: 'running shoes', matchType: 'Broad', impressions: '5,678', clicks: '89', ctr: '1.57%', cpc: '$0.89', conversions: '1', status: 'Consider Negative' },
+    { searchTerm: 'adidas ultraboost review', keyword: 'adidas ultraboost', matchType: 'Phrase', impressions: '19,876', clicks: '987', ctr: '4.97%', cpc: '$1.34', conversions: '54', status: 'High Performer' },
+    { searchTerm: 'discount running gear', keyword: 'running gear', matchType: 'Broad', impressions: '67,543', clicks: '1,351', ctr: '2.00%', cpc: '$0.78', conversions: '23', status: 'Review Needed' },
+    { searchTerm: 'marathon training shoes', keyword: 'marathon shoes', matchType: 'Phrase', impressions: '28,765', clicks: '1,438', ctr: '5.00%', cpc: '$1.56', conversions: '78', status: 'High Performer' },
+    { searchTerm: 'how to tie running shoes', keyword: 'running shoes', matchType: 'Broad', impressions: '9,876', clicks: '123', ctr: '1.25%', cpc: '$0.45', conversions: '0', status: 'Consider Negative' },
+    { searchTerm: 'best trail running shoes 2024', keyword: 'trail running shoes', matchType: 'Phrase', impressions: '15,432', clicks: '771', ctr: '5.00%', cpc: '$1.89', conversions: '43', status: 'High Performer' },
+    { searchTerm: 'running shoes under 50', keyword: 'cheap running shoes', matchType: 'Broad', impressions: '45,678', clicks: '456', ctr: '1.00%', cpc: '$0.67', conversions: '8', status: 'Review Needed' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(searchTermsData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -156,75 +188,43 @@ const SearchTermReport = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_1">best running shoes for marathon</td>
-                  <td className="p-3" data-id="keyword_1">running shoes</td>
-                  <td className="p-3" data-id="match_type_1">Broad</td>
-                  <td className="p-3" data-id="impressions_1">45,678</td>
-                  <td className="p-3" data-id="clicks_1">2,234</td>
-                  <td className="p-3" data-id="ctr_1">4.89%</td>
-                  <td className="p-3" data-id="cpc_1">$0.95</td>
-                  <td className="p-3" data-id="conversions_1">187</td>
-                  <td className="p-3"><span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">High Performer</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_2">nike air max 270 sale</td>
-                  <td className="p-3" data-id="keyword_2">nike air max</td>
-                  <td className="p-3" data-id="match_type_2">Phrase</td>
-                  <td className="p-3" data-id="impressions_2">23,456</td>
-                  <td className="p-3" data-id="clicks_2">1,456</td>
-                  <td className="p-3" data-id="ctr_2">6.21%</td>
-                  <td className="p-3" data-id="cpc_2">$1.12</td>
-                  <td className="p-3" data-id="conversions_2">89</td>
-                  <td className="p-3"><span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">High Performer</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_3">cheap athletic shoes</td>
-                  <td className="p-3" data-id="keyword_3">athletic shoes</td>
-                  <td className="p-3" data-id="match_type_3">Broad</td>
-                  <td className="p-3" data-id="impressions_3">78,901</td>
-                  <td className="p-3" data-id="clicks_3">789</td>
-                  <td className="p-3" data-id="ctr_3">1.00%</td>
-                  <td className="p-3" data-id="cpc_3">$0.45</td>
-                  <td className="p-3" data-id="conversions_3">12</td>
-                  <td className="p-3"><span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">Review Needed</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_4">free running apps</td>
-                  <td className="p-3" data-id="keyword_4">running</td>
-                  <td className="p-3" data-id="match_type_4">Broad</td>
-                  <td className="p-3" data-id="impressions_4">12,345</td>
-                  <td className="p-3" data-id="clicks_4">234</td>
-                  <td className="p-3" data-id="ctr_4">1.90%</td>
-                  <td className="p-3" data-id="cpc_4">$0.67</td>
-                  <td className="p-3" data-id="conversions_4">0</td>
-                  <td className="p-3"><span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Consider Negative</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_5">women running shoes size 8</td>
-                  <td className="p-3" data-id="keyword_5">women running shoes</td>
-                  <td className="p-3" data-id="match_type_5">Phrase</td>
-                  <td className="p-3" data-id="impressions_5">34,567</td>
-                  <td className="p-3" data-id="clicks_5">1,234</td>
-                  <td className="p-3" data-id="ctr_5">3.57%</td>
-                  <td className="p-3" data-id="cpc_5">$1.23</td>
-                  <td className="p-3" data-id="conversions_5">67</td>
-                  <td className="p-3"><span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">High Performer</span></td>
-                </tr>
-                <tr className="border-b hover:bg-muted/50">
-                  <td className="p-3 font-medium" data-id="search_term_6">running shoes repair</td>
-                  <td className="p-3" data-id="keyword_6">running shoes</td>
-                  <td className="p-3" data-id="match_type_6">Broad</td>
-                  <td className="p-3" data-id="impressions_6">5,678</td>
-                  <td className="p-3" data-id="clicks_6">89</td>
-                  <td className="p-3" data-id="ctr_6">1.57%</td>
-                  <td className="p-3" data-id="cpc_6">$0.89</td>
-                  <td className="p-3" data-id="conversions_6">1</td>
-                  <td className="p-3"><span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">Consider Negative</span></td>
-                </tr>
+                {paginatedData.map((item, index) => (
+                  <tr key={index} className="border-b hover:bg-muted/50">
+                    <td className="p-3 font-medium">{item.searchTerm}</td>
+                    <td className="p-3">{item.keyword}</td>
+                    <td className="p-3">{item.matchType}</td>
+                    <td className="p-3">{item.impressions}</td>
+                    <td className="p-3">{item.clicks}</td>
+                    <td className="p-3">{item.ctr}</td>
+                    <td className="p-3">{item.cpc}</td>
+                    <td className="p-3">{item.conversions}</td>
+                    <td className="p-3">
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        item.status === 'High Performer' ? 'bg-green-100 text-green-800' :
+                        item.status === 'Review Needed' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {item.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+          
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            showAll={showAll}
+            onNextPage={goToNextPage}
+            onPrevPage={goToPrevPage}
+            onToggleShowAll={toggleShowAll}
+            totalItems={searchTermsData.length}
+            itemsPerPage={10}
+          />
         </div>
 
         {/* Negative Keywords Suggestions */}

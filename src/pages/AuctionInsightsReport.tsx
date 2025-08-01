@@ -6,11 +6,43 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import ExportButtons from "@/components/ExportButtons";
+import { usePagination } from '@/hooks/usePagination';
+import PaginationControls from '@/components/PaginationControls';
 
 const AuctionInsightsReport = () => {
   const [selectedFont, setSelectedFont] = useState('Inter');
   const [primaryColor, setPrimaryColor] = useState('#2563eb');
   const [logoUrl, setLogoUrl] = useState('');
+
+  // Sample competitor data for pagination
+  const competitorData = [
+    { domain: 'competitor-a.com', impressionShare: '23.4%', overlapRate: '18.7%', outrankingShare: '35.2%', positionAboveRate: '28.6%', topOfPageRate: '21.3%' },
+    { domain: 'rival-business.com', impressionShare: '19.8%', overlapRate: '15.3%', outrankingShare: '78.9%', positionAboveRate: '19.4%', topOfPageRate: '18.7%' },
+    { domain: 'industry-leader.com', impressionShare: '31.2%', overlapRate: '28.9%', outrankingShare: '42.1%', positionAboveRate: '45.8%', topOfPageRate: '29.6%' },
+    { domain: 'startup-competitor.com', impressionShare: '12.7%', overlapRate: '9.4%', outrankingShare: '82.3%', positionAboveRate: '12.1%', topOfPageRate: '11.8%' },
+    { domain: 'market-challenger.com', impressionShare: '15.6%', overlapRate: '12.8%', outrankingShare: '67.4%', positionAboveRate: '22.3%', topOfPageRate: '16.9%' },
+    { domain: 'big-brand-corp.com', impressionShare: '28.9%', overlapRate: '25.7%', outrankingShare: '38.6%', positionAboveRate: '41.2%', topOfPageRate: '27.8%' },
+    { domain: 'local-business.com', impressionShare: '8.3%', overlapRate: '6.9%', outrankingShare: '89.5%', positionAboveRate: '9.1%', topOfPageRate: '7.4%' },
+    { domain: 'niche-player.com', impressionShare: '6.7%', overlapRate: '5.2%', outrankingShare: '91.2%', positionAboveRate: '7.8%', topOfPageRate: '6.1%' },
+    { domain: 'enterprise-solution.com', impressionShare: '22.4%', overlapRate: '19.8%', outrankingShare: '45.7%', positionAboveRate: '33.9%', topOfPageRate: '20.5%' },
+    { domain: 'discount-provider.com', impressionShare: '11.9%', overlapRate: '8.7%', outrankingShare: '74.3%', positionAboveRate: '14.6%', topOfPageRate: '10.2%' },
+    { domain: 'premium-service.com', impressionShare: '17.8%', overlapRate: '14.6%', outrankingShare: '58.9%', positionAboveRate: '26.7%', topOfPageRate: '15.3%' },
+    { domain: 'new-entrant.com', impressionShare: '4.2%', overlapRate: '3.1%', outrankingShare: '95.6%', positionAboveRate: '4.8%', topOfPageRate: '3.9%' }
+  ];
+
+  const {
+    currentPage,
+    paginatedData,
+    exportData,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    showAll,
+    goToNextPage,
+    goToPrevPage,
+    toggleShowAll,
+    resetPagination
+  } = usePagination(competitorData, 10);
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -141,41 +173,34 @@ const AuctionInsightsReport = () => {
                   </tr>
                 </thead>
                 <tbody id="competitor_data" data-table="competitor_metrics">
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="domain">competitor-a.com</td>
-                    <td className="text-right p-2" data-field="impression_share">23.4%</td>
-                    <td className="text-right p-2" data-field="overlap_rate">18.7%</td>
-                    <td className="text-right p-2 text-red-600 font-medium" data-field="outranking_share">35.2%</td>
-                    <td className="text-right p-2" data-field="position_above_rate">28.6%</td>
-                    <td className="text-right p-2" data-field="top_of_page_rate">21.3%</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="domain">rival-business.com</td>
-                    <td className="text-right p-2" data-field="impression_share">19.8%</td>
-                    <td className="text-right p-2" data-field="overlap_rate">15.3%</td>
-                    <td className="text-right p-2 text-green-600 font-medium" data-field="outranking_share">78.9%</td>
-                    <td className="text-right p-2" data-field="position_above_rate">19.4%</td>
-                    <td className="text-right p-2" data-field="top_of_page_rate">18.7%</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="domain">industry-leader.com</td>
-                    <td className="text-right p-2" data-field="impression_share">31.2%</td>
-                    <td className="text-right p-2" data-field="overlap_rate">28.9%</td>
-                    <td className="text-right p-2 text-red-600 font-medium" data-field="outranking_share">42.1%</td>
-                    <td className="text-right p-2" data-field="position_above_rate">45.8%</td>
-                    <td className="text-right p-2" data-field="top_of_page_rate">29.6%</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="p-2 font-medium" data-field="domain">startup-competitor.com</td>
-                    <td className="text-right p-2" data-field="impression_share">12.7%</td>
-                    <td className="text-right p-2" data-field="overlap_rate">9.4%</td>
-                    <td className="text-right p-2 text-green-600 font-medium" data-field="outranking_share">82.3%</td>
-                    <td className="text-right p-2" data-field="position_above_rate">12.1%</td>
-                    <td className="text-right p-2" data-field="top_of_page_rate">11.8%</td>
-                  </tr>
+                  {paginatedData.map((item, index) => (
+                    <tr key={index} className="border-b">
+                      <td className="p-2 font-medium" data-field="domain">{item.domain}</td>
+                      <td className="text-right p-2" data-field="impression_share">{item.impressionShare}</td>
+                      <td className="text-right p-2" data-field="overlap_rate">{item.overlapRate}</td>
+                      <td className={`text-right p-2 font-medium ${
+                        parseFloat(item.outrankingShare) >= 50 ? 'text-green-600' : 'text-red-600'
+                      }`} data-field="outranking_share">{item.outrankingShare}</td>
+                      <td className="text-right p-2" data-field="position_above_rate">{item.positionAboveRate}</td>
+                      <td className="text-right p-2" data-field="top_of_page_rate">{item.topOfPageRate}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
+            
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPrevPage}
+              showAll={showAll}
+              onNextPage={goToNextPage}
+              onPrevPage={goToPrevPage}
+              onToggleShowAll={toggleShowAll}
+              totalItems={competitorData.length}
+              itemsPerPage={10}
+            />
           </CardContent>
         </Card>
 
