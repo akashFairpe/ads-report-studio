@@ -45,7 +45,7 @@ const DemographicPerformance = () => {
   } = usePagination(demographicsData, 10);
 
   return (
-    <div className="min-h-screen bg-background" style={reportStyle}>
+    <div className="min-h-screen" style={reportStyle}>
       <style>{`
         :root {
           --primary-color: ${primaryColor};

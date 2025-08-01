@@ -15,6 +15,12 @@ body {
   line-height: 1.5;
 }
 
+/* Page layout */
+.min-h-screen {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
 /* Container styles */
 .container {
   max-width: 1200px;

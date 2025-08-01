@@ -53,7 +53,7 @@ const ROASReport = () => {
 
 
   return (
-    <div className="min-h-screen bg-background" style={reportStyle}>
+    <div className="min-h-screen" style={reportStyle}>
       {/* Branding Controls */}
       <div className="bg-card border-b p-4 print:hidden">
         <div className="max-w-4xl mx-auto flex flex-wrap gap-4">

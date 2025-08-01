@@ -1,431 +1,295 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-primary">Google Ads PPC Reports Dashboard</h1>
-          <p className="text-xl text-muted-foreground mb-8">
+    <div className="min-h-screen">
+      <div className="container">
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <h1 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '16px', color: '#2563eb' }}>
+            Google Ads PPC Reports Dashboard
+          </h1>
+          <p style={{ fontSize: '20px', color: '#6b7280', marginBottom: '32px' }}>
             Professional, customizable PPC reports for Google Ads performance analysis
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                📊 Account Performance
-              </CardTitle>
-              <CardDescription>
-                Comprehensive account-level overview with key metrics, trends, and campaign snapshots
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Key performance metrics summary</li>
-                <li>• Performance trend charts</li>
-                <li>• Top performing campaigns table</li>
-                <li>• Insights & recommendations</li>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', 
+          gap: '24px',
+          maxWidth: '1400px',
+          margin: '0 auto'
+        }}>
+          {[
+            {
+              icon: '📊',
+              title: 'Account Performance',
+              description: 'Comprehensive account-level overview with key metrics, trends, and campaign snapshots',
+              features: [
+                'Key performance metrics summary',
+                'Performance trend charts',
+                'Top performing campaigns table',
+                'Insights & recommendations'
+              ],
+              route: '/account-performance'
+            },
+            {
+              icon: '🎯',
+              title: 'Campaign Performance',
+              description: 'Detailed campaign analysis with funnel metrics, device insights, and creative performance',
+              features: [
+                'Campaign funnel overview',
+                'Device & demographic breakdowns',
+                'Creative performance analysis',
+                'Daily performance tracking'
+              ],
+              route: '/campaign-performance'
+            },
+            {
+              icon: '🔍',
+              title: 'Ad Group Performance',
+              description: 'Ad group level analysis with keyword breakdowns and quality score insights',
+              features: [
+                'Ad group performance comparison',
+                'Top keywords by ad group',
+                'Creative performance by ad group',
+                'Quality score analysis'
+              ],
+              route: '/ad-group-performance'
+            },
+            {
+              icon: '👥',
+              title: 'Demographic Performance',
+              description: 'Performance analysis by age, gender, and demographic segments',
+              features: [
+                'Age group performance analysis',
+                'Gender demographic insights',
+                'Cross-demographic comparisons',
+                'Targeting recommendations'
+              ],
+              route: '/demographic-performance'
+            },
+            {
+              icon: '🌍',
+              title: 'Geographic Performance',
+              description: 'Regional and location-based performance insights and trends',
+              features: [
+                'Country/region performance map',
+                'Top performing locations',
+                'Geographic trend analysis',
+                'Location-based optimization'
+              ],
+              route: '/geographic-performance'
+            },
+            {
+              icon: '📱',
+              title: 'Device Performance',
+              description: 'Mobile, desktop, and tablet performance comparison and analysis',
+              features: [
+                'Cross-device performance metrics',
+                'Traffic distribution analysis',
+                'Device-specific trends',
+                'Mobile optimization insights'
+              ],
+              route: '/device-performance'
+            },
+            {
+              icon: '⏰',
+              title: 'Dayparting Performance',
+              description: 'Hour-by-hour and day-of-week performance analysis for optimal ad scheduling',
+              features: [
+                'Performance by hour of day',
+                'Day-of-week analysis',
+                'Peak performance windows',
+                'Bid adjustment recommendations'
+              ],
+              route: '/dayparting-performance'
+            },
+            {
+              icon: '📝',
+              title: 'Ad Performance',
+              description: 'Individual ad creative analysis with CTR, conversion tracking, and optimization insights',
+              features: [
+                'Top performing ad creatives',
+                'Ad type comparison analysis',
+                'Creative performance metrics',
+                'A/B testing recommendations'
+              ],
+              route: '/ad-performance'
+            },
+            {
+              icon: '🔑',
+              title: 'Keyword Performance',
+              description: 'Comprehensive keyword analysis with match types, negative keywords, and bid optimization',
+              features: [
+                'Top keywords by conversions',
+                'Match type performance analysis',
+                'Negative keyword suggestions',
+                'Keyword expansion opportunities'
+              ],
+              route: '/keyword-performance'
+            },
+            {
+              icon: '🔍',
+              title: 'Search Term Report',
+              description: 'Detailed analysis of actual search queries triggering your ads with performance insights',
+              features: [
+                'Search term performance analysis',
+                'Negative keyword recommendations',
+                'Search query optimization',
+                'Irrelevant traffic identification'
+              ],
+              route: '/search-term-report'
+            },
+            {
+              icon: '💰',
+              title: 'Cost & Budget Tracking',
+              description: 'Comprehensive budget monitoring with spend analysis and cost efficiency metrics',
+              features: [
+                'Budget vs actual spend tracking',
+                'Daily cost trend analysis',
+                'Campaign cost breakdown',
+                'Cost efficiency optimization'
+              ],
+              route: '/cost-budget-report'
+            },
+            {
+              icon: '📈',
+              title: 'Pacing Report',
+              description: 'Budget pacing analysis with spending projections and campaign optimization recommendations',
+              features: [
+                'Budget pacing health monitoring',
+                'Spend projection analysis',
+                'Campaign-level pacing status',
+                'Automated adjustment recommendations'
+              ],
+              route: '/pacing-report'
+            },
+            {
+              icon: '🎯',
+              title: 'Conversion Tracking',
+              description: 'Comprehensive conversion tracking with attribution model analysis and optimization insights',
+              features: [
+                'Conversion action breakdowns',
+                'Attribution model comparison',
+                'Conversion trend analysis',
+                'CPA optimization insights'
+              ],
+              route: '/conversion-tracking-report'
+            },
+            {
+              icon: '💸',
+              title: 'ROAS Report',
+              description: 'Return on Ad Spend analysis with campaign profitability and revenue optimization insights',
+              features: [
+                'Campaign ROAS performance',
+                'Revenue trend analysis',
+                'Top/bottom performer identification',
+                'Profitability optimization'
+              ],
+              route: '/roas-report'
+            },
+            {
+              icon: '🧪',
+              title: 'Ad Variation Performance',
+              description: 'A/B testing results with statistical significance and creative optimization recommendations',
+              features: [
+                'A/B test performance comparison',
+                'Statistical significance analysis',
+                'Winning creative identification',
+                'Testing strategy recommendations'
+              ],
+              route: '/ad-variation-performance-report'
+            },
+            {
+              icon: '⭐',
+              title: 'Quality Score Analysis',
+              description: 'In-depth quality score analysis with keyword optimization and landing page recommendations',
+              features: [
+                'Quality score by keyword analysis',
+                'Expected CTR performance review',
+                'Landing page experience insights',
+                'Ad relevance optimization tips'
+              ],
+              route: '/quality-score-analysis-report'
+            },
+            {
+              icon: '⚔️',
+              title: 'Auction Insights',
+              description: 'Competitive analysis with auction insights, impression share, and outranking data',
+              features: [
+                'Competitor impression share analysis',
+                'Overlap rate and outranking metrics',
+                'Top of page rate comparison',
+                'Competitive strategy recommendations'
+              ],
+              route: '/auction-insights-report'
+            },
+            {
+              icon: '🛍️',
+              title: 'Shopping Campaign Performance',
+              description: 'E-commerce focused analysis with product performance, ROAS, and merchandising insights',
+              features: [
+                'Product group performance analysis',
+                'Top/bottom performing SKUs',
+                'Brand performance comparison',
+                'Merchandising optimization tips'
+              ],
+              route: '/shopping-campaign-performance-report'
+            }
+          ].map((report, index) => (
+            <div key={index} className="card" style={{ transition: 'box-shadow 0.3s' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '18px', fontWeight: '600', color: '#1f2937' }}>
+                  <span style={{ fontSize: '20px' }}>{report.icon}</span>
+                  {report.title}
+                </h3>
+                <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '8px' }}>
+                  {report.description}
+                </p>
+              </div>
+              
+              <ul style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px', paddingLeft: '16px' }}>
+                {report.features.map((feature, i) => (
+                  <li key={i} style={{ marginBottom: '4px' }}>• {feature}</li>
+                ))}
               </ul>
-              <Button asChild className="w-full">
-                <Link to="/account-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎯 Campaign Performance
-              </CardTitle>
-              <CardDescription>
-                Detailed campaign analysis with funnel metrics, device insights, and creative performance
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Campaign funnel overview</li>
-                <li>• Device & demographic breakdowns</li>
-                <li>• Creative performance analysis</li>
-                <li>• Daily performance tracking</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/campaign-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🔍 Ad Group Performance
-              </CardTitle>
-              <CardDescription>
-                Ad group level analysis with keyword breakdowns and quality score insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Ad group performance comparison</li>
-                <li>• Top keywords by ad group</li>
-                <li>• Creative performance by ad group</li>
-                <li>• Quality score analysis</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/ad-group-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                👥 Demographic Performance
-              </CardTitle>
-              <CardDescription>
-                Performance analysis by age, gender, and demographic segments
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Age group performance analysis</li>
-                <li>• Gender demographic insights</li>
-                <li>• Cross-demographic comparisons</li>
-                <li>• Targeting recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/demographic-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🌍 Geographic Performance
-              </CardTitle>
-              <CardDescription>
-                Regional and location-based performance insights and trends
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Country/region performance map</li>
-                <li>• Top performing locations</li>
-                <li>• Geographic trend analysis</li>
-                <li>• Location-based optimization</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/geographic-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                📱 Device Performance
-              </CardTitle>
-              <CardDescription>
-                Mobile, desktop, and tablet performance comparison and analysis
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Cross-device performance metrics</li>
-                <li>• Traffic distribution analysis</li>
-                <li>• Device-specific trends</li>
-                <li>• Mobile optimization insights</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/device-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                ⏰ Dayparting Performance
-              </CardTitle>
-              <CardDescription>
-                Hour-by-hour and day-of-week performance analysis for optimal ad scheduling
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Performance by hour of day</li>
-                <li>• Day-of-week analysis</li>
-                <li>• Peak performance windows</li>
-                <li>• Bid adjustment recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/dayparting-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                📝 Ad Performance
-              </CardTitle>
-              <CardDescription>
-                Individual ad creative analysis with CTR, conversion tracking, and optimization insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Top performing ad creatives</li>
-                <li>• Ad type comparison analysis</li>
-                <li>• Creative performance metrics</li>
-                <li>• A/B testing recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/ad-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🔑 Keyword Performance
-              </CardTitle>
-              <CardDescription>
-                Comprehensive keyword analysis with match types, negative keywords, and bid optimization
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Top keywords by conversions</li>
-                <li>• Match type performance analysis</li>
-                <li>• Negative keyword suggestions</li>
-                <li>• Keyword expansion opportunities</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/keyword-performance">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🔍 Search Term Report
-              </CardTitle>
-              <CardDescription>
-                Detailed analysis of actual search queries triggering your ads with performance insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Search term performance analysis</li>
-                <li>• Negative keyword recommendations</li>
-                <li>• Search query optimization</li>
-                <li>• Irrelevant traffic identification</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/search-term-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                💰 Cost & Budget Tracking
-              </CardTitle>
-              <CardDescription>
-                Comprehensive budget monitoring with spend analysis and cost efficiency metrics
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Budget vs actual spend tracking</li>
-                <li>• Daily cost trend analysis</li>
-                <li>• Campaign cost breakdown</li>
-                <li>• Cost efficiency optimization</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/cost-budget-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                📈 Pacing Report
-              </CardTitle>
-              <CardDescription>
-                Budget pacing analysis with spending projections and campaign optimization recommendations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Budget pacing health monitoring</li>
-                <li>• Spend projection analysis</li>
-                <li>• Campaign-level pacing status</li>
-                <li>• Automated adjustment recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/pacing-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🎯 Conversion Tracking
-              </CardTitle>
-              <CardDescription>
-                Comprehensive conversion tracking with attribution model analysis and optimization insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Conversion action breakdowns</li>
-                <li>• Attribution model comparison</li>
-                <li>• Conversion trend analysis</li>
-                <li>• CPA optimization insights</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/conversion-tracking-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                💸 ROAS Report
-              </CardTitle>
-              <CardDescription>
-                Return on Ad Spend analysis with campaign profitability and revenue optimization insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Campaign ROAS performance</li>
-                <li>• Revenue trend analysis</li>
-                <li>• Top/bottom performer identification</li>
-                <li>• Profitability optimization</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/roas-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🧪 Ad Variation Performance
-              </CardTitle>
-              <CardDescription>
-                A/B testing results with statistical significance and creative optimization recommendations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• A/B test performance comparison</li>
-                <li>• Statistical significance analysis</li>
-                <li>• Winning creative identification</li>
-                <li>• Testing strategy recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/ad-variation-performance-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                ⭐ Quality Score Analysis
-              </CardTitle>
-              <CardDescription>
-                In-depth quality score analysis with keyword optimization and landing page recommendations
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Quality score by keyword analysis</li>
-                <li>• Expected CTR performance review</li>
-                <li>• Landing page experience insights</li>
-                <li>• Ad relevance optimization tips</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/quality-score-analysis-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                ⚔️ Auction Insights
-              </CardTitle>
-              <CardDescription>
-                Competitive analysis with auction insights, impression share, and outranking data
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Competitor impression share analysis</li>
-                <li>• Overlap rate and outranking metrics</li>
-                <li>• Top of page rate comparison</li>
-                <li>• Competitive strategy recommendations</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/auction-insights-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                🛍️ Shopping Campaign Performance
-              </CardTitle>
-              <CardDescription>
-                E-commerce focused analysis with product performance, ROAS, and merchandising insights
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-sm text-muted-foreground mb-4 space-y-1">
-                <li>• Product group performance analysis</li>
-                <li>• Top/bottom performing SKUs</li>
-                <li>• Brand performance comparison</li>
-                <li>• Merchandising optimization tips</li>
-              </ul>
-              <Button asChild className="w-full">
-                <Link to="/shopping-campaign-performance-report">View Report</Link>
-              </Button>
-            </CardContent>
-          </Card>
+              
+              <Link to={report.route} style={{ textDecoration: 'none' }}>
+                <button className="button button-primary" style={{ width: '100%' }}>
+                  View Report
+                </button>
+              </Link>
+            </div>
+          ))}
         </div>
 
-        <div className="mt-12 text-center">
-          <div className="bg-muted rounded-lg p-6 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-4">Report Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div style={{ marginTop: '48px', textAlign: 'center' }}>
+          <div style={{ 
+            background: '#f9fafb', 
+            borderRadius: '8px', 
+            padding: '24px', 
+            maxWidth: '1000px', 
+            margin: '0 auto' 
+          }}>
+            <h2 style={{ fontSize: '24px', fontWeight: '600', marginBottom: '16px' }}>Report Features</h2>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+              gap: '16px',
+              fontSize: '14px'
+            }}>
               <div>
-                <h3 className="font-medium mb-2">🎨 Customizable Branding</h3>
-                <p className="text-muted-foreground">Upload logos, select fonts, and customize colors for branded reports</p>
+                <h3 style={{ fontWeight: '500', marginBottom: '8px' }}>🎨 Customizable Branding</h3>
+                <p style={{ color: '#6b7280' }}>Upload logos, select fonts, and customize colors for branded reports</p>
               </div>
               <div>
-                <h3 className="font-medium mb-2">✏️ Editable Content</h3>
-                <p className="text-muted-foreground">Click to edit titles, insights, and recommendations directly in the browser</p>
+                <h3 style={{ fontWeight: '500', marginBottom: '8px' }}>✏️ Editable Content</h3>
+                <p style={{ color: '#6b7280' }}>Click to edit titles, insights, and recommendations directly in the browser</p>
               </div>
               <div>
-                <h3 className="font-medium mb-2">🖨️ Export Ready</h3>
-                <p className="text-muted-foreground">Optimized for PDF export and Google Docs with proper formatting</p>
+                <h3 style={{ fontWeight: '500', marginBottom: '8px' }}>🖨️ Export Ready</h3>
+                <p style={{ color: '#6b7280' }}>Optimized for PDF export and Google Docs with proper formatting</p>
               </div>
             </div>
           </div>

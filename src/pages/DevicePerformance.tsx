@@ -33,7 +33,7 @@ const DevicePerformance = () => {
   } = usePagination(deviceData, 10);
 
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: selectedFont }}>
+    <div className="min-h-screen" style={{ fontFamily: selectedFont }}>
       <style>{`
         :root {
           --primary-color: ${primaryColor};

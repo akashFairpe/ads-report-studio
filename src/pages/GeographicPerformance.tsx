@@ -1,431 +1,280 @@
 import React, { useState } from 'react';
 
+interface LocationData {
+  country: string;
+  flag: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  cpc: number;
+  conversions: number;
+  roas: number;
+}
+
 const GeographicPerformance = () => {
-  const [selectedFont, setSelectedFont] = useState("Inter");
-  const [primaryColor, setPrimaryColor] = useState("#2563eb");
-  
+  const [selectedFont, setSelectedFont] = useState('Inter');
+  const [primaryColor, setPrimaryColor] = useState('#2563eb');
+  const [logoUrl, setLogoUrl] = useState('');
+
+  const locationData: LocationData[] = [
+    { country: 'United States', flag: '🇺🇸', impressions: 456789, clicks: 12345, ctr: 2.70, cpc: 0.95, conversions: 234, roas: 4.2 },
+    { country: 'Canada', flag: '🇨🇦', impressions: 234567, clicks: 8901, ctr: 3.80, cpc: 1.12, conversions: 189, roas: 3.8 },
+    { country: 'United Kingdom', flag: '🇬🇧', impressions: 189234, clicks: 7891, ctr: 4.17, cpc: 0.89, conversions: 167, roas: 5.1 },
+    { country: 'Australia', flag: '🇦🇺', impressions: 345678, clicks: 6789, ctr: 1.96, cpc: 1.23, conversions: 134, roas: 2.9 },
+    { country: 'Germany', flag: '🇩🇪', impressions: 567890, clicks: 5678, ctr: 1.00, cpc: 1.67, conversions: 98, roas: 2.1 },
+    { country: 'France', flag: '🇫🇷', impressions: 123456, clicks: 4567, ctr: 3.70, cpc: 1.05, conversions: 87, roas: 3.4 },
+    { country: 'Japan', flag: '🇯🇵', impressions: 298765, clicks: 8234, ctr: 2.76, cpc: 0.78, conversions: 198, roas: 4.8 },
+    { country: 'Brazil', flag: '🇧🇷', impressions: 432109, clicks: 9876, ctr: 2.29, cpc: 1.34, conversions: 156, roas: 3.1 }
+  ];
+
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setLogoUrl(e.target?.result as string);
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const reportStyle = {
+    fontFamily: selectedFont,
+    '--primary-color': primaryColor,
+  } as React.CSSProperties;
+
   return (
-    <div className="min-h-screen bg-background" style={{ fontFamily: selectedFont }}>
-      <style>{`
-        :root {
-          --primary-color: ${primaryColor};
-          --text-color: #1f2937;
-          --background-color: #ffffff;
-          --border-color: #e5e7eb;
-          --success-color: #10b981;
-          --warning-color: #f59e0b;
-          --danger-color: #ef4444;
-          --secondary-bg: #f8fafc;
-        }
-
-        .branding-controls {
-          background: var(--secondary-bg);
-          padding: 20px;
-          border-bottom: 2px solid var(--border-color);
-          margin-bottom: 30px;
-        }
-
-        .branding-controls h3 {
-          margin-bottom: 15px;
-          color: var(--primary-color);
-        }
-
-        .branding-row {
-          display: flex;
-          gap: 20px;
-          align-items: center;
-          flex-wrap: wrap;
-        }
-
-        .branding-item {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-
-        .branding-item label {
-          font-weight: 600;
-          font-size: 14px;
-        }
-
-        .branding-item input, .branding-item select {
-          padding: 8px 12px;
-          border: 1px solid var(--border-color);
-          border-radius: 6px;
-          font-size: 14px;
-        }
-
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-
-        .report-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 30px;
-          padding-bottom: 20px;
-          border-bottom: 3px solid var(--primary-color);
-        }
-
-        .logo-section img {
-          max-height: 60px;
-          max-width: 200px;
-        }
-
-        .report-title {
-          text-align: center;
-          flex-grow: 1;
-        }
-
-        .report-title h1 {
-          font-size: 28px;
-          font-weight: 700;
-          color: var(--primary-color);
-          margin-bottom: 5px;
-        }
-
-        .report-meta {
-          text-align: right;
-          font-size: 14px;
-          color: #6b7280;
-        }
-
-        .overview-metrics {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-          margin-bottom: 40px;
-        }
-
-        .metric-card {
-          background: var(--secondary-bg);
-          padding: 20px;
-          border-radius: 8px;
-          border-left: 4px solid var(--primary-color);
-          text-align: center;
-        }
-
-        .metric-card h3 {
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 10px;
-          color: #6b7280;
-        }
-
-        .metric-value {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--primary-color);
-        }
-
-        .metric-change {
-          font-size: 12px;
-          margin-top: 5px;
-        }
-
-        .metric-change.positive { color: var(--success-color); }
-        .metric-change.negative { color: var(--danger-color); }
-
-        .geo-section {
-          margin-bottom: 40px;
-        }
-
-        .geo-grid {
-          display: grid;
-          grid-template-columns: 2fr 1fr;
-          gap: 20px;
-          margin-bottom: 30px;
-        }
-
-        .chart-container {
-          background: white;
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          padding: 20px;
-        }
-
-        .chart-title {
-          font-size: 18px;
-          font-weight: 600;
-          margin-bottom: 15px;
-          color: var(--primary-color);
-        }
-
-        .chart-placeholder {
-          height: 350px;
-          background: var(--secondary-bg);
-          border: 2px dashed var(--border-color);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 6px;
-          color: #6b7280;
-          font-style: italic;
-          text-align: center;
-          padding: 20px;
-        }
-
-        .top-locations {
-          background: white;
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          padding: 20px;
-        }
-
-        .location-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 12px 0;
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        .location-item:last-child {
-          border-bottom: none;
-        }
-
-        .location-name {
-          font-weight: 600;
-        }
-
-        .location-metrics {
-          display: flex;
-          gap: 15px;
-          font-size: 14px;
-          color: #6b7280;
-        }
-
-        .performance-table {
-          background: white;
-          border: 1px solid var(--border-color);
-          border-radius: 8px;
-          overflow: hidden;
-          margin-bottom: 40px;
-        }
-
-        .table-header {
-          background: var(--primary-color);
-          color: white;
-          padding: 15px 20px;
-          font-size: 18px;
-          font-weight: 600;
-        }
-
-        table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-
-        th, td {
-          padding: 12px 15px;
-          text-align: left;
-          border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-          background: var(--secondary-bg);
-          font-weight: 600;
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        tr:hover {
-          background: var(--secondary-bg);
-        }
-
-        .flag-icon {
-          width: 20px;
-          height: 15px;
-          margin-right: 8px;
-          border-radius: 2px;
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        .insights-section {
-          background: var(--secondary-bg);
-          padding: 30px;
-          border-radius: 8px;
-          margin-bottom: 40px;
-        }
-
-        .insights-section h2 {
-          color: var(--primary-color);
-          margin-bottom: 20px;
-        }
-
-        .editable {
-          min-height: 100px;
-          padding: 15px;
-          border: 2px dashed transparent;
-          border-radius: 6px;
-          transition: border-color 0.3s;
-        }
-
-        .editable:hover {
-          border-color: var(--primary-color);
-          background: rgba(37, 99, 235, 0.05);
-        }
-
-        .editable:focus {
-          outline: none;
-          border-color: var(--primary-color);
-          background: white;
-          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .report-footer {
-          text-align: center;
-          padding: 30px 0;
-          border-top: 2px solid var(--border-color);
-          margin-top: 40px;
-          color: #6b7280;
-        }
-
-        @media (max-width: 768px) {
-          .geo-grid { grid-template-columns: 1fr; }
-          .branding-row { flex-direction: column; align-items: stretch; }
-          .report-header { flex-direction: column; text-align: center; gap: 20px; }
-          .overview-metrics { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-          .location-metrics { flex-direction: column; gap: 5px; }
-        }
-      `}</style>
-
+    <div className="min-h-screen" style={reportStyle}>
       {/* Branding Controls */}
       <div className="branding-controls">
-        <h3>🌍 Report Branding Controls</h3>
-        <div className="branding-row">
-          <div className="branding-item">
-            <label htmlFor="logo-upload">Upload Logo:</label>
-            <input type="file" id="logo-upload" accept="image/*" />
-          </div>
-          <div className="branding-item">
-            <label htmlFor="font-select">Select Font:</label>
-            <select id="font-select" value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)}>
-              <option value="Inter">Inter</option>
-              <option value="Roboto">Roboto</option>
-              <option value="Lato">Lato</option>
-            </select>
-          </div>
-          <div className="branding-item">
-            <label htmlFor="color-picker">Primary Color:</label>
-            <input type="color" id="color-picker" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} />
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px', color: '#374151' }}>
+            🌍 Report Branding Controls
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
+            <div className="branding-item">
+              <label className="label">Company Logo</label>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={handleLogoUpload} 
+                className="input"
+              />
+            </div>
+            <div className="branding-item">
+              <label className="label">Font Family</label>
+              <select 
+                value={selectedFont} 
+                onChange={(e) => setSelectedFont(e.target.value)}
+                className="select"
+              >
+                <option value="Inter">Inter</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Lato">Lato</option>
+                <option value="Open Sans">Open Sans</option>
+              </select>
+            </div>
+            <div className="branding-item">
+              <label className="label">Primary Color</label>
+              <input 
+                type="color" 
+                value={primaryColor} 
+                onChange={(e) => setPrimaryColor(e.target.value)}
+                className="input"
+                style={{ height: '40px' }}
+              />
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Report Content */}
       <div className="container">
-        {/* Report Header */}
-        <header className="report-header">
-          <div className="logo-section">
-            <img id="report-logo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjYwIiB2aWV3Qm94PSIwIDAgMjAwIDYwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIGZpbGw9IiMyNTYzZWIiLz48dGV4dCB4PSIxMDAiIHk9IjM1IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkludGVyIiBmb250LXNpemU9IjE4Ij5Zb3VyIExvZ288L3RleHQ+PC9zdmc+" alt="Company Logo" />
-          </div>
-          <div className="report-title">
-            <h1 contentEditable="true">Geographic Performance Report</h1>
-            <div className="report-meta">
-              <div contentEditable="true">Client: Global Marketing Corp</div>
-              <div contentEditable="true">Report Period: Jan 1 - Jan 31, 2024</div>
+        {/* Header */}
+        <div className="card">
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '24px' }}>
+            <div style={{ flex: '1' }}>
+              {logoUrl && (
+                <img src={logoUrl} alt="Company Logo" style={{ height: '64px', marginBottom: '16px' }} />
+              )}
+              <h1 
+                style={{ 
+                  fontSize: '30px', 
+                  fontWeight: 'bold', 
+                  marginBottom: '8px', 
+                  color: primaryColor 
+                }}
+              >
+                Geographic Performance Report
+              </h1>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', fontSize: '14px' }}>
+                <div>
+                  <strong>Client:</strong>
+                  <input 
+                    type="text" 
+                    defaultValue="Global Marketing Corp" 
+                    className="input"
+                    style={{ border: 'none', background: 'transparent', marginLeft: '8px', padding: '2px' }}
+                  />
+                </div>
+                <div>
+                  <strong>Report Period:</strong>
+                  <input 
+                    type="text" 
+                    defaultValue="Jan 1 - Jan 31, 2024" 
+                    className="input"
+                    style={{ border: 'none', background: 'transparent', marginLeft: '8px', padding: '2px' }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right', fontSize: '14px', color: '#6b7280' }}>
+              <div>Generated: {new Date().toLocaleDateString()}</div>
+              <div>
+                Analyst: 
+                <input 
+                  type="text" 
+                  defaultValue="Sarah Johnson" 
+                  className="input"
+                  style={{ border: 'none', background: 'transparent', marginLeft: '8px', padding: '2px' }}
+                />
+              </div>
             </div>
           </div>
-          <div className="report-meta">
-            <div>Generated: Feb 1, 2024</div>
-            <div>Analyst: <span contentEditable="true">Sarah Johnson</span></div>
-          </div>
-        </header>
+        </div>
 
-        {/* Geographic Overview Metrics */}
-        <section className="overview-metrics">
+        {/* Overview Metrics */}
+        <div className="overview-metrics" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
           <div className="metric-card">
-            <h3>Countries Reached</h3>
-            <div className="metric-value">12</div>
-            <div className="metric-change positive">+2 vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>12</div>
+            <div className="metric-label">Countries Reached</div>
+            <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>+2 vs last period</div>
           </div>
           <div className="metric-card">
-            <h3>Total Impressions</h3>
-            <div className="metric-value">892,456</div>
-            <div className="metric-change positive">+18.5% vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>892,456</div>
+            <div className="metric-label">Total Impressions</div>
+            <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>+18.5% vs last period</div>
           </div>
           <div className="metric-card">
-            <h3>Total Clicks</h3>
-            <div className="metric-value">24,789</div>
-            <div className="metric-change positive">+12.3% vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>24,789</div>
+            <div className="metric-label">Total Clicks</div>
+            <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>+12.3% vs last period</div>
           </div>
           <div className="metric-card">
-            <h3>Average CPC</h3>
-            <div className="metric-value">$1.89</div>
-            <div className="metric-change negative">+8.2% vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>$1.89</div>
+            <div className="metric-label">Average CPC</div>
+            <div style={{ fontSize: '12px', color: '#ef4444', marginTop: '4px' }}>+8.2% vs last period</div>
           </div>
           <div className="metric-card">
-            <h3>Total Conversions</h3>
-            <div className="metric-value">1,247</div>
-            <div className="metric-change positive">+22.1% vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>1,247</div>
+            <div className="metric-label">Total Conversions</div>
+            <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>+22.1% vs last period</div>
           </div>
           <div className="metric-card">
-            <h3>Geographic ROAS</h3>
-            <div className="metric-value">3.8x</div>
-            <div className="metric-change positive">+0.4x vs last period</div>
+            <div className="metric-value" style={{ color: primaryColor }}>3.8x</div>
+            <div className="metric-label">Geographic ROAS</div>
+            <div style={{ fontSize: '12px', color: '#10b981', marginTop: '4px' }}>+0.4x vs last period</div>
           </div>
-        </section>
+        </div>
 
         {/* Geographic Visualization */}
-        <section className="geo-section">
-          <div className="geo-grid">
-            <div className="chart-container">
-              <h3 className="chart-title">Performance by Geographic Region</h3>
-              <div className="chart-placeholder">
-                Interactive Geographic Heatmap<br />
-                (Countries/States colored by performance metrics)
-              </div>
-            </div>
-            <div className="top-locations">
-              <h3 className="chart-title">Top 5 Performing Locations</h3>
-              <div>
-                <div className="location-item">
-                  <div>
-                    <span className="flag-icon" style={{background: 'linear-gradient(to bottom, #b22234 33%, white 33%, white 66%, #b22234 66%)'}}></span>
-                    <span className="location-name">United States</span>
-                  </div>
-                  <div className="location-metrics">
-                    <span>$12,450</span>
-                    <span>4.2x ROAS</span>
-                  </div>
-                </div>
-                <div className="location-item">
-                  <div>
-                    <span className="flag-icon" style={{background: 'linear-gradient(to right, #ff0000 50%, white 50%)'}}></span>
-                    <span className="location-name">Canada</span>
-                  </div>
-                  <div className="location-metrics">
-                    <span>$8,920</span>
-                    <span>3.9x ROAS</span>
-                  </div>
-                </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '30px' }}>
+          <div className="card">
+            <h2 className="card-title" style={{ color: primaryColor }}>Performance by Geographic Region</h2>
+            <div className="chart-placeholder">
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '18px', fontWeight: '500' }}>Interactive Geographic Heatmap</p>
+                <p style={{ fontSize: '14px', marginTop: '8px' }}>(Countries/States colored by performance metrics)</p>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Insights */}
-        <section className="insights-section">
-          <h2>🌍 Geographic Insights & Analysis</h2>
-          <div className="editable" contentEditable="true">
-            <p><strong>Key Geographic Findings:</strong></p>
-            <ul>
-              <li>North American markets dominate performance, accounting for 65% of total conversions</li>
-              <li>English-speaking markets show consistently higher conversion rates</li>
-              <li>European markets show higher CPCs but lower conversion rates</li>
-            </ul>
+          
+          <div className="card">
+            <h2 className="card-title" style={{ color: primaryColor }}>Top 5 Performing Locations</h2>
+            <div>
+              {locationData.slice(0, 5).map((location, index) => (
+                <div key={index} style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center', 
+                  padding: '12px 0', 
+                  borderBottom: index < 4 ? '1px solid #e5e7eb' : 'none' 
+                }}>
+                  <div>
+                    <span style={{ marginRight: '8px', fontSize: '18px' }}>{location.flag}</span>
+                    <span style={{ fontWeight: '600' }}>{location.country}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', fontSize: '14px', color: '#6b7280' }}>
+                    <span>${(location.conversions * location.cpc * location.roas).toLocaleString()}</span>
+                    <span>{location.roas}x ROAS</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </section>
+        </div>
 
-        <footer className="report-footer">
-          <div>Powered by AdSpyder | Geographic Performance Analytics</div>
-        </footer>
+        {/* Performance Table */}
+        <div className="card">
+          <h2 className="card-title" style={{ color: primaryColor }}>Geographic Performance Details</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Country</th>
+                  <th>Impressions</th>
+                  <th>Clicks</th>
+                  <th>CTR</th>
+                  <th>CPC</th>
+                  <th>Conversions</th>
+                  <th>ROAS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {locationData.map((location, index) => (
+                  <tr key={index}>
+                    <td>
+                      <span style={{ marginRight: '8px', fontSize: '16px' }}>{location.flag}</span>
+                      <span style={{ fontWeight: '500' }}>{location.country}</span>
+                    </td>
+                    <td>{location.impressions.toLocaleString()}</td>
+                    <td>{location.clicks.toLocaleString()}</td>
+                    <td>{location.ctr}%</td>
+                    <td>${location.cpc}</td>
+                    <td>{location.conversions}</td>
+                    <td>{location.roas}x</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Insights & Analysis */}
+        <div className="card">
+          <h2 className="card-title" style={{ color: primaryColor }}>🌍 Geographic Insights & Analysis</h2>
+          <textarea 
+            className="textarea"
+            defaultValue="Key Geographic Findings:&#10;• North American markets dominate performance, accounting for 65% of total conversions&#10;• English-speaking markets show consistently higher conversion rates&#10;• European markets show higher CPCs but lower conversion rates&#10;• Asia-Pacific region shows strong potential for expansion with competitive CPCs"
+            style={{ minHeight: '150px' }}
+          />
+        </div>
+
+        {/* Export Buttons */}
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
+          <button className="button button-primary">Export to PDF</button>
+          <button className="button button-secondary">Export to Excel</button>
+          <button className="button button-secondary">Export to CSV</button>
+        </div>
+
+        {/* Footer */}
+        <div className="report-footer">
+          <div>
+            {logoUrl && <img src={logoUrl} alt="Company Logo" style={{ height: '32px' }} />}
+          </div>
+          <div style={{ fontSize: '12px', color: '#6b7280' }}>
+            <p>Geographic Performance Report | Page 1 of 1</p>
+            <p>Generated on {new Date().toLocaleDateString()}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
