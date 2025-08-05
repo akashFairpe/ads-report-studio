@@ -59,15 +59,15 @@ const AuctionInsightsReport = () => {
   } as React.CSSProperties;
 
   return (
-    <div className="min-h-screen" style={reportStyle}>
+    <div style={{ ...reportStyle, backgroundColor: 'white', minHeight: '100vh' }}>
       {/* Branding Controls */}
-      <div className="bg-card border-b p-4 print:hidden">
-        <div className="max-w-4xl mx-auto flex flex-wrap gap-4">
-          <div>
+      <div className="branding-controls">
+        <div className="branding-row">
+          <div className="branding-item">
             <Label htmlFor="logo-upload">Company Logo</Label>
             <Input id="logo-upload" type="file" accept="image/*" onChange={handleLogoUpload} className="w-48" />
           </div>
-          <div>
+          <div className="branding-item">
             <Label>Font Family</Label>
             <Select value={selectedFont} onValueChange={setSelectedFont}>
               <SelectTrigger className="w-32">
@@ -81,7 +81,7 @@ const AuctionInsightsReport = () => {
               </SelectContent>
             </Select>
           </div>
-          <div>
+          <div className="branding-item">
             <Label htmlFor="color-picker">Primary Color</Label>
             <Input
               id="color-picker"
@@ -91,23 +91,25 @@ const AuctionInsightsReport = () => {
               className="w-16 h-10"
             />
           </div>
+          <ExportButtons reportTitle="Auction Insights Report" />
         </div>
       </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="container">
         {/* Header */}
-        <div className="text-center border-b pb-6" style={{ pageBreakAfter: 'avoid' }}>
+        <div className="report-header">
           {logoUrl && (
-            <img 
-              src={logoUrl} 
-              alt="Company Logo" 
-              className="mx-auto mb-4 max-h-16 object-contain"
-              id="company_logo"
-            />
+            <div className="logo-section">
+              <img 
+                src={logoUrl} 
+                alt="Company Logo" 
+                id="company_logo"
+              />
+            </div>
           )}
           <h1 
-            className="text-3xl font-bold mb-2"
+            className="report-title"
             contentEditable="true"
             suppressContentEditableWarning={true}
             style={{ color: primaryColor }}
@@ -115,12 +117,12 @@ const AuctionInsightsReport = () => {
           >
             Auction Insights Report
           </h1>
-          <div className="text-lg text-muted-foreground space-y-1">
+          <div className="report-meta">
             <p>
-              Campaign: <span contentEditable="true" suppressContentEditableWarning={true} id="campaign_name" className="font-medium">Premium Product Launch</span>
+              Campaign: <span contentEditable="true" suppressContentEditableWarning={true} id="campaign_name">Premium Product Launch</span>
             </p>
             <p>
-              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range" className="font-medium">January 1, 2024 - January 31, 2024</span>
+              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range">January 1, 2024 - January 31, 2024</span>
             </p>
           </div>
         </div>
@@ -132,22 +134,22 @@ const AuctionInsightsReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready metric cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="impression_share" data-metric="impression_share">68.5%</div>
-                <div className="text-sm text-muted-foreground">Impression Share</div>
+            <div className="overview-metrics">
+              <div className="metric-card">
+                <div className="metric-value" id="impression_share" data-metric="impression_share">68.5%</div>
+                <div className="metric-label">Impression Share</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="overlap_rate" data-metric="overlap_rate">42.3%</div>
-                <div className="text-sm text-muted-foreground">Overlap Rate</div>
+              <div className="metric-card">
+                <div className="metric-value" id="overlap_rate" data-metric="overlap_rate">42.3%</div>
+                <div className="metric-label">Overlap Rate</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="outranking_share" data-metric="outranking_share">73.8%</div>
-                <div className="text-sm text-muted-foreground">Outranking Share</div>
+              <div className="metric-card">
+                <div className="metric-value" id="outranking_share" data-metric="outranking_share">73.8%</div>
+                <div className="metric-label">Outranking Share</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="top_of_page_rate" data-metric="top_of_page_rate">45.2%</div>
-                <div className="text-sm text-muted-foreground">Top of Page Rate</div>
+              <div className="metric-card">
+                <div className="metric-value" id="top_of_page_rate" data-metric="top_of_page_rate">45.2%</div>
+                <div className="metric-label">Top of Page Rate</div>
               </div>
             </div>
           </CardContent>
@@ -160,29 +162,31 @@ const AuctionInsightsReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse" id="competitor_analysis_table">
+            <div style={{ overflowX: 'auto' }}>
+              <table className="table" id="competitor_analysis_table">
                 <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2 font-semibold">Competitor Domain</th>
-                    <th className="text-right p-2 font-semibold">Impression Share</th>
-                    <th className="text-right p-2 font-semibold">Overlap Rate</th>
-                    <th className="text-right p-2 font-semibold">Outranking Share</th>
-                    <th className="text-right p-2 font-semibold">Position Above Rate</th>
-                    <th className="text-right p-2 font-semibold">Top of Page Rate</th>
+                  <tr>
+                    <th style={{ textAlign: 'left' }}>Competitor Domain</th>
+                    <th style={{ textAlign: 'right' }}>Impression Share</th>
+                    <th style={{ textAlign: 'right' }}>Overlap Rate</th>
+                    <th style={{ textAlign: 'right' }}>Outranking Share</th>
+                    <th style={{ textAlign: 'right' }}>Position Above Rate</th>
+                    <th style={{ textAlign: 'right' }}>Top of Page Rate</th>
                   </tr>
                 </thead>
                 <tbody id="competitor_data" data-table="competitor_metrics">
                   {paginatedData.map((item, index) => (
-                    <tr key={index} className="border-b">
-                      <td className="p-2 font-medium" data-field="domain">{item.domain}</td>
-                      <td className="text-right p-2" data-field="impression_share">{item.impressionShare}</td>
-                      <td className="text-right p-2" data-field="overlap_rate">{item.overlapRate}</td>
-                      <td className={`text-right p-2 font-medium ${
-                        parseFloat(item.outrankingShare) >= 50 ? 'text-green-600' : 'text-red-600'
-                      }`} data-field="outranking_share">{item.outrankingShare}</td>
-                      <td className="text-right p-2" data-field="position_above_rate">{item.positionAboveRate}</td>
-                      <td className="text-right p-2" data-field="top_of_page_rate">{item.topOfPageRate}</td>
+                    <tr key={index}>
+                      <td style={{ fontWeight: 'bold' }} data-field="domain">{item.domain}</td>
+                      <td style={{ textAlign: 'right' }} data-field="impression_share">{item.impressionShare}</td>
+                      <td style={{ textAlign: 'right' }} data-field="overlap_rate">{item.overlapRate}</td>
+                      <td style={{ 
+                        textAlign: 'right', 
+                        fontWeight: 'bold',
+                        color: parseFloat(item.outrankingShare) >= 50 ? '#16a34a' : '#dc2626'
+                      }} data-field="outranking_share">{item.outrankingShare}</td>
+                      <td style={{ textAlign: 'right' }} data-field="position_above_rate">{item.positionAboveRate}</td>
+                      <td style={{ textAlign: 'right' }} data-field="top_of_page_rate">{item.topOfPageRate}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -211,8 +215,8 @@ const AuctionInsightsReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="impression_share_chart" data-chart="impression_share_comparison">
-              <p className="text-muted-foreground">📊 Impression Share Comparison Chart</p>
+            <div className="chart-placeholder" id="impression_share_chart" data-chart="impression_share_comparison">
+              <p>📊 Impression Share Comparison Chart</p>
               {/* Chart will be injected here via API */}
             </div>
           </CardContent>
@@ -225,32 +229,32 @@ const AuctionInsightsReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="overlap_trend_chart" data-chart="overlap_rate_trend">
-              <p className="text-muted-foreground">📈 Overlap Rate Trend Over Time</p>
+            <div className="chart-placeholder" id="overlap_trend_chart" data-chart="overlap_rate_trend">
+              <p>📈 Overlap Rate Trend Over Time</p>
               {/* Chart will be injected here via API */}
             </div>
           </CardContent>
         </Card>
 
         {/* Competitive Performance Highlights */}
-        <div className="grid md:grid-cols-2 gap-6" style={{ pageBreakInside: 'avoid' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', pageBreakInside: 'avoid' }}>
           <Card>
             <CardHeader>
               <CardTitle style={{ color: primaryColor }}>Key Opportunities</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3" id="opportunities" data-section="competitive_opportunities">
-                <div className="p-3 bg-green-50 rounded">
-                  <div className="font-medium text-green-800" data-field="opportunity_title">Strong Against Startup Competitors</div>
-                  <div className="text-sm text-green-700 mt-1" data-field="opportunity_desc">82.3% outranking share vs startup-competitor.com</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }} id="opportunities" data-section="competitive_opportunities">
+                <div style={{ padding: '12px', backgroundColor: '#f0fdf4', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#166534' }} data-field="opportunity_title">Strong Against Startup Competitors</div>
+                  <div style={{ fontSize: '14px', color: '#15803d', marginTop: '4px' }} data-field="opportunity_desc">82.3% outranking share vs startup-competitor.com</div>
                 </div>
-                <div className="p-3 bg-blue-50 rounded">
-                  <div className="font-medium text-blue-800" data-field="opportunity_title">Impression Share Growth</div>
-                  <div className="text-sm text-blue-700 mt-1" data-field="opportunity_desc">31.5% potential increase available in auction</div>
+                <div style={{ padding: '12px', backgroundColor: '#eff6ff', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#1e40af' }} data-field="opportunity_title">Impression Share Growth</div>
+                  <div style={{ fontSize: '14px', color: '#1d4ed8', marginTop: '4px' }} data-field="opportunity_desc">31.5% potential increase available in auction</div>
                 </div>
-                <div className="p-3 bg-purple-50 rounded">
-                  <div className="font-medium text-purple-800" data-field="opportunity_title">Top of Page Optimization</div>
-                  <div className="text-sm text-purple-700 mt-1" data-field="opportunity_desc">54.8% room for improvement in premium placements</div>
+                <div style={{ padding: '12px', backgroundColor: '#faf5ff', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#7c3aed' }} data-field="opportunity_title">Top of Page Optimization</div>
+                  <div style={{ fontSize: '14px', color: '#8b5cf6', marginTop: '4px' }} data-field="opportunity_desc">54.8% room for improvement in premium placements</div>
                 </div>
               </div>
             </CardContent>
@@ -261,18 +265,18 @@ const AuctionInsightsReport = () => {
               <CardTitle style={{ color: primaryColor }}>Competitive Threats</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3" id="threats" data-section="competitive_threats">
-                <div className="p-3 bg-red-50 rounded">
-                  <div className="font-medium text-red-800" data-field="threat_title">Industry Leader Dominance</div>
-                  <div className="text-sm text-red-700 mt-1" data-field="threat_desc">industry-leader.com outranks us 42.1% of the time</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }} id="threats" data-section="competitive_threats">
+                <div style={{ padding: '12px', backgroundColor: '#fef2f2', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#991b1b' }} data-field="threat_title">Industry Leader Dominance</div>
+                  <div style={{ fontSize: '14px', color: '#dc2626', marginTop: '4px' }} data-field="threat_desc">industry-leader.com outranks us 42.1% of the time</div>
                 </div>
-                <div className="p-3 bg-orange-50 rounded">
-                  <div className="font-medium text-orange-800" data-field="threat_title">High Competitive Overlap</div>
-                  <div className="text-sm text-orange-700 mt-1" data-field="threat_desc">42.3% average overlap rate indicates intense competition</div>
+                <div style={{ padding: '12px', backgroundColor: '#fff7ed', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#c2410c' }} data-field="threat_title">High Competitive Overlap</div>
+                  <div style={{ fontSize: '14px', color: '#ea580c', marginTop: '4px' }} data-field="threat_desc">42.3% average overlap rate indicates intense competition</div>
                 </div>
-                <div className="p-3 bg-yellow-50 rounded">
-                  <div className="font-medium text-yellow-800" data-field="threat_title">Position Competition</div>
-                  <div className="text-sm text-yellow-700 mt-1" data-field="threat_desc">competitor-a.com appears above us 28.6% of the time</div>
+                <div style={{ padding: '12px', backgroundColor: '#fefce8', borderRadius: '8px' }}>
+                  <div style={{ fontWeight: 'bold', color: '#a16207' }} data-field="threat_title">Position Competition</div>
+                  <div style={{ fontSize: '14px', color: '#ca8a04', marginTop: '4px' }} data-field="threat_desc">competitor-a.com appears above us 28.6% of the time</div>
                 </div>
               </div>
             </CardContent>
@@ -323,52 +327,15 @@ Strategic Recommendations:
         </Card>
 
         {/* Footer */}
-        <div className="text-center text-sm text-muted-foreground border-t pt-4" style={{ pageBreakBefore: 'avoid' }}>
+        <div className="report-footer">
           <p>
             <span contentEditable="true" suppressContentEditableWarning={true} id="footer_text">
               Powered by AdSpyder Analytics | Competitive Intelligence Solutions
             </span>
           </p>
-          <p className="mt-2">Page <span className="page-counter">1</span></p>
+          <p>Page <span className="page-counter">1</span></p>
         </div>
       </div>
-
-      {/* API Integration Example (commented out) */}
-      {/*
-      <script>
-        // Example API integration for dynamic auction insights data injection
-        async function loadAuctionInsightsData() {
-          try {
-            const response = await fetch('/api/auction-insights', {
-              method: 'GET',
-              headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await response.json();
-            
-            // Update overview metrics
-            document.getElementById('impression_share').textContent = data.impressionShare + '%';
-            document.getElementById('overlap_rate').textContent = data.overlapRate + '%';
-            document.getElementById('outranking_share').textContent = data.outrankingShare + '%';
-            document.getElementById('top_of_page_rate').textContent = data.topOfPageRate + '%';
-            
-            // Update competitor table
-            const tbody = document.getElementById('competitor_data');
-            tbody.innerHTML = data.competitors.map(competitor => `
-              <tr class="border-b">
-                <td class="p-2 font-medium">${competitor.domain}</td>
-                <td class="text-right p-2">${competitor.impressionShare}%</td>
-                <td class="text-right p-2">${competitor.overlapRate}%</td>
-                <td class="text-right p-2 ${competitor.outrankingShare < 50 ? 'text-red-600' : 'text-green-600'} font-medium">${competitor.outrankingShare}%</td>
-                <td class="text-right p-2">${competitor.positionAboveRate}%</td>
-                <td class="text-right p-2">${competitor.topOfPageRate}%</td>
-              </tr>
-            `).join('');
-          } catch (error) {
-            console.error('Failed to load auction insights data:', error);
-          }
-        }
-      </script>
-      */}
     </div>
   );
 };

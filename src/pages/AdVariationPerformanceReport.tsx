@@ -98,19 +98,20 @@ const AdVariationPerformanceReport = () => {
         </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="container">
         {/* Header */}
-        <div className="text-center border-b pb-6" style={{ pageBreakAfter: 'avoid' }}>
+        <div className="report-header">
           {logoUrl && (
-            <img 
-              src={logoUrl} 
-              alt="Company Logo" 
-              className="mx-auto mb-4 max-h-16 object-contain"
-              id="company_logo"
-            />
+            <div className="logo-section">
+              <img 
+                src={logoUrl} 
+                alt="Company Logo" 
+                id="company_logo"
+              />
+            </div>
           )}
           <h1 
-            className="text-3xl font-bold mb-2"
+            className="report-title"
             contentEditable="true"
             suppressContentEditableWarning={true}
             style={{ color: primaryColor }}
@@ -118,12 +119,12 @@ const AdVariationPerformanceReport = () => {
           >
             Ad Variation Performance Report (A/B Testing)
           </h1>
-          <div className="text-lg text-muted-foreground space-y-1">
+          <div className="report-meta">
             <p>
-              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name" className="font-medium">AdSpyder Analytics</span>
+              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name">AdSpyder Analytics</span>
             </p>
             <p>
-              Test Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range" className="font-medium">January 1, 2024 - January 31, 2024</span>
+              Test Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range">January 1, 2024 - January 31, 2024</span>
             </p>
           </div>
         </div>
@@ -135,22 +136,22 @@ const AdVariationPerformanceReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready metric cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="test_variants" data-metric="test_variants">4</div>
-                <div className="text-sm text-muted-foreground">Test Variants</div>
+            <div className="overview-metrics">
+              <div className="metric-card">
+                <div className="metric-value" id="test_variants" data-metric="test_variants">4</div>
+                <div className="metric-label">Test Variants</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="test_duration" data-metric="test_duration">30 Days</div>
-                <div className="text-sm text-muted-foreground">Test Duration</div>
+              <div className="metric-card">
+                <div className="metric-value" id="test_duration" data-metric="test_duration">30 Days</div>
+                <div className="metric-label">Test Duration</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-green-600" id="winning_variant" data-metric="winning_variant">Variant B</div>
-                <div className="text-sm text-muted-foreground">Winning Ad</div>
+              <div className="metric-card">
+                <div className="metric-value" id="winning_variant" data-metric="winning_variant" style={{ color: '#16a34a' }}>Variant B</div>
+                <div className="metric-label">Winning Ad</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="confidence_level" data-metric="confidence_level">95.2%</div>
-                <div className="text-sm text-muted-foreground">Confidence Level</div>
+              <div className="metric-card">
+                <div className="metric-value" id="confidence_level" data-metric="confidence_level">95.2%</div>
+                <div className="metric-label">Confidence Level</div>
               </div>
             </div>
           </CardContent>
@@ -215,8 +216,8 @@ const AdVariationPerformanceReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="performance_comparison_chart" data-chart="performance_comparison">
-              <p className="text-muted-foreground">📊 Performance Comparison Chart</p>
+            <div className="chart-placeholder" id="performance_comparison_chart" data-chart="performance_comparison">
+              <p>📊 Performance Comparison Chart</p>
               {/* Chart will be injected here via API */}
             </div>
           </CardContent>

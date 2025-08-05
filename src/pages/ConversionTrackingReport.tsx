@@ -119,19 +119,20 @@ const ConversionTrackingReport = () => {
       </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="container">
         {/* Header */}
-        <div className="text-center border-b pb-6" style={{ pageBreakAfter: 'avoid' }}>
+        <div className="report-header">
           {logoUrl && (
-            <img 
-              src={logoUrl} 
-              alt="Company Logo" 
-              className="mx-auto mb-4 max-h-16 object-contain"
-              id="company_logo"
-            />
+            <div className="logo-section">
+              <img 
+                src={logoUrl} 
+                alt="Company Logo" 
+                id="company_logo"
+              />
+            </div>
           )}
           <h1 
-            className="text-3xl font-bold mb-2"
+            className="report-title"
             contentEditable="true"
             suppressContentEditableWarning={true}
             style={{ color: primaryColor }}
@@ -139,12 +140,12 @@ const ConversionTrackingReport = () => {
           >
             Conversion Tracking Performance Report
           </h1>
-          <div className="text-lg text-muted-foreground space-y-1">
+          <div className="report-meta">
             <p>
-              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name" className="font-medium">AdSpyder Analytics</span>
+              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name">AdSpyder Analytics</span>
             </p>
             <p>
-              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range" className="font-medium">January 1, 2024 - January 31, 2024</span>
+              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range">January 1, 2024 - January 31, 2024</span>
             </p>
           </div>
         </div>
@@ -156,22 +157,22 @@ const ConversionTrackingReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready metric cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="total_conversions" data-metric="total_conversions">1,247</div>
-                <div className="text-sm text-muted-foreground">Total Conversions</div>
+            <div className="overview-metrics">
+              <div className="metric-card">
+                <div className="metric-value" id="total_conversions" data-metric="total_conversions">1,247</div>
+                <div className="metric-label">Total Conversions</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="conversion_rate" data-metric="conversion_rate">3.42%</div>
-                <div className="text-sm text-muted-foreground">Conversion Rate</div>
+              <div className="metric-card">
+                <div className="metric-value" id="conversion_rate" data-metric="conversion_rate">3.42%</div>
+                <div className="metric-label">Conversion Rate</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="cost_per_acquisition" data-metric="cost_per_acquisition">$24.50</div>
-                <div className="text-sm text-muted-foreground">Cost Per Acquisition</div>
+              <div className="metric-card">
+                <div className="metric-value" id="cost_per_acquisition" data-metric="cost_per_acquisition">$24.50</div>
+                <div className="metric-label">Cost Per Acquisition</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="assisted_conversions" data-metric="assisted_conversions">892</div>
-                <div className="text-sm text-muted-foreground">Assisted Conversions</div>
+              <div className="metric-card">
+                <div className="metric-value" id="assisted_conversions" data-metric="assisted_conversions">892</div>
+                <div className="metric-label">Assisted Conversions</div>
               </div>
             </div>
           </CardContent>
@@ -231,8 +232,8 @@ const ConversionTrackingReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="conversions_chart" data-chart="conversions_over_time">
-              <p className="text-muted-foreground">📈 Conversions Over Time Chart</p>
+            <div className="chart-placeholder" id="conversions_chart" data-chart="conversions_over_time">
+              <p>📈 Conversions Over Time Chart</p>
               {/* Chart will be injected here via API */}
             </div>
           </CardContent>

@@ -89,19 +89,20 @@ const ROASReport = () => {
       </div>
 
       {/* Report Content */}
-      <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <div className="container">
         {/* Header */}
-        <div className="text-center border-b pb-6" style={{ pageBreakAfter: 'avoid' }}>
+        <div className="report-header">
           {logoUrl && (
-            <img 
-              src={logoUrl} 
-              alt="Company Logo" 
-              className="mx-auto mb-4 max-h-16 object-contain"
-              id="company_logo"
-            />
+            <div className="logo-section">
+              <img 
+                src={logoUrl} 
+                alt="Company Logo" 
+                id="company_logo"
+              />
+            </div>
           )}
           <h1 
-            className="text-3xl font-bold mb-2"
+            className="report-title"
             contentEditable="true"
             suppressContentEditableWarning={true}
             style={{ color: primaryColor }}
@@ -109,12 +110,12 @@ const ROASReport = () => {
           >
             Return on Ad Spend (ROAS) Report
           </h1>
-          <div className="text-lg text-muted-foreground space-y-1">
+          <div className="report-meta">
             <p>
-              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name" className="font-medium">AdSpyder Analytics</span>
+              Client: <span contentEditable="true" suppressContentEditableWarning={true} id="client_name">AdSpyder Analytics</span>
             </p>
             <p>
-              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range" className="font-medium">January 1, 2024 - January 31, 2024</span>
+              Report Period: <span contentEditable="true" suppressContentEditableWarning={true} id="date_range">January 1, 2024 - January 31, 2024</span>
             </p>
           </div>
         </div>
@@ -126,22 +127,22 @@ const ROASReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready metric cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="total_revenue" data-metric="total_revenue">$487,250</div>
-                <div className="text-sm text-muted-foreground">Total Revenue</div>
+            <div className="overview-metrics">
+              <div className="metric-card">
+                <div className="metric-value" id="total_revenue" data-metric="total_revenue">$487,250</div>
+                <div className="metric-label">Total Revenue</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="total_cost" data-metric="total_cost">$125,800</div>
-                <div className="text-sm text-muted-foreground">Total Ad Spend</div>
+              <div className="metric-card">
+                <div className="metric-value" id="total_cost" data-metric="total_cost">$125,800</div>
+                <div className="metric-label">Total Ad Spend</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold text-green-600" id="overall_roas" data-metric="overall_roas">3.87x</div>
-                <div className="text-sm text-muted-foreground">Overall ROAS</div>
+              <div className="metric-card">
+                <div className="metric-value" id="overall_roas" data-metric="overall_roas" style={{ color: '#16a34a' }}>3.87x</div>
+                <div className="metric-label">Overall ROAS</div>
               </div>
-              <div className="text-center p-4 bg-muted rounded-lg">
-                <div className="text-2xl font-bold" id="avg_order_value" data-metric="avg_order_value">$127.45</div>
-                <div className="text-sm text-muted-foreground">Avg Order Value</div>
+              <div className="metric-card">
+                <div className="metric-value" id="avg_order_value" data-metric="avg_order_value">$127.45</div>
+                <div className="metric-label">Avg Order Value</div>
               </div>
             </div>
           </CardContent>
@@ -212,8 +213,8 @@ const ROASReport = () => {
           </CardHeader>
           <CardContent>
             {/* API-ready chart container */}
-            <div className="h-64 bg-muted rounded flex items-center justify-center" id="roas_trend_chart" data-chart="roas_over_time">
-              <p className="text-muted-foreground">📈 ROAS Trend Chart</p>
+            <div className="chart-placeholder" id="roas_trend_chart" data-chart="roas_over_time">
+              <p>📈 ROAS Trend Chart</p>
               {/* Chart will be injected here via API */}
             </div>
           </CardContent>
