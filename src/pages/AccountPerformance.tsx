@@ -60,57 +60,71 @@ const AccountPerformance = () => {
       '--secondary-color': '#f8f9fa'
     } as React.CSSProperties}>
       <style>{`
+        /* AdSpyder Design System */
         .page-background {
-          background-color: #ffffff;
+          background-color: #FFFFFF;
           min-height: 100vh;
+          font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         .container {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 20px;
+          padding: 16px;
         }
 
         .branding-controls {
-          background: var(--secondary-color);
-          padding: 20px;
+          background: #F8F9FA;
+          padding: 16px;
           border-radius: 8px;
-          margin-bottom: 30px;
-          border: 2px dashed var(--border-color);
+          margin-bottom: 24px;
+          border: 1px solid #E5E7EB;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         .control-group {
           display: flex;
           flex-wrap: wrap;
-          gap: 20px;
+          gap: 16px;
           align-items: center;
         }
 
         .control-item {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 4px;
         }
 
         .control-item label {
           font-weight: 600;
           font-size: 14px;
+          color: #2C3E50;
+          line-height: 1.5;
         }
 
         .control-item input, .control-item select {
           padding: 8px 12px;
-          border: 1px solid var(--border-color);
+          border: 1px solid #E5E7EB;
           border-radius: 4px;
           font-size: 14px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #1A1A1A;
+          background: #FFFFFF;
+        }
+
+        .control-item input:focus, .control-item select:focus {
+          outline: 2px solid #3B82F6;
+          border-color: #3B82F6;
         }
 
         .report-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 30px;
-          padding-bottom: 20px;
-          border-bottom: 2px solid var(--primary-color);
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 2px solid #3B82F6;
         }
 
         .logo-container {
@@ -126,132 +140,204 @@ const AccountPerformance = () => {
         .report-title {
           text-align: center;
           flex-grow: 1;
-          margin: 0 20px;
+          margin: 0 16px;
         }
 
         .report-title h1 {
-          color: var(--primary-color);
-          font-size: 28px;
-          margin-bottom: 10px;
+          color: #2C3E50;
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 8px;
+          line-height: 1.5;
+        }
+
+        .report-title div {
+          color: #6C757D;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.6;
         }
 
         .report-meta {
           text-align: right;
           min-width: 200px;
+          font-size: 14px;
+          color: #6C757D;
+          line-height: 1.6;
+        }
+
+        .report-meta strong {
+          color: #2C3E50;
         }
 
         [contenteditable="true"] {
           border: 1px dashed transparent;
           padding: 4px;
           border-radius: 4px;
+          transition: all 0.2s ease;
         }
 
         [contenteditable="true"]:hover {
-          border-color: var(--primary-color);
-          background-color: rgba(26, 115, 232, 0.1);
+          border-color: #3B82F6;
+          background-color: rgba(59, 130, 246, 0.05);
         }
 
         [contenteditable="true"]:focus {
-          outline: 2px solid var(--primary-color);
-          border-color: var(--primary-color);
-          background-color: rgba(26, 115, 232, 0.1);
+          outline: 2px solid #3B82F6;
+          border-color: #3B82F6;
+          background-color: rgba(59, 130, 246, 0.05);
         }
 
         .metrics-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-          margin-bottom: 30px;
+          gap: 16px;
+          margin-bottom: 24px;
         }
 
         .metric-card {
-          background: white;
-          border: 1px solid var(--border-color);
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
           border-radius: 8px;
-          padding: 20px;
+          padding: 16px;
           text-align: center;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+          transition: all 0.2s ease;
+        }
+
+        .metric-card:hover {
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
         }
 
         .metric-value {
-          font-size: 32px;
-          font-weight: bold;
-          color: var(--primary-color);
-          margin-bottom: 5px;
+          font-size: 24px;
+          font-weight: 600;
+          color: #3B82F6;
+          margin-bottom: 4px;
+          line-height: 1.2;
         }
 
         .metric-label {
-          color: #666;
-          font-size: 14px;
+          color: #6C757D;
+          font-size: 12px;
+          font-weight: 400;
           text-transform: uppercase;
+          letter-spacing: 0.5px;
+          line-height: 1.5;
         }
 
         .chart-container {
-          background: white;
-          border: 1px solid var(--border-color);
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
           border-radius: 8px;
-          padding: 20px;
+          padding: 16px;
           height: 300px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #666;
+          color: #6C757D;
           font-style: italic;
-          margin-bottom: 30px;
+          margin-bottom: 24px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         .data-table {
           width: 100%;
           border-collapse: collapse;
-          margin-bottom: 30px;
-          background: white;
+          margin-bottom: 24px;
+          background: #FFFFFF;
           border-radius: 8px;
           overflow: hidden;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
 
         .data-table th {
-          background: var(--primary-color);
-          color: white;
-          padding: 15px;
+          background: #3B82F6;
+          color: #FFFFFF;
+          padding: 12px 16px;
           text-align: left;
           font-weight: 600;
+          font-size: 14px;
+          line-height: 1.5;
         }
 
         .data-table td {
-          padding: 12px 15px;
-          border-bottom: 1px solid var(--border-color);
+          padding: 12px 16px;
+          border-bottom: 1px solid #E5E7EB;
+          font-size: 14px;
+          color: #1A1A1A;
+          line-height: 1.5;
         }
 
         .data-table tr:hover {
-          background-color: var(--secondary-color);
+          background-color: #F8F9FA;
+        }
+
+        .data-table tr:last-child td {
+          border-bottom: none;
         }
 
         .insights-section {
-          background: var(--secondary-color);
+          background: #F8F9FA;
           border-radius: 8px;
-          padding: 25px;
-          margin-bottom: 30px;
+          padding: 16px;
+          margin-bottom: 24px;
+          border: 1px solid #E5E7EB;
         }
 
         .insights-section h3 {
-          color: var(--primary-color);
-          margin-bottom: 15px;
+          color: #2C3E50;
+          margin-bottom: 12px;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.5;
+        }
+
+        .insights-section p {
+          color: #1A1A1A;
+          font-size: 14px;
+          line-height: 1.6;
+          margin-bottom: 12px;
+        }
+
+        .insights-section ul, .insights-section ol {
+          color: #1A1A1A;
+          font-size: 14px;
+          line-height: 1.6;
+          margin-left: 20px;
+        }
+
+        .insights-section li {
+          margin-bottom: 8px;
         }
 
         .report-footer {
-          margin-top: 40px;
-          padding-top: 20px;
-          border-top: 1px solid var(--border-color);
+          margin-top: 24px;
+          padding-top: 16px;
+          border-top: 1px solid #E5E7EB;
           text-align: center;
-          color: #666;
+          color: #6C757D;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+
+        h2 {
+          color: #2C3E50;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 1.5;
+          margin-bottom: 16px;
         }
 
         @media (max-width: 768px) {
+          .container {
+            padding: 12px;
+          }
+
           .report-header {
             flex-direction: column;
             text-align: center;
-            gap: 20px;
+            gap: 16px;
           }
           
           .control-group {
@@ -261,6 +347,29 @@ const AccountPerformance = () => {
           
           .metrics-grid {
             grid-template-columns: 1fr;
+          }
+
+          .report-title h1 {
+            font-size: 20px;
+          }
+
+          .metric-value {
+            font-size: 20px;
+          }
+        }
+
+        @media print {
+          .branding-controls {
+            display: none;
+          }
+          
+          .page-background {
+            background: white;
+          }
+          
+          .container {
+            max-width: none;
+            padding: 0;
           }
         }
       `}</style>
