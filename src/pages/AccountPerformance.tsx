@@ -1,25 +1,12 @@
-import React from 'react';
-import { useBranding } from '@/hooks/useBranding';
-import { usePagination } from "@/hooks/usePagination";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChartContainer } from "@/components/ui/chart";
+import React, { useState } from 'react';
 import ExportButtons from "@/components/ExportButtons";
 import PaginationControls from "@/components/PaginationControls";
+import { usePagination } from "@/hooks/usePagination";
 
 const AccountPerformance = () => {
-  const {
-    selectedFont,
-    setSelectedFont,
-    primaryColor,
-    setPrimaryColor,
-    logoUrl,
-    handleLogoUpload,
-    reportStyle
-  } = useBranding();
+  const [primaryColor, setPrimaryColor] = useState('#1a73e8');
+  const [selectedFont, setSelectedFont] = useState('Inter');
+  const [logoSrc, setLogoSrc] = useState("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMxYTczZTgiLz48dGV4dCB4PSI1MCIgeT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiPkxPR084L3RleHQ+PC9zdmc+");
 
   // Sample campaign data with more entries for pagination demonstration
   const campaignData = [
@@ -52,177 +39,386 @@ const AccountPerformance = () => {
     toggleShowAll,
   } = usePagination(campaignData, 10);
 
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setLogoSrc(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background" style={reportStyle}>
+    <div className="page-background" style={{ 
+      fontFamily: selectedFont,
+      '--primary-color': primaryColor,
+      '--text-color': '#333',
+      '--background-color': '#fff',
+      '--border-color': '#e0e0e0',
+      '--secondary-color': '#f8f9fa'
+    } as React.CSSProperties}>
       <style>{`
+        /* AdSpyder Design System */
+        .page-background {
+          background-color: #FFFFFF;
+          min-height: 100vh;
+          font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 16px;
+        }
+
         .branding-controls {
-          background: #f8fafc;
-          padding: 20px;
-          margin-bottom: 20px;
+          background: #F8F9FA;
+          padding: 16px;
           border-radius: 8px;
-          border: 1px solid #e5e7eb;
+          margin-bottom: 24px;
+          border: 1px solid #E5E7EB;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
         }
-        
-        .branding-row {
+
+        .control-group {
           display: flex;
-          gap: 20px;
-          align-items: center;
           flex-wrap: wrap;
+          gap: 16px;
+          align-items: center;
         }
-        
-        .branding-item {
+
+        .control-item {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+          gap: 4px;
         }
-        
+
+        .control-item label {
+          font-weight: 600;
+          font-size: 14px;
+          color: #2C3E50;
+          line-height: 1.5;
+        }
+
+        .control-item input, .control-item select {
+          padding: 8px 12px;
+          border: 1px solid #E5E7EB;
+          border-radius: 4px;
+          font-size: 14px;
+          font-weight: 400;
+          line-height: 1.5;
+          color: #1A1A1A;
+          background: #FFFFFF;
+        }
+
+        .control-item input:focus, .control-item select:focus {
+          outline: 2px solid #3B82F6;
+          border-color: #3B82F6;
+        }
+
         .report-header {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          padding: 30px 0;
-          border-bottom: 2px solid #e5e7eb;
-          margin-bottom: 30px;
+          align-items: center;
+          margin-bottom: 24px;
+          padding-bottom: 16px;
+          border-bottom: 2px solid #3B82F6;
         }
-        
-        .logo-section img {
-          max-height: 60px;
+
+        .logo-container {
           max-width: 200px;
         }
-        
+
+        .logo-container img {
+          max-width: 100%;
+          height: auto;
+          max-height: 60px;
+        }
+
         .report-title {
           text-align: center;
           flex-grow: 1;
+          margin: 0 16px;
         }
-        
+
         .report-title h1 {
-          font-size: 28px;
-          font-weight: 700;
-          margin-bottom: 5px;
+          color: #2C3E50;
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 8px;
+          line-height: 1.5;
         }
-        
+
+        .report-title div {
+          color: #6C757D;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.6;
+        }
+
         .report-meta {
           text-align: right;
+          min-width: 200px;
           font-size: 14px;
-          color: #6b7280;
+          color: #6C757D;
+          line-height: 1.6;
         }
-        
-        .overview-metrics {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 20px;
-          margin-bottom: 30px;
+
+        .report-meta strong {
+          color: #2C3E50;
         }
-        
-        .chart-placeholder {
-          background: #f9fafb;
-          border: 2px dashed #d1d5db;
-          border-radius: 8px;
-          padding: 40px;
-          text-align: center;
-          color: #6b7280;
-          height: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-style: italic;
-        }
-        
-        .report-footer {
-          margin-top: 40px;
-          padding-top: 20px;
-          border-top: 1px solid #e5e7eb;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          font-size: 12px;
-          color: #6b7280;
-        }
-        
+
         [contenteditable="true"] {
           border: 1px dashed transparent;
           padding: 4px;
           border-radius: 4px;
           transition: all 0.2s ease;
         }
-        
+
         [contenteditable="true"]:hover {
-          border-color: #3b82f6;
+          border-color: #3B82F6;
           background-color: rgba(59, 130, 246, 0.05);
         }
-        
+
         [contenteditable="true"]:focus {
-          outline: 2px solid #3b82f6;
-          border-color: #3b82f6;
+          outline: 2px solid #3B82F6;
+          border-color: #3B82F6;
           background-color: rgba(59, 130, 246, 0.05);
         }
-        
+
+        .metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+
+        .metric-card {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          border-radius: 8px;
+          padding: 16px;
+          text-align: center;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+          transition: all 0.2s ease;
+        }
+
+        .metric-card:hover {
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .metric-value {
+          font-size: 24px;
+          font-weight: 600;
+          color: #3B82F6;
+          margin-bottom: 4px;
+          line-height: 1.2;
+        }
+
+        .metric-label {
+          color: #6C757D;
+          font-size: 12px;
+          font-weight: 400;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          line-height: 1.5;
+        }
+
+        .chart-container {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          border-radius: 8px;
+          padding: 16px;
+          height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #6C757D;
+          font-style: italic;
+          margin-bottom: 24px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        .data-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 24px;
+          background: #FFFFFF;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+
+        .data-table th {
+          background: #3B82F6;
+          color: #FFFFFF;
+          padding: 12px 16px;
+          text-align: left;
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        .data-table td {
+          padding: 12px 16px;
+          border-bottom: 1px solid #E5E7EB;
+          font-size: 14px;
+          color: #1A1A1A;
+          line-height: 1.5;
+        }
+
+        .data-table tr:hover {
+          background-color: #F8F9FA;
+        }
+
+        .data-table tr:last-child td {
+          border-bottom: none;
+        }
+
+        .insights-section {
+          background: #F8F9FA;
+          border-radius: 8px;
+          padding: 16px;
+          margin-bottom: 24px;
+          border: 1px solid #E5E7EB;
+        }
+
+        .insights-section h3 {
+          color: #2C3E50;
+          margin-bottom: 12px;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.5;
+        }
+
+        .insights-section p {
+          color: #1A1A1A;
+          font-size: 14px;
+          line-height: 1.6;
+          margin-bottom: 12px;
+        }
+
+        .insights-section ul, .insights-section ol {
+          color: #1A1A1A;
+          font-size: 14px;
+          line-height: 1.6;
+          margin-left: 20px;
+        }
+
+        .insights-section li {
+          margin-bottom: 8px;
+        }
+
+        .report-footer {
+          margin-top: 24px;
+          padding-top: 16px;
+          border-top: 1px solid #E5E7EB;
+          text-align: center;
+          color: #6C757D;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+
+        h2 {
+          color: #2C3E50;
+          font-size: 20px;
+          font-weight: 600;
+          line-height: 1.5;
+          margin-bottom: 16px;
+        }
+
         @media (max-width: 768px) {
+          .container {
+            padding: 12px;
+          }
+
           .report-header {
             flex-direction: column;
             text-align: center;
             gap: 16px;
           }
           
-          .branding-row {
+          .control-group {
             flex-direction: column;
             align-items: stretch;
           }
           
-          .overview-metrics {
+          .metrics-grid {
             grid-template-columns: 1fr;
+          }
+
+          .report-title h1 {
+            font-size: 20px;
+          }
+
+          .metric-value {
+            font-size: 20px;
+          }
+        }
+
+        @media print {
+          .branding-controls {
+            display: none;
+          }
+          
+          .page-background {
+            background: white;
+          }
+          
+          .container {
+            max-width: none;
+            padding: 0;
           }
         }
       `}</style>
 
       {/* Branding Controls */}
       <div className="branding-controls">
-        <div className="container max-w-6xl mx-auto px-4">
-          <h2 className="text-lg font-semibold mb-4 text-foreground">Report Branding Controls</h2>
-          <div className="branding-row">
-            <div className="branding-item">
-              <Label htmlFor="logo-upload">Company Logo</Label>
-              <Input 
-                type="file" 
-                id="logo-upload"
-                accept="image/*" 
-                onChange={handleLogoUpload} 
-              />
-            </div>
-            <div className="branding-item">
-              <Label htmlFor="font-select">Font Family</Label>
-              <Select value={selectedFont} onValueChange={setSelectedFont}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Inter">Inter</SelectItem>
-                  <SelectItem value="Roboto">Roboto</SelectItem>
-                  <SelectItem value="Lato">Lato</SelectItem>
-                  <SelectItem value="Open Sans">Open Sans</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="branding-item">
-              <Label htmlFor="primary-color">Primary Color</Label>
-              <Input 
-                type="color" 
-                id="primary-color"
-                value={primaryColor} 
-                onChange={(e) => setPrimaryColor(e.target.value)}
-                className="h-10"
-              />
-            </div>
-            <ExportButtons reportTitle="Account Performance Report" />
+        <h3 style={{ marginBottom: '15px', color: primaryColor }}>🎨 Customize Report Branding</h3>
+        <div className="control-group">
+          <div className="control-item">
+            <label htmlFor="logo-upload">Upload Logo:</label>
+            <input 
+              type="file" 
+              id="logo-upload" 
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
           </div>
+          <div className="control-item">
+            <label htmlFor="font-select">Brand Font:</label>
+            <select 
+              id="font-select" 
+              value={selectedFont}
+              onChange={(e) => setSelectedFont(e.target.value)}
+            >
+              <option value="Inter">Inter</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Lato">Lato</option>
+              <option value="Open Sans">Open Sans</option>
+              <option value="Montserrat">Montserrat</option>
+            </select>
+          </div>
+          <div className="control-item">
+            <label htmlFor="primary-color">Primary Color:</label>
+            <input 
+              type="color" 
+              id="primary-color" 
+              value={primaryColor}
+              onChange={(e) => setPrimaryColor(e.target.value)}
+            />
+          </div>
+          <ExportButtons reportTitle="Account Performance Report" />
         </div>
       </div>
 
-      <div className="container max-w-6xl mx-auto px-4">
+      <div className="container">
         {/* Report Header */}
         <header className="report-header">
-          <div className="logo-section">
-            {logoUrl && <img src={logoUrl} alt="Company Logo" />}
+          <div className="logo-container">
+            <img id="report-logo" src={logoSrc} alt="Company Logo" />
           </div>
           <div className="report-title">
             <h1 contentEditable={true} suppressContentEditableWarning={true}>
@@ -240,112 +436,82 @@ const AccountPerformance = () => {
         </header>
 
         {/* Key Metrics Summary */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-6 text-foreground" style={{ color: primaryColor }}>
-            📊 Key Performance Metrics
-          </h2>
-          <div className="overview-metrics">
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">12,456</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Total Clicks</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">245,789</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Impressions</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">5.07%</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Click-Through Rate</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">$2.34</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Avg. Cost Per Click</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">1,234</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Conversions</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">$29,146</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Total Cost</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">425%</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Return on Ad Spend</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="text-center p-6">
-                <div className="text-3xl font-bold text-primary mb-2">9.91%</div>
-                <div className="text-sm text-muted-foreground uppercase tracking-wide">Impression Share</div>
-              </CardContent>
-            </Card>
+        <section className="metrics-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>📊 Key Performance Metrics</h2>
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <div className="metric-value">12,456</div>
+              <div className="metric-label">Total Clicks</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">245,789</div>
+              <div className="metric-label">Impressions</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">5.07%</div>
+              <div className="metric-label">Click-Through Rate</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">$2.34</div>
+              <div className="metric-label">Avg. Cost Per Click</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">1,234</div>
+              <div className="metric-label">Conversions</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">$29,146</div>
+              <div className="metric-label">Total Cost</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">425%</div>
+              <div className="metric-label">Return on Ad Spend</div>
+            </div>
+            <div className="metric-card">
+              <div className="metric-value">9.91%</div>
+              <div className="metric-label">Conversion Rate</div>
+            </div>
           </div>
         </section>
 
         {/* Trend Charts */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-6 text-foreground" style={{ color: primaryColor }}>
-            📈 Performance Trends
-          </h2>
-          <Card>
-            <CardContent className="p-6">
-              <div className="chart-placeholder">
-                [Trend Chart: Spend vs Conversions Over Time]<br />
-                {/* API Integration Point: Replace with chart library data */}
-              </div>
-            </CardContent>
-          </Card>
+        <section className="chart-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>📈 Performance Trends</h2>
+          <div className="chart-container">
+            [Trend Chart: Spend vs Conversions Over Time]<br />
+            {/* API Integration Point: Replace with chart library data */}
+          </div>
         </section>
 
         {/* Campaign Snapshot Table */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold mb-6 text-foreground" style={{ color: primaryColor }}>
-            🎯 Top Performing Campaigns
-          </h2>
-          <Card>
-            <CardContent className="p-0">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Campaign Name</TableHead>
-                    <TableHead>Impressions</TableHead>
-                    <TableHead>Clicks</TableHead>
-                    <TableHead>CTR</TableHead>
-                    <TableHead>Cost</TableHead>
-                    <TableHead>Conversions</TableHead>
-                    <TableHead>ROAS</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedData.map((campaign) => (
-                    <TableRow key={campaign.id}>
-                      <TableCell className="font-medium">{campaign.name}</TableCell>
-                      <TableCell>{campaign.impressions}</TableCell>
-                      <TableCell>{campaign.clicks}</TableCell>
-                      <TableCell>{campaign.ctr}</TableCell>
-                      <TableCell>{campaign.cost}</TableCell>
-                      <TableCell>{campaign.conversions}</TableCell>
-                      <TableCell>{campaign.roas}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+        <section className="table-section">
+          <h2 style={{ color: primaryColor, marginBottom: '20px' }}>🎯 Top Performing Campaigns</h2>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Campaign Name</th>
+                <th>Impressions</th>
+                <th>Clicks</th>
+                <th>CTR</th>
+                <th>Cost</th>
+                <th>Conversions</th>
+                <th>ROAS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedData.map((campaign) => (
+                <tr key={campaign.id}>
+                  <td>{campaign.name}</td>
+                  <td>{campaign.impressions}</td>
+                  <td>{campaign.clicks}</td>
+                  <td>{campaign.ctr}</td>
+                  <td>{campaign.cost}</td>
+                  <td>{campaign.conversions}</td>
+                  <td>{campaign.roas}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <PaginationControls
             currentPage={currentPage}
             totalPages={totalPages}
@@ -361,46 +527,38 @@ const AccountPerformance = () => {
         </section>
 
         {/* Insights & Notes */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>💡 Key Insights & Analysis</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div contentEditable={true} suppressContentEditableWarning={true}>
-              <p className="mb-4"><strong>Performance Highlights:</strong></p>
-              <ul className="mb-4 ml-6 list-disc">
-                <li>Brand campaigns continue to deliver the highest ROAS at 525%, significantly above account average</li>
-                <li>Overall conversion rate improved by 12% compared to previous period</li>
-                <li>Cost per acquisition decreased by 8% while maintaining conversion volume</li>
-              </ul>
-              
-              <p className="mb-4"><strong>Areas for Optimization:</strong></p>
-              <ul className="ml-6 list-disc">
-                <li>Display remarketing campaigns show opportunity for bid optimization</li>
-                <li>Product search terms could benefit from negative keyword expansion</li>
-                <li>Shopping campaigns performing well but could expand product coverage</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
+        <section className="insights-section">
+          <h3>💡 Key Insights & Analysis</h3>
+          <div contentEditable={true} suppressContentEditableWarning={true}>
+            <p><strong>Performance Highlights:</strong></p>
+            <ul>
+              <li>Brand campaigns continue to deliver the highest ROAS at 525%, significantly above account average</li>
+              <li>Overall conversion rate improved by 12% compared to previous period</li>
+              <li>Cost per acquisition decreased by 8% while maintaining conversion volume</li>
+            </ul>
+            
+            <p><strong>Areas for Optimization:</strong></p>
+            <ul>
+              <li>Display remarketing campaigns show opportunity for bid optimization</li>
+              <li>Product search terms could benefit from negative keyword expansion</li>
+              <li>Shopping campaigns performing well but could expand product coverage</li>
+            </ul>
+          </div>
+        </section>
 
         {/* Recommendations */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>🚀 Recommendations & Next Steps</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div contentEditable={true} suppressContentEditableWarning={true}>
-              <ol className="ml-6 list-decimal space-y-2">
-                <li><strong>Increase Budget Allocation:</strong> Shift 15% more budget to brand campaigns given superior ROAS performance</li>
-                <li><strong>Expand Keyword Coverage:</strong> Add 50+ new product-related keywords based on search term analysis</li>
-                <li><strong>Optimize Display Targeting:</strong> Refine audience segments for remarketing campaigns to improve CTR</li>
-                <li><strong>Landing Page Testing:</strong> A/B test product landing pages to improve conversion rates further</li>
-                <li><strong>Competitor Analysis:</strong> Monitor competitive landscape for new keyword opportunities</li>
-              </ol>
-            </div>
-          </CardContent>
-        </Card>
+        <section className="insights-section">
+          <h3>🚀 Recommendations & Next Steps</h3>
+          <div contentEditable={true} suppressContentEditableWarning={true}>
+            <ol>
+              <li><strong>Increase Budget Allocation:</strong> Shift 15% more budget to brand campaigns given superior ROAS performance</li>
+              <li><strong>Expand Keyword Coverage:</strong> Add 50+ new product-related keywords based on search term analysis</li>
+              <li><strong>Optimize Display Targeting:</strong> Refine audience segments for remarketing campaigns to improve CTR</li>
+              <li><strong>Landing Page Testing:</strong> A/B test product landing pages to improve conversion rates further</li>
+              <li><strong>Competitor Analysis:</strong> Monitor competitive landscape for new keyword opportunities</li>
+            </ol>
+          </div>
+        </section>
 
         {/* Footer */}
         <footer className="report-footer">
