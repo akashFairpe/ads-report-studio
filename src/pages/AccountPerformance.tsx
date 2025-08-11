@@ -54,9 +54,130 @@ const AccountPerformance = () => {
 
   return (
     <div className="min-h-screen bg-background" style={reportStyle}>
+      <style>{`
+        .branding-controls {
+          background: #f8fafc;
+          padding: 20px;
+          margin-bottom: 20px;
+          border-radius: 8px;
+          border: 1px solid #e5e7eb;
+        }
+        
+        .branding-row {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        
+        .branding-item {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+        
+        .report-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 30px 0;
+          border-bottom: 2px solid #e5e7eb;
+          margin-bottom: 30px;
+        }
+        
+        .logo-section img {
+          max-height: 60px;
+          max-width: 200px;
+        }
+        
+        .report-title {
+          text-align: center;
+          flex-grow: 1;
+        }
+        
+        .report-title h1 {
+          font-size: 28px;
+          font-weight: 700;
+          margin-bottom: 5px;
+        }
+        
+        .report-meta {
+          text-align: right;
+          font-size: 14px;
+          color: #6b7280;
+        }
+        
+        .overview-metrics {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        
+        .chart-placeholder {
+          background: #f9fafb;
+          border: 2px dashed #d1d5db;
+          border-radius: 8px;
+          padding: 40px;
+          text-align: center;
+          color: #6b7280;
+          height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-style: italic;
+        }
+        
+        .report-footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e5e7eb;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          color: #6b7280;
+        }
+        
+        [contenteditable="true"] {
+          border: 1px dashed transparent;
+          padding: 4px;
+          border-radius: 4px;
+          transition: all 0.2s ease;
+        }
+        
+        [contenteditable="true"]:hover {
+          border-color: #3b82f6;
+          background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        [contenteditable="true"]:focus {
+          outline: 2px solid #3b82f6;
+          border-color: #3b82f6;
+          background-color: rgba(59, 130, 246, 0.05);
+        }
+        
+        @media (max-width: 768px) {
+          .report-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 16px;
+          }
+          
+          .branding-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          
+          .overview-metrics {
+            grid-template-columns: 1fr;
+          }
+        }
+      `}</style>
+
       {/* Branding Controls */}
       <div className="branding-controls">
-        <div className="container">
+        <div className="container max-w-6xl mx-auto px-4">
           <h2 className="text-lg font-semibold mb-4 text-foreground">Report Branding Controls</h2>
           <div className="branding-row">
             <div className="branding-item">
@@ -97,11 +218,11 @@ const AccountPerformance = () => {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container max-w-6xl mx-auto px-4">
         {/* Report Header */}
         <header className="report-header">
           <div className="logo-section">
-            {logoUrl && <img src={logoUrl} alt="Company Logo" className="max-h-15 max-w-50" />}
+            {logoUrl && <img src={logoUrl} alt="Company Logo" />}
           </div>
           <div className="report-title">
             <h1 contentEditable={true} suppressContentEditableWarning={true}>
@@ -124,52 +245,52 @@ const AccountPerformance = () => {
             📊 Key Performance Metrics
           </h2>
           <div className="overview-metrics">
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">12,456</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Total Clicks</div>
+                <div className="text-3xl font-bold text-primary mb-2">12,456</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Total Clicks</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">245,789</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Impressions</div>
+                <div className="text-3xl font-bold text-primary mb-2">245,789</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Impressions</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">5.07%</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Click-Through Rate</div>
+                <div className="text-3xl font-bold text-primary mb-2">5.07%</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Click-Through Rate</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">$2.34</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Avg. Cost Per Click</div>
+                <div className="text-3xl font-bold text-primary mb-2">$2.34</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Avg. Cost Per Click</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">1,234</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Conversions</div>
+                <div className="text-3xl font-bold text-primary mb-2">1,234</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Conversions</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">$29,146</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Total Cost</div>
+                <div className="text-3xl font-bold text-primary mb-2">$29,146</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Total Cost</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">425%</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Return on Ad Spend</div>
+                <div className="text-3xl font-bold text-primary mb-2">425%</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Return on Ad Spend</div>
               </CardContent>
             </Card>
-            <Card className="metric-card">
+            <Card>
               <CardContent className="text-center p-6">
-                <div className="metric-value text-2xl font-bold text-primary">9.91%</div>
-                <div className="metric-label text-sm text-muted-foreground uppercase tracking-wide">Impression Share</div>
+                <div className="text-3xl font-bold text-primary mb-2">9.91%</div>
+                <div className="text-sm text-muted-foreground uppercase tracking-wide">Impression Share</div>
               </CardContent>
             </Card>
           </div>
@@ -182,7 +303,7 @@ const AccountPerformance = () => {
           </h2>
           <Card>
             <CardContent className="p-6">
-              <div className="chart-placeholder flex items-center justify-center h-75 text-muted-foreground italic">
+              <div className="chart-placeholder">
                 [Trend Chart: Spend vs Conversions Over Time]<br />
                 {/* API Integration Point: Replace with chart library data */}
               </div>
